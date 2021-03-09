@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'UserInterfaces/gradiant.dart';
 
 void main() {
@@ -22,7 +21,10 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       home: Stack(
-        children: [Gradiant(), Text("aqui va tu widget")],
+        children: [
+          Gradiant(),
+          Text(""),
+        ],
       ),
     );
   }
