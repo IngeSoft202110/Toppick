@@ -1,0 +1,12 @@
+/* Background color of the container */
+.pedidos-por-confirmar {
+    background-color: #fcdcbf81;
+}
+/* Buttons in the card */
+.pedidos-por-confirmar button {
+    width: 100%; 
+}
+/* Text with order id */
+.pedidos-por-confirmar p {
+    font-weight: normal; 
+}

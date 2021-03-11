@@ -1,5 +1,8 @@
 // Modules to import 
 import express from 'express'; 
+// -------- import data to simulate database response 
+import { porConfirmar, enCurso, listos } from './Test-Data/pedidos.js'; 
+console.log(porConfirmar);
 
 // Initialice express app 
 const app = express(); 
@@ -12,7 +15,11 @@ app.set('view engine', 'ejs');
 
 // Routes of the web page ------- This should be imported and the routes should be in a separate file
 app.get('/', (req, res) => {
-    res.render('pedidos')
+    res.render('pedidos', {
+        porConfirmar : porConfirmar, 
+        enCurso : enCurso, 
+        listos : listos,
+    })
 }); 
 
 // Port to listen 

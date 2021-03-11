@@ -9,7 +9,32 @@
     <%- include('../partials/navbar'); %> 
     
     <!-- Main content of the page --> 
-    
+    <div class="container-fluid mt-4">
+        <!-- Row for the boxes -->
+        <div class="row">
+            <!-- First column for the incoming orders -->
+            <div class="col-xl-4 pedidos">
+                <p class="text-center display-6"> Pedidos <b>por confirmar : </b> </p> 
+                <% porConfirmar.forEach( (pedido) => {  %>  
+                <%- include('../partials/por-confirmar-card', {idPedido : pedido.id }); %>
+                <% }); %>  
+            </div>
+            <!-- Second column for orders in progress -->
+            <div class="col-xl-4 pedidos">
+                <p class="text-center display-6"> Pedidos <b> en curso : </b> </p> 
+                <% enCurso.forEach( (pedido) => {  %>  
+                <%- include('../partials/en-curso-card', {idPedido : pedido.id }); %> 
+                <% }); %> 
+            </div>
+            <!-- Third column for orders to be delivered -->
+            <div class="col-xl-4 pedidos">
+                <p class="text-center display-6"> Pedidos <b> listos : </b> </p> 
+                <% listos.forEach( (pedido) => {  %>  
+                <%- include('../partials/listos-card', {idPedido : pedido.id }) %> 
+                <% }); %> 
+            </div>
+        </div>
+    </div>
 
     <!-- Footer of the page -->
     <%- include('../partials/footer'); %> 

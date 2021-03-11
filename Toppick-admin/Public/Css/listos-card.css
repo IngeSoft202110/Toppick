@@ -1,0 +1,12 @@
+/* Background color of the container */
+.pedidos-listos {
+    background-color: #fcdcbf81;
+}
+/* Buttons in the card */
+.pedidos-listos button {
+    width: 100%; 
+}
+/* Text with order id */
+.pedidos-listos p {
+    font-weight: normal; 
+}

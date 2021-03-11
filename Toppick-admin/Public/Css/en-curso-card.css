@@ -1,0 +1,12 @@
+/* Background color of the container */
+.pedidos-en-curso {
+    background-color: #fcdcbf81;
+}
+/* Buttons in the card */
+.pedidos-en-curso button {
+    width: 100%; 
+}
+/* Text with order id */
+.pedidos-en-curso p {
+    font-weight: normal; 
+}
