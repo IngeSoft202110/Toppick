@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'UserInterfaces/gradiant.dart';
+import 'UserInterfaces/shopcategorylist.dart';
+import 'UserInterfaces/productlist.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,9 +22,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       debugShowCheckedModeBanner: false,
-      home: Stack(
-        children: [Gradiant(), Text("aqui va tu widget")],
-      ),
+      home: ProductList(),
     );
   }
 }
