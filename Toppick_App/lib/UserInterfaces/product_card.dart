@@ -7,7 +7,7 @@ Widget image(String pathImage, double w, double h) {
   return Container(
     height: h,
     width: w,
-    margin: EdgeInsets.only(bottom: 10.0),
+    margin: EdgeInsets.only(bottom: 15.0),
     decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         shape: BoxShape.rectangle,
@@ -17,70 +17,82 @@ Widget image(String pathImage, double w, double h) {
 }
 
 Widget cardHeader(String title, bool status, String ubication) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceAround,
-    children: [
-      Text(
-        title,
-        style: TextStyle(
-            fontWeight: FontWeight.w400,
-            fontSize: 38,
-            color: Color(0xFFB7B7B7)),
-      ),
-      Text(
-        (status) ? "Disponible" : "No disponible",
-        style: TextStyle(
-            fontWeight: FontWeight.w700,
-            fontSize: 15,
-            color: (status) ? Color(0xFF0CC665) : Color(0xFFD76060)),
-      ),
-      Icon(
-        Icons.place,
-        size: 30,
-      )
-    ],
+  return Container(
+    margin: EdgeInsets.only(bottom: 15.0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 38,
+              color: Color(0xFFB7B7B7)),
+        ),
+        Text(
+          (status) ? "Disponible" : "No disponible",
+          style: TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 15,
+              color: (status) ? Color(0xFF0CC665) : Color(0xFFD76060)),
+        ),
+        Icon(
+          Icons.place,
+          size: 30,
+        )
+      ],
+    ),
   );
 }
 
 Widget cardDescription(String description) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        "Description",
-        style: TextStyle(
-            fontWeight: FontWeight.w700,
-            fontSize: 25,
-            color: Color(0xFFD76060)),
-      ),
-      Container(
-        width: 356,
-        height: 55,
-        child: Text(
-          description,
-          style: TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: 15,
-              color: Color(0xFF707070)),
+  return Container(
+    margin: EdgeInsets.only(bottom: 15.0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          margin: EdgeInsets.only(bottom: 10.0),
+          child: Text(
+            "Description",
+            style: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 25,
+                color: Color(0xFFD76060)),
+          ),
         ),
-      ),
-    ],
+        Container(
+          width: 356,
+          height: 55,
+          child: Text(
+            description,
+            style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 15,
+                color: Color(0xFF707070)),
+          ),
+        ),
+      ],
+    ),
   );
 }
 
 Widget cardSchedule(String schedule) {
   return Container(
     alignment: Alignment.centerLeft,
-    margin: EdgeInsets.only(left: 20.0),
+    margin: EdgeInsets.only(left: 20.0, bottom: 20.0),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          "Horario",
-          style: TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: 25,
-              color: Color(0xFFD76060)),
+        Container(
+          margin: EdgeInsets.only(bottom: 10.0),
+          child: Text(
+            "Horario",
+            style: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 25,
+                color: Color(0xFFD76060)),
+          ),
         ),
         Container(
           width: 128,
