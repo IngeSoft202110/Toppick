@@ -11,8 +11,8 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController _filter = new TextEditingController();
   String _searchText = "";
-  List names = new List();
-  List filteredNames = new List();
+  List names = [];
+  List filteredNames = [];
   int option;
   Widget _appBarTitle = new Text('');
 
@@ -44,7 +44,6 @@ class _SearchScreenState extends State<SearchScreen> {
       body: Container(
         child: _buildList(),
       ),
-      resizeToAvoidBottomPadding: false,
     );
   }
 
@@ -73,7 +72,7 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget _buildList() {
     // ignore: prefer_is_not_empty
     if (!(_searchText.isEmpty)) {
-      List tempList = new List();
+      List tempList = [];
       for (int i = 0; i < filteredNames.length; i++) {
         if (filteredNames[i]['name']
             .toLowerCase()
@@ -123,7 +122,8 @@ class _SearchScreenState extends State<SearchScreen> {
       ];
     }
 
-    List tempList = new List();
+    List tempList = [];
+
     tempList = a;
     setState(() {
       names = tempList;
