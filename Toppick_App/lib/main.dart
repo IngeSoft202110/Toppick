@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'UserInterfaces/home_product.dart';
 //import 'UserInterfaces/home_screen.dart';
+import 'UserInterfaces/shopcategorylist.dart';
+import 'UserInterfaces/productlist.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
