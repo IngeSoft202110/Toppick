@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'UserInterfaces/home_product.dart';
+//import 'UserInterfaces/home_screen.dart';
 import 'UserInterfaces/shopcategorylist.dart';
 import 'UserInterfaces/productlist.dart';
 
@@ -16,13 +17,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Toppick App',
-      theme: ThemeData(
-        primarySwatch: Colors.deepOrange,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      debugShowCheckedModeBanner: false,
-      home: ProductList(),
-    );
+        title: 'Toppick App',
+        theme: ThemeData(
+          primarySwatch: Colors.deepOrange,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(body: HomeProduct()));
   }
 }
