@@ -8,9 +8,9 @@ class Gradiant extends StatelessWidget {
       height: double.infinity,
       decoration: BoxDecoration(
           gradient: LinearGradient(begin: Alignment.topCenter, colors: [
-        Colors.orange[900],
-        Colors.orange[800],
-        Colors.orange[400]
+        Color(0xFFFD8901),
+        Color(0xFFFC8C08),
+        Color(0xFFF59C32)
       ])),
     );
   }
