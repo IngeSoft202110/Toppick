@@ -4,29 +4,66 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Css/pantallapedidos.css">
     <title>Toppick Admin - pantalla pedidos </title>
 </head>
 <body>
     <header>
         <nav class='navbar'>
-            <h1> Toppick Admin </h1>
+            <div class="titulo">
+                <h1> Toppick  </h1>
+                <p>Admin</p>
+            </div>
             <ul>
                 <li> <a> Pedidos </a></li>
-                <li> <a>Historial de pedidos </a></li>
+                <li> <a href="historial_pedidos.html"> Historial de pedidos </a></li>
                 <li><a>Cierre de caja </a></li>
+                <li><button > Cerrar sesión </button>  </li>
             </ul>
-            <button class='cs'> Cerrar sesión </button>  <!-- clase para el boton de cerrar sesión -->
+            
         </nav>
     </header>
     <main>
         <section class='ppc'> <!-- clase para pedidos por confirmar -->
-            
+            <div class="titulo-contenedor">
+                <h2>
+                    Pedidos
+                </h2>
+                <p> por confirmar:</p>
+            </div>   
+            <div class="cajita">
+                <div class="carta1"> <!-- Hacer diseño carata para ppc -->
+
+                </div>
+            </div>         
        </section>
         <section class='pec'> <!-- clase para pedidos en curso  -->
-            
+            <div class="titulo-contenedor">
+                <h2>
+                    Pedidos
+                </h2>
+                <p> en curso:</p>
+            </div>        
+            <div class="cajita">
+                <div class="carta2"> <!-- Hacer diseño carata para pec -->
+
+                </div>
+            </div>
         </section>
         <section class='pl'> <!-- clase para pedidos listos -->
-            
+            <div class="titulo-contenedor">
+                <h2>
+                    Pedidos
+                </h2>
+                <p> listos:</p>
+            </div>   
+            <div class="cajita">
+                <div class="carta3"> <!-- Hacer diseño carata para pl -->
+
+                </div>
+            </div>     
         </section>
     </main>
     <footer>

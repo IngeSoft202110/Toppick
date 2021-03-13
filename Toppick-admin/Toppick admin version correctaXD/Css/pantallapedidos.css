@@ -1,0 +1,136 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+html{
+    font-size: 62.5%; /*con esto un rem es igual a 10px y sirve para usar medidas relativas */
+}
+
+.navbar{
+    background-color: #D77D4F;   
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+.titulo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+h1{
+    color: #FFFDE7;
+    font-size: 50px;
+    font-family: Roboto, sans-serif;
+}
+.navbar div p{
+    color: #FFFDE7;
+    font-size: 40px;
+    font-family: Roboto, sans-serif;
+    margin-left: 15px;
+}
+
+ul{
+    list-style-type: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+ul li{
+    margin: 0 30px;  
+}
+
+ul li a{
+    font-size: 1.8rem; 
+    padding: 10px;
+    border: 2px solid #FFFEEE;
+    border-radius: 5px;
+    color: #FFFEEE;
+    display: inline-block;
+    width: 192px;
+    text-align: center;
+    font-family: 'Lato', sans-serif;
+}
+
+ul li button{
+    font-size: 1.8rem;
+    padding: 10px;
+    background-color: #472025;
+    border-radius: 5px;
+    color: #FFFEEE;
+    width: 192px;
+    font-family: 'Lato', sans-serif;
+    border: none;
+}
+
+body{
+    background-image: url("./asets/logo.png"); /*Mirar porque no funciona */
+    width: 100%;
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-color: rgba(255, 253, 231, 0.7);
+}
+
+main{
+    height: 80vh;
+    display: flex;
+    flex-direction: row; 
+    justify-content: space-around;   
+}
+
+.titulo-contenedor{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}  
+
+.titulo-contenedor h2{
+    color: #47525E;
+    font-family: Roboto,sans-serif;
+    font-size: 3.5rem;
+    line-height: 45px;
+    width: 132px;
+    text-align: left;
+    margin-top: 20px ;
+}
+
+.titulo-contenedor p{
+    color: #47525E;
+    font-family: Roboto, sans-serif;
+    font-size: 3.4rem;
+    line-height: 44px;
+    width: 228px;
+    text-align: left;
+    margin-left: 13px;
+    margin-top:20px;
+    
+}
+
+.cajita{
+    border: 8px solid #FCDCBF;
+    border-radius: 25px;
+    width: 500px;
+    height: 714px;
+    margin: 20px;
+
+}
+
+footer{
+    display: flex;
+    width: 100%;
+    height: 5vh;
+    justify-content: center;
+    align-items: center;
+    color: #47525E;
+    font-family: Roboto;
+    font-size: 2.6rem;
+    margin: 50px 0;
+}
