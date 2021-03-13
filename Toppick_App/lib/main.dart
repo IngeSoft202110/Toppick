@@ -1,9 +1,6 @@
+import 'package:Toppick_App/Users/UserInterfaces/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'UserInterfaces/home_product.dart';
-//import 'UserInterfaces/home_screen.dart';
-import 'UserInterfaces/shopcategorylist.dart';
-import 'UserInterfaces/productlist.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,6 +20,6 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         debugShowCheckedModeBanner: false,
-        home: Scaffold(body: HomeProduct()));
+        home: Scaffold(body: HomeScreen()));
   }
 }

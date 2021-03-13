@@ -1,0 +1,199 @@
+import 'package:Toppick_App/Products/Models/producto.dart';
+import 'package:Toppick_App/GeneralUserInterfaces/listmaintext.dart';
+import 'package:Toppick_App/GeneralUserInterfaces/gradiant.dart';
+import 'package:Toppick_App/GeneralUserInterfaces/header.dart';
+import 'package:Toppick_App/Products/UserInterfaces/productcard.dart';
+import 'package:Toppick_App/Products/UserInterfaces/productcategorycard.dart';
+import 'package:Toppick_App/Products/UserInterfaces/productcategorydisplay.dart';
+import 'package:Toppick_App/GeneralUserInterfaces/search_bar_button.dart';
+import 'package:flutter/material.dart';
+
+List<String> categories = [
+  'Horneados',
+  'Empaquetados',
+  'Bebidas',
+  'A la carta',
+  'Combos',
+  'Otros',
+];
+
+List<String> descriptions = [
+  'Productos horneados',
+  'Productos Empaquetados',
+  'Bebidas refrescantes',
+  'Platos personalizables',
+  'Combo de productos',
+  'Productos que no cumplen con las caracteristicas de los demas',
+];
+
+List<String> logoPahts = [
+  'assets/icons/horneados.png',
+  'assets/icons/empaquetados.png',
+  'assets/icons/bebidas.png',
+  'assets/icons/alacarta.png',
+  'assets/icons/combos.png',
+  'assets/icons/otros.png',
+];
+
+/*Esta lista de productos se cargara con el ID de la tienda pasado al ProductList, si no le dan
+ese parametro se listan todos los productos.*/
+List <Producto> productList = [
+  Producto(
+    1,
+    "Pescadito",
+    3000,
+    "NINFO",
+    "Hojaldre relleno de arequipe, preparado por los mejores cocineros de toda la universidad.",
+    20,
+    4.5,
+    "Horneados"),
+  Producto(
+    2,
+    "Hamburguesa",
+    10000,
+    "NINFO",
+    "Rica hamburguesa de la PUJ, preparada con la mejor carne y vegetales de Colombia.",
+    20,
+    4.5,
+    "A la carta"),
+  Producto(
+    3,
+    "Te",
+    2000,
+    "NINFO",
+    "Te frio de la PUJ, perfecto para combinar con otras comidas que ofrece la universidad.",
+    20,
+    4.5,
+    "Bebidas"),
+  Producto(
+    4,
+    "Avena",
+    1200,
+    "NINFO",
+    "Avena alpina como la conoces, simple pero muy rica.",
+    20,
+    4.5,
+    "Bebidas"),
+  Producto(
+    5,
+    "Chocorramo",
+    2000,
+    "NINFO",
+    "Ponque de vainilla recubierto en chocolate",
+    20,
+    4.5,
+    "Empaquetados"),
+  Producto(
+    6,
+    "Combo del mes",
+    5000,
+    "NINFO",
+    "Pescadito con Te.",
+    20,
+    4.5,
+    "Combos"),
+];
+
+List<Producto> filterProducts(List<Producto> products, String category){
+  List<Producto> filtered = [];
+  for(Producto product in products){
+    if(product.category == category)
+      filtered.add(product);
+  }
+  return filtered;
+}
+
+
+class ProductList extends StatefulWidget {
+  ProductList({this.storeID});
+  final int storeID;
+  @override
+  ProductListState createState() => ProductListState();
+}
+
+class ProductListState extends State<ProductList> {
+  List<ProductCategoryCard> widgets = [];
+  String currentTitle = "";
+  String currentDescription = "";
+  ListView products = ListView(
+    children: <Widget>[],
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: <Widget>[
+          Gradiant(),
+          Column(
+            children: <Widget>[
+              Header(),
+              SearchButton("Buscar productos", 3),
+              SizedBox(
+                height: 450,
+                child: ListView(
+                  children: <Widget>[
+                    ListMainText("Escoge la", "comida que amas"),
+                    Padding(
+                      padding: const EdgeInsets.only(top:10.0, left: 10.0, bottom: 10.0),
+                      child: Container(
+                        alignment: Alignment.centerLeft,
+                        child: Text("Categorias", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 25),),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 150,
+                      child: ListView.builder(
+                        itemCount: categories.length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (BuildContext context, int index){
+                          return Padding(
+                            padding: const EdgeInsets.only(left: 15.0, bottom: 25.0),
+                            child: GestureDetector(
+                              onTap: (){
+                                setState(() {
+                                  ProductCategoryCard selectedCard = widgets[index];
+                                  if(selectedCard!=null){
+                                    this.currentTitle = selectedCard.categoryName;
+                                    this.currentDescription = selectedCard.categoryDescription;
+                                    List<Producto> selected = filterProducts(productList, this.currentTitle);
+                                    this.products = ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: selected.length,
+                                      itemBuilder: (BuildContext context, int index){
+                                        return Padding(
+                                          padding: const EdgeInsets.only(left:15.0),
+                                          child: ProductCard(selected[index]),
+                                        );
+                                      }
+                                    );
+                                  }
+                                });
+                              },
+                              child: widgets[index],
+                            ),
+                          );
+                        }
+                      ),
+                    ),
+                    ProductCategoryDisplay(this.currentTitle, this.currentDescription, this.products),
+                  ],
+                ),
+              ),
+            ]
+          )
+        ],
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      for(int i = 0; i < categories.length; i++){
+        widgets.add(ProductCategoryCard(categories[i], descriptions[i], logoPahts[i]));
+      }
+    });
+  }
+}
