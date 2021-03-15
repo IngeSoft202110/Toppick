@@ -7,6 +7,8 @@ import 'package:Toppick_App/Products/UserInterfaces/productcategorycard.dart';
 import 'package:Toppick_App/Products/UserInterfaces/productcategorydisplay.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/search_bar_button.dart';
 import 'package:flutter/material.dart';
+import '../../Shops/Models/tienda.dart';
+import 'package:Toppick_App/Products/UserInterfaces/home_product_card.dart';
 
 List<String> categories = [
   'Horneados',
@@ -37,75 +39,83 @@ List<String> logoPahts = [
 
 /*Esta lista de productos se cargara con el ID de la tienda pasado al ProductList, si no le dan
 ese parametro se listan todos los productos.*/
-List <Producto> productList = [
+List<Producto> productList = [
   Producto(
-    1,
-    "Pescadito",
-    3000,
-    "NINFO",
-    "Hojaldre relleno de arequipe, preparado por los mejores cocineros de toda la universidad.",
-    20,
-    4.5,
-    "Horneados"),
+      1,
+      "Pescadito",
+      3000,
+      "NINFO",
+      "Hojaldre relleno de arequipe, preparado por los mejores cocineros de toda la universidad.",
+      20,
+      4.5,
+      "Horneados"),
   Producto(
-    2,
-    "Hamburguesa",
-    10000,
-    "NINFO",
-    "Rica hamburguesa de la PUJ, preparada con la mejor carne y vegetales de Colombia.",
-    20,
-    4.5,
-    "A la carta"),
+      2,
+      "Hamburguesa",
+      10000,
+      "NINFO",
+      "Rica hamburguesa de la PUJ, preparada con la mejor carne y vegetales de Colombia.",
+      20,
+      4.5,
+      "A la carta"),
   Producto(
-    3,
-    "Te",
-    2000,
-    "NINFO",
-    "Te frio de la PUJ, perfecto para combinar con otras comidas que ofrece la universidad.",
-    20,
-    4.5,
-    "Bebidas"),
+      3,
+      "Te",
+      2000,
+      "NINFO",
+      "Te frio de la PUJ, perfecto para combinar con otras comidas que ofrece la universidad.",
+      20,
+      4.5,
+      "Bebidas"),
   Producto(
-    4,
-    "Avena",
-    1200,
-    "NINFO",
-    "Avena alpina como la conoces, simple pero muy rica.",
-    20,
-    4.5,
-    "Bebidas"),
-  Producto(
-    5,
-    "Chocorramo",
-    2000,
-    "NINFO",
-    "Ponque de vainilla recubierto en chocolate",
-    20,
-    4.5,
-    "Empaquetados"),
-  Producto(
-    6,
-    "Combo del mes",
-    5000,
-    "NINFO",
-    "Pescadito con Te.",
-    20,
-    4.5,
-    "Combos"),
+      4,
+      "Avena",
+      1200,
+      "NINFO",
+      "Avena alpina como la conoces, simple pero muy rica.",
+      20,
+      4.5,
+      "Bebidas"),
+  Producto(5, "Chocorramo", 2000, "NINFO",
+      "Ponque de vainilla recubierto en chocolate", 20, 4.5, "Empaquetados"),
+  Producto(6, "Combo del mes", 5000, "NINFO", "Pescadito con Te.", 20, 4.5,
+      "Combos"),
 ];
 
-List<Producto> filterProducts(List<Producto> products, String category){
+//tiendas para el widget de producto propio
+List<Tienda> storeList = [
+  Tienda(
+    1,
+    "La Central",
+    "Cafeterias",
+    "L-V: 6:00 A.M - 9:00 P.M \n S: 8:00 am a 4:00pm",
+    "En el restaurante La Central brindamos gran variedad de productos: desayunos, almuerzos, comidas rapidas, pizzas, opciones para llevar y un espacio comodo, una experiencia unica ",
+    "assets/img/central.PNG",
+    true,
+    "https://www.google.com/maps/dir//la+central+javeriana/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x8e3f9b5f5fdde08f:0x19a674df1df81bae?sa=X&ved=2ahUKEwiBnN-jyKnvAhVju1kKHewoCP4Q9RcwAHoECAQQAw",
+  ),
+  Tienda(
+    2,
+    "La Pecera",
+    "Cafeterias",
+    "L-V: 6:00 A.M - 9:00 P.M \n S: 8:00 am a 4:00pm",
+    "En el restaurante La Central brindamos gran variedad de productos: desayunos, almuerzos, comidas rapidas, pizzas, opciones para llevar y un espacio comodo, una experiencia unica ",
+    "assets/img/central.PNG",
+    true,
+    "https://www.google.com/maps/dir//la+central+javeriana/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x8e3f9b5f5fdde08f:0x19a674df1df81bae?sa=X&ved=2ahUKEwiBnN-jyKnvAhVju1kKHewoCP4Q9RcwAHoECAQQAw",
+  )
+];
+
+List<Producto> filterProducts(List<Producto> products, String category) {
   List<Producto> filtered = [];
-  for(Producto product in products){
-    if(product.category == category)
-      filtered.add(product);
+  for (Producto product in products) {
+    if (product.category == category) filtered.add(product);
   }
   return filtered;
 }
 
-
 class ProductList extends StatefulWidget {
-  ProductList({this.storeID});
+  ProductList({this.storeID = 1});
   final int storeID;
   @override
   ProductListState createState() => ProductListState();
@@ -119,27 +129,36 @@ class ProductListState extends State<ProductList> {
     children: <Widget>[],
   );
 
-  Widget selectProductsFromCategory(BuildContext context, int index){
+  Widget selectProductsFromCategory(BuildContext context, int index) {
     return Padding(
       padding: const EdgeInsets.only(left: 15.0, bottom: 25.0),
       child: GestureDetector(
-        onTap: (){
+        onTap: () {
           setState(() {
             ProductCategoryCard selectedCard = widgets[index];
-            if(selectedCard!=null){
+            if (selectedCard != null) {
               this.currentTitle = selectedCard.categoryName;
               this.currentDescription = selectedCard.categoryDescription;
-              List<Producto> selected = filterProducts(productList, this.currentTitle);
+              List<Producto> selected =
+                  filterProducts(productList, this.currentTitle);
               this.products = ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: selected.length,
-                itemBuilder: (BuildContext context, int index){
-                  return Padding(
-                    padding: const EdgeInsets.only(left:15.0),
-                    child: ProductCard(selected[index]),
-                  );
-                }
-              );
+                  scrollDirection: Axis.horizontal,
+                  itemCount: selected.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return GestureDetector(
+                      onTap: () => {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomeProductCard(
+                                    selected[index], storeList)))
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 15.0),
+                        child: ProductCard(selected[index]),
+                      ),
+                    );
+                  });
             }
           });
         },
@@ -164,10 +183,17 @@ class ProductListState extends State<ProductList> {
                 SearchButton("Buscar productos", 3),
                 ListMainText("Escoge la", "comida que amas"),
                 Padding(
-                  padding: const EdgeInsets.only(top:10.0, left: 10.0, bottom: 10.0),
+                  padding: const EdgeInsets.only(
+                      top: 10.0, left: 10.0, bottom: 10.0),
                   child: Container(
                     alignment: Alignment.centerLeft,
-                    child: Text("Categorias", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 25),),
+                    child: Text(
+                      "Categorias",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 25),
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -178,7 +204,8 @@ class ProductListState extends State<ProductList> {
                     itemBuilder: selectProductsFromCategory,
                   ),
                 ),
-                ProductCategoryDisplay(this.currentTitle, this.currentDescription, this.products),
+                ProductCategoryDisplay(
+                    this.currentTitle, this.currentDescription, this.products),
                 SizedBox(
                   height: 10,
                 ),
@@ -194,8 +221,9 @@ class ProductListState extends State<ProductList> {
   void initState() {
     super.initState();
     setState(() {
-      for(int i = 0; i < categories.length; i++){
-        widgets.add(ProductCategoryCard(categories[i], descriptions[i], logoPahts[i]));
+      for (int i = 0; i < categories.length; i++) {
+        widgets.add(
+            ProductCategoryCard(categories[i], descriptions[i], logoPahts[i]));
       }
     });
   }

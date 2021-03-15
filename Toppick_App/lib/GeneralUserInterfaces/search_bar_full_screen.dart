@@ -13,7 +13,7 @@ class _SearchScreenState extends State<SearchScreen> {
   String _searchText = "";
   List names = [];
   List filteredNames = [];
-  int option;
+  int option = 0;
   Widget _appBarTitle = new Text('');
 
   _SearchScreenState(int option) {
@@ -40,7 +40,8 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _buildBar(context),
+      appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(100), child: _buildBar(context)),
       body: Container(
         child: _buildList(),
       ),
