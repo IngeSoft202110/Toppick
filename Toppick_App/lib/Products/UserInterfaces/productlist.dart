@@ -119,69 +119,72 @@ class ProductListState extends State<ProductList> {
     children: <Widget>[],
   );
 
+  Widget selectProductsFromCategory(BuildContext context, int index){
+    return Padding(
+      padding: const EdgeInsets.only(left: 15.0, bottom: 25.0),
+      child: GestureDetector(
+        onTap: (){
+          setState(() {
+            ProductCategoryCard selectedCard = widgets[index];
+            if(selectedCard!=null){
+              this.currentTitle = selectedCard.categoryName;
+              this.currentDescription = selectedCard.categoryDescription;
+              List<Producto> selected = filterProducts(productList, this.currentTitle);
+              this.products = ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: selected.length,
+                itemBuilder: (BuildContext context, int index){
+                  return Padding(
+                    padding: const EdgeInsets.only(left:15.0),
+                    child: ProductCard(selected[index]),
+                  );
+                }
+              );
+            }
+          });
+        },
+        child: widgets[index],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: <Widget>[
           Gradiant(),
-          Column(
-            children: <Widget>[
-              Header(),
-              SearchButton("Buscar productos", 3),
-              SizedBox(
-                height: 450,
-                child: ListView(
-                  children: <Widget>[
-                    ListMainText("Escoge la", "comida que amas"),
-                    Padding(
-                      padding: const EdgeInsets.only(top:10.0, left: 10.0, bottom: 10.0),
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        child: Text("Categorias", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 25),),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 150,
-                      child: ListView.builder(
-                        itemCount: categories.length,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (BuildContext context, int index){
-                          return Padding(
-                            padding: const EdgeInsets.only(left: 15.0, bottom: 25.0),
-                            child: GestureDetector(
-                              onTap: (){
-                                setState(() {
-                                  ProductCategoryCard selectedCard = widgets[index];
-                                  if(selectedCard!=null){
-                                    this.currentTitle = selectedCard.categoryName;
-                                    this.currentDescription = selectedCard.categoryDescription;
-                                    List<Producto> selected = filterProducts(productList, this.currentTitle);
-                                    this.products = ListView.builder(
-                                      scrollDirection: Axis.horizontal,
-                                      itemCount: selected.length,
-                                      itemBuilder: (BuildContext context, int index){
-                                        return Padding(
-                                          padding: const EdgeInsets.only(left:15.0),
-                                          child: ProductCard(selected[index]),
-                                        );
-                                      }
-                                    );
-                                  }
-                                });
-                              },
-                              child: widgets[index],
-                            ),
-                          );
-                        }
-                      ),
-                    ),
-                    ProductCategoryDisplay(this.currentTitle, this.currentDescription, this.products),
-                  ],
+          Container(
+            margin: EdgeInsets.only(top: 5.0),
+            height: MediaQuery.of(context).size.height,
+            width: double.infinity,
+            child: ListView(
+              children: <Widget>[
+                Header(),
+                SearchButton("Buscar productos", 3),
+                ListMainText("Escoge la", "comida que amas"),
+                Padding(
+                  padding: const EdgeInsets.only(top:10.0, left: 10.0, bottom: 10.0),
+                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text("Categorias", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 25),),
+                  ),
                 ),
-              ),
-            ]
-          )
+                SizedBox(
+                  height: 150,
+                  child: ListView.builder(
+                    itemCount: categories.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: selectProductsFromCategory,
+                  ),
+                ),
+                ProductCategoryDisplay(this.currentTitle, this.currentDescription, this.products),
+                SizedBox(
+                  height: 10,
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

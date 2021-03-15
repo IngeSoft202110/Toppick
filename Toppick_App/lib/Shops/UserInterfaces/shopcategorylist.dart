@@ -100,6 +100,22 @@ List<Tienda> filterShops(List<Tienda> shops, String category){
   return filtered;
 }
 
+List<Widget> buildCategoriesCard(BuildContext context){
+  List<Widget> results = [];
+  for(int i = 0; i < categories.length; i++){
+    results.add(GestureDetector(
+      onTap: (){
+        List<Tienda> filtered = filterShops(storeList, categories[i]);
+        Navigator.push(context, MaterialPageRoute(builder: (context)=> ShopList(categories[i], logoPahts[i], filtered)));
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(left:5.0, right: 5.0, bottom: 5.0),
+        child: ShopCategoryCard(categories[i], descriptions[i], logoPahts[i]),
+      ),
+    ));
+  }
+  return results;
+}
 class ShopCategoryList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -107,33 +123,26 @@ class ShopCategoryList extends StatelessWidget {
       body: Stack(
         children: <Widget>[
           Gradiant(),
-          Column(
-            children: <Widget>[
-              Header(),
-              SearchButton("Buscar puntos de venta", 2),
-              Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: ListMainText("Escoge", "Tu forma de comer"),
-              ),
-              SizedBox(
-                height: 350,
-                child:ListView.builder(
-                  itemCount: categories.length,
-                  itemBuilder: (BuildContext context, int index){
-                    return GestureDetector(
-                      onTap: (){
-                        List<Tienda> filtered = filterShops(storeList, categories[index]);
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> ShopList(categories[index], logoPahts[index], filtered)));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(left:5.0, right: 5.0, bottom: 5.0),
-                        child: ShopCategoryCard(categories[index], descriptions[index], logoPahts[index]),
-                      ),
-                    );
-                  }
+          Container(
+            margin: EdgeInsets.only(top: 5.0),
+            height: MediaQuery.of(context).size.height,
+            width: double.infinity,
+            child: ListView(
+              children: <Widget>[
+                Header(),
+                SearchButton("Buscar puntos de venta", 2),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: ListMainText("Escoge", "Tu forma de comer"),
                 ),
-              ),
-            ],
+                Column(
+                  children: buildCategoriesCard(context),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+              ]
+            ),
           ),  
         ]
       )

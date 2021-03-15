@@ -1,3 +1,5 @@
+import 'package:Toppick_App/GeneralUserInterfaces/header.dart';
+import 'package:Toppick_App/GeneralUserInterfaces/search_bar_button.dart';
 import 'package:Toppick_App/Products/UserInterfaces/productlist.dart';
 import 'package:Toppick_App/Shops/UserInterfaces/shopcategorylist.dart';
 import 'package:flutter/material.dart';
@@ -7,16 +9,21 @@ import '../../UserInterfaces/../Users/UserInterfaces/home_card.dart';
 class HomeCardList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var f1 = () => Navigator.push(context, MaterialPageRoute(builder: (context) => ShopCategoryList()));
-    var f2 = () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProductList()));
-    var f3 = () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProductList()));
+    var f1 = () => Navigator.push(
+        context, MaterialPageRoute(builder: (context) => ShopCategoryList()));
+    var f2 = () => Navigator.push(
+        context, MaterialPageRoute(builder: (context) => ProductList()));
+    var f3 = () => Navigator.push(
+        context, MaterialPageRoute(builder: (context) => ProductList()));
     return Container(
       margin: EdgeInsets.only(top: 5.0),
-      height: 480.0,
+      height: MediaQuery.of(context).size.height,
       width: double.infinity,
       child: ListView(
         scrollDirection: Axis.vertical,
         children: [
+          Header(),
+          SearchButton("Buscar Tiendas/Productos", 1),
           HomeCard(
               "Puntos de venta",
               "assets/img/store.png",
@@ -38,6 +45,9 @@ class HomeCardList extends StatelessWidget {
               100,
               136,
               f3),
+          SizedBox(
+            height: 20,
+          )
         ],
       ),
     );

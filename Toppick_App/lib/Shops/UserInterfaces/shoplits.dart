@@ -11,39 +11,48 @@ class ShopList extends StatelessWidget {
   final String category;
   final String categoryImagePath;
   final List<Tienda> stores;
+
+  List<Widget> buildShopCards(BuildContext context){
+    List<Widget> result = [];
+    for(int i = 0; i < this.stores.length; i++){
+      result.add(Padding(
+          padding: const EdgeInsets.only(left:5.0, right: 5.0, bottom: 5.0),
+          child: GestureDetector(
+            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=> HomeShop(this.stores[i]))),
+            child: ShopCard(this.stores[i], this.categoryImagePath)
+          ),
+        )
+      );
+    }
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: <Widget>[
           Gradiant(),
-          Column(
-            children: <Widget>[
-              Header(),
-              SearchButton("Buscar puntos de venta", 2),
-              Padding(
-                padding: const EdgeInsets.only(top:10.0, left:10.0),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(this.category, style: TextStyle(color: Colors.white, fontSize: 35, fontWeight: FontWeight.bold)),
+          Container(
+            margin: EdgeInsets.only(top: 5.0),
+            height: MediaQuery.of(context).size.height,
+            width: double.infinity,
+            child: ListView(
+              children: <Widget>[
+                Header(),
+                SearchButton("Buscar puntos de venta", 2),
+                Padding(
+                  padding: const EdgeInsets.only(top:10.0, left:10.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(this.category, style: TextStyle(color: Colors.white, fontSize: 35, fontWeight: FontWeight.bold)),
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 400,
-                child: ListView.builder(
-                  itemCount: this.stores.length,
-                  itemBuilder: (BuildContext context, int index){
-                    return Padding(
-                      padding: const EdgeInsets.only(left:5.0, right: 5.0, bottom: 5.0),
-                      child: GestureDetector(
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=> HomeShop(this.stores[index]))),
-                        child: ShopCard(this.stores[index], this.categoryImagePath)
-                      ),
-                    );
-                  }
-                ),
-              ),
-            ],
+                Column(
+                  children: buildShopCards(context),
+                )
+              ],
+            ),
           ),
         ],
       ),

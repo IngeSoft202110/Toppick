@@ -117,11 +117,10 @@ class HomeShopCard extends StatelessWidget {
   final Tienda selected;
   @override
   Widget build(BuildContext context) {
-    var transition = () => 
-    Navigator.push(context, MaterialPageRoute(builder: (context) => ProductList(storeID: this.selected.id,)));
+    var transition = () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProductList(storeID: this.selected.id,)));
     return Container(
-      margin: EdgeInsets.only(top: 18.0),
-      width: 362,
+      margin: EdgeInsets.only(top: 18.0, left: 10.0, right: 10.0),
+      width: 392,
       height: 550,
       decoration: BoxDecoration(
         color: Color(0xFFFFFEEE),
@@ -129,7 +128,7 @@ class HomeShopCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          image(this.selected.url, 392, 201),
+          image(this.selected.url, double.infinity, 201),
           cardHeader(this.selected.name, this.selected.status,
               this.selected.ubication),
           cardDescription(this.selected.description),

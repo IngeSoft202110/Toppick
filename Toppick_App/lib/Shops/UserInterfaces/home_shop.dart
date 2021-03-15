@@ -1,3 +1,4 @@
+import 'package:Toppick_App/GeneralUserInterfaces/search_bar_button.dart';
 import 'package:Toppick_App/Shops/Models/tienda.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/header.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +10,9 @@ class HomeShop extends StatelessWidget {
   final Tienda selectedShop;
   @override
   Widget build(BuildContext context) {
-    final fusionBody = Column(
-      children: [Header(), HomeShopCard(this.selectedShop)],
+    final fusionBody = Container(
+        child: ListView(children: <Widget>[Header(), SearchButton("Buscar tienda", 2), HomeShopCard(this.selectedShop)],
+      )
     );
 
     return Scaffold(
