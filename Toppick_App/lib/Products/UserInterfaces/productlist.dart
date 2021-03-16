@@ -115,7 +115,7 @@ List<Producto> filterProducts(List<Producto> products, String category) {
 }
 
 class ProductList extends StatefulWidget {
-  ProductList({this.storeID = 1});
+  ProductList({this.storeID = -1});
   final int storeID;
   @override
   ProductListState createState() => ProductListState();
@@ -151,7 +151,7 @@ class ProductListState extends State<ProductList> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => HomeProductCard(
-                                    selected[index], storeList)))
+                                    selected[index], storeList, widget.storeID)))
                       },
                       child: Padding(
                         padding: const EdgeInsets.only(left: 15.0),

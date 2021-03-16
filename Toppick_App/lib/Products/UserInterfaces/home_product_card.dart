@@ -77,10 +77,10 @@ Widget place() {
 }
 
 class HomeProductCard extends StatelessWidget {
-  HomeProductCard(this.selected, this.available);
+  HomeProductCard(this.selected, this.available, this.storeID);
   final Producto selected;
   final List<Tienda> available;
-  final String kind = "A la carta";
+  final int storeID;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,7 +103,7 @@ class HomeProductCard extends StatelessWidget {
                       GenericButton("Personalizar", Color(0xFF0CC665), 160, 36,
                           15.0, 0, 0, 30.0, 22, 30, () => {}),
                     place(),
-                    RadioButtonListStore(this.selected, this.available),
+                    RadioButtonListStore(this.selected, this.available, this.storeID),
                     Center(
                       child: GenericButton("Ver Reseñas", Color(0xFF2196F3),
                           274, 45, 15.0, 0, 0, 0, 22, 30, () => {}),
