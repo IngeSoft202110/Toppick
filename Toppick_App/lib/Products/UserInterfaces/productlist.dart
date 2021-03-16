@@ -1,8 +1,10 @@
 import 'package:Toppick_App/Products/Models/producto.dart';
+import 'package:Toppick_App/Products/Models/combo.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/listmaintext.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/gradiant.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/header.dart';
 import 'package:Toppick_App/Products/UserInterfaces/productcard.dart';
+import 'package:Toppick_App/Products/UserInterfaces/home_combos_card.dart';
 import 'package:Toppick_App/Products/UserInterfaces/productcategorycard.dart';
 import 'package:Toppick_App/Products/UserInterfaces/productcategorydisplay.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/search_bar_button.dart';
@@ -39,6 +41,7 @@ List<String> logoPahts = [
 
 /*Esta lista de productos se cargara con el ID de la tienda pasado al ProductList, si no le dan
 ese parametro se listan todos los productos.*/
+
 List<Producto> productList = [
   Producto(
       1,
@@ -81,6 +84,19 @@ List<Producto> productList = [
   Producto(6, "Combo del mes", 5000, "NINFO", "Pescadito con Te.", 20, 4.5,
       "Combos"),
 ];
+
+Combo quemado = Combo(
+    DateTime.parse("2021-03-01 00:01:00Z"),
+    DateTime.parse("2021-03-31 23:59:00Z"),
+    productList,
+    1,
+    "Pescadito",
+    3000,
+    "NINFO",
+    "Hojaldre relleno de arequipe, preparado por los mejores cocineros de toda la universidad.",
+    20,
+    4.5,
+    "Horneados");
 
 //tiendas para el widget de producto propio
 List<Tienda> storeList = [
@@ -150,8 +166,12 @@ class ProductListState extends State<ProductList> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => HomeProductCard(
-                                    selected[index], storeList, widget.storeID)))
+                                builder: (context) =>
+                                    (selected[index].category == "Combos")
+                                        ? HomeCombosCard(
+                                            quemado, storeList, widget.storeID)
+                                        : HomeProductCard(selected[index],
+                                            storeList, widget.storeID)))
                       },
                       child: Padding(
                         padding: const EdgeInsets.only(left: 15.0),
