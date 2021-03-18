@@ -1,13 +1,16 @@
 import 'package:Toppick_App/GeneralUserInterfaces/generic_button.dart';
-import 'package:Toppick_App/Orders/Models/paymentmethod.dart';
+import 'package:Toppick_App/Orders/Models/metodopago.dart';
+import 'package:Toppick_App/Orders/Models/pedido.dart';
+import 'package:Toppick_App/Orders/UserInterfaces/ordercard.dart';
 import 'package:Toppick_App/main.dart';
 import 'package:flutter/material.dart';
 
 class PaymentCard extends StatelessWidget {
-  PaymentCard(this.imagePath, this.totalValue, this.paymentMethod);
+  PaymentCard(this.imagePath, this.totalValue, this.paymentMethod, this.actual);
   final String imagePath;
   final int totalValue;
-  final MetodoPago paymentMethod;
+  final MetodoPago? paymentMethod;
+  final Pedido actual;
 
   Widget textForPrice(String title, int value){
     return Column(
@@ -25,23 +28,24 @@ class PaymentCard extends StatelessWidget {
     );
   }
 
-  Widget buttons(var transition){
+  Widget buttons(var transitionFinishOrder, var transitionBack){
     return Column(
       children: <Widget>[
         Container(
           margin: EdgeInsets.only(top: 105.0),
           child: GenericButton("Realizar Compra", Color(0xFF0CC665), 250.0, 55.0, 10.0,
-            10.0, 10.0, 10.0, 30.0, 20.0, transition),
+            10.0, 10.0, 10.0, 30.0, 20.0, transitionFinishOrder),
         ),
         GenericButton("Cancelar Compra", Color(0xFFFB2900), 250.0, 55.0, 10.0,
-            10.0, 10.0, 10.0, 30.0, 20.0, transition),
+            10.0, 10.0, 10.0, 30.0, 20.0, transitionBack),
       ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    var transition = () => Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
+    var transitionFinishOrder = () => Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
+    var transitionBack = () => Navigator.push(context, MaterialPageRoute(builder: (context)=>OrderCard(this.actual)));
     return Scaffold(
       body: Container(
         margin: EdgeInsets.only(top: 5.0),
@@ -50,9 +54,9 @@ class PaymentCard extends StatelessWidget {
         child: ListView(
           children: <Widget>[    
             Image.asset(this.imagePath, height: 150,),
-            textForPrice("Disponible", this.paymentMethod.availableAmount),
+            textForPrice("Disponible", this.paymentMethod!.availableAmount),
             textForPrice("Valor compra", this.totalValue),
-            buttons(transition),
+            buttons(transitionFinishOrder, transitionBack),
           ],
         ),
       ),
