@@ -3,44 +3,314 @@
 -- Model: New Model    Version: 1.0
 -- MySQL Workbench Forward Engineering
 
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
-
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 -- -----------------------------------------------------
--- Data for table `mydb`.`Usuario`
+-- Data for table `Toppick_Schema`.`Usuario`
 -- -----------------------------------------------------
 START TRANSACTION;
-USE `mydb`;
-INSERT INTO `mydb`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('simon_davila', 'prueba_1');
-INSERT INTO `mydb`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('juan_campos', 'prueba_2');
-INSERT INTO `mydb`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('gabriela_camacho', 'prueba_3');
-INSERT INTO `mydb`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('julian_builes', 'prueba_4');
-INSERT INTO `mydb`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('juan_hamon', 'prueba_5');
-INSERT INTO `mydb`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('camilo_buitrago', 'prueba_6');
-INSERT INTO `mydb`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('caf_central', 'pdv_central_1');
+USE `Toppick_Schema`;
+INSERT INTO `Toppick_Schema`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('simon_davila', 'prueba_1');
+INSERT INTO `Toppick_Schema`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('juan_campos', 'prueba_2');
+INSERT INTO `Toppick_Schema`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('gabriela_camacho', 'prueba_3');
+INSERT INTO `Toppick_Schema`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('julian_builes', 'prueba_4');
+INSERT INTO `Toppick_Schema`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('juan_hamon', 'prueba_5');
+INSERT INTO `Toppick_Schema`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('camilo_buitrago', 'prueba_6');
+INSERT INTO `Toppick_Schema`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('caf_central', 'pdv_central_1');
+INSERT INTO `Toppick_Schema`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('caf_husi', 'pdv_husi_1');
+INSERT INTO `Toppick_Schema`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('caf_basicas', 'pdv_basicas_1');
+INSERT INTO `Toppick_Schema`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('caf_giraldo', 'pdv_giraldo_1');
+INSERT INTO `Toppick_Schema`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('caf_bienestar', 'pdv_bienestar_1');
+INSERT INTO `Toppick_Schema`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('cyk_biblioteca', 'pdv_biblioteca_1');
+INSERT INTO `Toppick_Schema`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('cyk_sauce', 'pdv_sauce_1');
+INSERT INTO `Toppick_Schema`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('cyk_urgencias', 'pdv_urgencias_1');
+INSERT INTO `Toppick_Schema`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('cyk_arboleda', 'pdv_arboleda_1');
+INSERT INTO `Toppick_Schema`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('cyk_estacion', 'pdv_estacion_1');
+INSERT INTO `Toppick_Schema`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('cyk_baron', 'pdv_baron_1');
+INSERT INTO `Toppick_Schema`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('cyk_urapanes', 'pdv_urapanes_1');
+INSERT INTO `Toppick_Schema`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('cyk_pecera', 'pdv_pecera_1');
+INSERT INTO `Toppick_Schema`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('cyk_atico', 'pdv_atico_1');
+INSERT INTO `Toppick_Schema`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('cyk_cataluña', 'pdv_cataluña_1');
+INSERT INTO `Toppick_Schema`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('cyk_ingenieria', 'pdv_ingenieria_1');
+INSERT INTO `Toppick_Schema`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('sal_frutera', 'pdv_frutera_1');
+INSERT INTO `Toppick_Schema`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('sal_frutera_basicas', 'pdv_s_basicas_1');
+INSERT INTO `Toppick_Schema`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('sal_frutera_giraldo', 'pdv_s_giraldo_1');
+INSERT INTO `Toppick_Schema`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('sal_frutera_central', 'pdv_s_central_1');
+INSERT INTO `Toppick_Schema`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('res_italiano', 'pdv_italiano_1');
+INSERT INTO `Toppick_Schema`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('res_creperia', 'pdv_creperia_1');
+INSERT INTO `Toppick_Schema`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('res_mirador', 'pdv_mirador_1');
+INSERT INTO `Toppick_Schema`.`Usuario` (`nombreUsuario`, `contraseña`) VALUES ('res_il_posto', 'pdv_il_posto_1');
 
 COMMIT;
 
 
 -- -----------------------------------------------------
--- Data for table `mydb`.`Cliente`
+-- Data for table `Toppick_Schema`.`Cliente`
 -- -----------------------------------------------------
 START TRANSACTION;
-USE `mydb`;
-INSERT INTO `mydb`.`Cliente` (`IdCliente`, `Usuario_nombreUsuario`, `Usuario_contraseña`, `nombreCompleto`, `tipoDocumento`, `idDocumento`, `correoElectronico`, `celular`) VALUES (1, 'simon_davila', 'prueba_1', 'Simón Dávila Saravia', 'CC', 1018504328, 'simondavila@javeriana.edu.co', 3108750771);
+USE `Toppick_Schema`;
+INSERT INTO `Toppick_Schema`.`Cliente` (`IdCliente`, `Usuario_nombreUsuario`, `Usuario_contraseña`, `nombreCompleto`, `tipoDocumento`, `idDocumento`, `correoElectronico`, `celular`) VALUES (DEFAULT, 'simon_davila', 'prueba_1', 'Simón Dávila Saravia', 'CC', 1018504328, 'simondavila@javeriana.edu.co', 3108750771);
+INSERT INTO `Toppick_Schema`.`Cliente` (`IdCliente`, `Usuario_nombreUsuario`, `Usuario_contraseña`, `nombreCompleto`, `tipoDocumento`, `idDocumento`, `correoElectronico`, `celular`) VALUES (DEFAULT, 'juan_campos', 'prueba_2', 'Juan Diego Campos Neira', 'CC', 1018504329, 'juand.campos@javeriana.edu.co', 3166266019);
+INSERT INTO `Toppick_Schema`.`Cliente` (`IdCliente`, `Usuario_nombreUsuario`, `Usuario_contraseña`, `nombreCompleto`, `tipoDocumento`, `idDocumento`, `correoElectronico`, `celular`) VALUES (DEFAULT, 'gabriela_camacho', 'prueba_3', 'Gabriela María Camacho Montejo', 'CC', 1018504330, 'gabrielamcamacho@javeriana.edu.co', 3002931505);
+INSERT INTO `Toppick_Schema`.`Cliente` (`IdCliente`, `Usuario_nombreUsuario`, `Usuario_contraseña`, `nombreCompleto`, `tipoDocumento`, `idDocumento`, `correoElectronico`, `celular`) VALUES (DEFAULT, 'julian_builes', 'prueba_4', 'Julián Camilo Builes Buitrago', 'CC', 1018504331, 'builes-j@javeriana.edu.co', 3156167536);
+INSERT INTO `Toppick_Schema`.`Cliente` (`IdCliente`, `Usuario_nombreUsuario`, `Usuario_contraseña`, `nombreCompleto`, `tipoDocumento`, `idDocumento`, `correoElectronico`, `celular`) VALUES (DEFAULT, 'juan_hamon', 'prueba_5', 'Juan Francisco Hamón Garcón', 'CC', 1018504332, 'hamon_juan@javeriana.edu.co', 3044576728);
+INSERT INTO `Toppick_Schema`.`Cliente` (`IdCliente`, `Usuario_nombreUsuario`, `Usuario_contraseña`, `nombreCompleto`, `tipoDocumento`, `idDocumento`, `correoElectronico`, `celular`) VALUES (DEFAULT, 'camilo_buitrago', 'prueba_6', 'Camilo Andrés Buitrago Ladino', 'CC', 1018504333, 'bu.camilo@javeriana.edu.co', 3045955980);
 
 COMMIT;
 
 
 -- -----------------------------------------------------
--- Data for table `mydb`.`PuntoDeVenta`
+-- Data for table `Toppick_Schema`.`PuntoDeVenta`
 -- -----------------------------------------------------
 START TRANSACTION;
-USE `mydb`;
-INSERT INTO `mydb`.`PuntoDeVenta` (`idPuntodeVenta`, `Usuario_nombreUsuario`, `Usuario_contraseña`, `nombre`, `tipoPuntoVenta`, `urlUbicacion`, `Estado`, `urlImagen`) VALUES (1, 'caf_central', 'pdv_central_1', 'La Central', 1, 'https://goo.gl/maps/9o3G8fSyrHgXDo3W6', 'Abierto', 'null');
+USE `Toppick_Schema`;
+INSERT INTO `Toppick_Schema`.`PuntoDeVenta` (`idPuntodeVenta`, `Usuario_nombreUsuario`, `Usuario_contraseña`, `nombre`, `tipoPuntoVenta`, `urlUbicacion`, `Estado`, `urlImagen`) VALUES (DEFAULT, 'caf_central', 'pdv_central_1', 'La Central', 1, 'https://goo.gl/maps/9o3G8fSyrHgXDo3W6', 'Abierto', 'null');
+INSERT INTO `Toppick_Schema`.`PuntoDeVenta` (`idPuntodeVenta`, `Usuario_nombreUsuario`, `Usuario_contraseña`, `nombre`, `tipoPuntoVenta`, `urlUbicacion`, `Estado`, `urlImagen`) VALUES (DEFAULT, 'caf_husi', 'pdv_husi_1', 'HUSI', 1, 'https://goo.gl/maps/d9ovZmUfpzZ7MWaa8', 'Abierto', 'null');
+INSERT INTO `Toppick_Schema`.`PuntoDeVenta` (`idPuntodeVenta`, `Usuario_nombreUsuario`, `Usuario_contraseña`, `nombre`, `tipoPuntoVenta`, `urlUbicacion`, `Estado`, `urlImagen`) VALUES (DEFAULT, 'caf_basicas', 'pdv_basicas_1', 'Básicas', 1, 'https://goo.gl/maps/HoGQWioWKf5ywMme8', 'Abierto', 'null');
+INSERT INTO `Toppick_Schema`.`PuntoDeVenta` (`idPuntodeVenta`, `Usuario_nombreUsuario`, `Usuario_contraseña`, `nombre`, `tipoPuntoVenta`, `urlUbicacion`, `Estado`, `urlImagen`) VALUES (DEFAULT, 'caf_giraldo', 'pdv_giraldo_1', 'Giraldo', 1, 'https://goo.gl/maps/KyQXtSx5hLAZTPcB6', 'Abierto', 'null');
+INSERT INTO `Toppick_Schema`.`PuntoDeVenta` (`idPuntodeVenta`, `Usuario_nombreUsuario`, `Usuario_contraseña`, `nombre`, `tipoPuntoVenta`, `urlUbicacion`, `Estado`, `urlImagen`) VALUES (DEFAULT, 'caf_bienestar', 'pdv_bienestar_1', 'Bienestar', 1, 'https://goo.gl/maps/KyQXtSx5hLAZTPcB6', 'Abierto', 'null');
+INSERT INTO `Toppick_Schema`.`PuntoDeVenta` (`idPuntodeVenta`, `Usuario_nombreUsuario`, `Usuario_contraseña`, `nombre`, `tipoPuntoVenta`, `urlUbicacion`, `Estado`, `urlImagen`) VALUES (DEFAULT, 'cyk_biblioteca', 'pdv_biblioteca_1', 'Biblioteca', 2, 'https://goo.gl/maps/RmVKKMunAFRWS3s99', 'Abierto', 'null');
+INSERT INTO `Toppick_Schema`.`PuntoDeVenta` (`idPuntodeVenta`, `Usuario_nombreUsuario`, `Usuario_contraseña`, `nombre`, `tipoPuntoVenta`, `urlUbicacion`, `Estado`, `urlImagen`) VALUES (DEFAULT, 'cyk_sauce', 'pdv_sauce_1', 'Sauce', 2, 'https://goo.gl/maps/VuQ5kzasv8YC2KDx5', 'Abierto', 'null');
+INSERT INTO `Toppick_Schema`.`PuntoDeVenta` (`idPuntodeVenta`, `Usuario_nombreUsuario`, `Usuario_contraseña`, `nombre`, `tipoPuntoVenta`, `urlUbicacion`, `Estado`, `urlImagen`) VALUES (DEFAULT, 'cyk_urgencias', 'pdv_urgencias_1', 'Urgencias', 2, 'https://goo.gl/maps/FMCqBGgeDhfqA5CeA', 'Abierto', 'null');
+INSERT INTO `Toppick_Schema`.`PuntoDeVenta` (`idPuntodeVenta`, `Usuario_nombreUsuario`, `Usuario_contraseña`, `nombre`, `tipoPuntoVenta`, `urlUbicacion`, `Estado`, `urlImagen`) VALUES (DEFAULT, 'cyk_arboleda', 'pdv_arboleda_1', 'La Arboleda', 2, 'https://goo.gl/maps/cdNZi9snM2tgQCEMA', 'Abierto', 'null');
+INSERT INTO `Toppick_Schema`.`PuntoDeVenta` (`idPuntodeVenta`, `Usuario_nombreUsuario`, `Usuario_contraseña`, `nombre`, `tipoPuntoVenta`, `urlUbicacion`, `Estado`, `urlImagen`) VALUES (DEFAULT, 'cyk_estacion', 'pdv_estacion_1', 'La Estación', 2, 'https://goo.gl/maps/oRBKZRuGCHmMEN4M8', 'Abierto', 'null');
+INSERT INTO `Toppick_Schema`.`PuntoDeVenta` (`idPuntodeVenta`, `Usuario_nombreUsuario`, `Usuario_contraseña`, `nombre`, `tipoPuntoVenta`, `urlUbicacion`, `Estado`, `urlImagen`) VALUES (DEFAULT, 'cyk_baron', 'pdv_baron_1', 'Barón', 2, 'https://goo.gl/maps/cg9WrXoxnRBJVfEH6', 'Abierto', 'null');
+INSERT INTO `Toppick_Schema`.`PuntoDeVenta` (`idPuntodeVenta`, `Usuario_nombreUsuario`, `Usuario_contraseña`, `nombre`, `tipoPuntoVenta`, `urlUbicacion`, `Estado`, `urlImagen`) VALUES (DEFAULT, 'cyk_urapanes', 'pdv_urapanes_1', 'Kiosco Urapanes', 2, 'https://goo.gl/maps/n7scATK93bVwa9t29', 'Abierto', 'null');
+INSERT INTO `Toppick_Schema`.`PuntoDeVenta` (`idPuntodeVenta`, `Usuario_nombreUsuario`, `Usuario_contraseña`, `nombre`, `tipoPuntoVenta`, `urlUbicacion`, `Estado`, `urlImagen`) VALUES (DEFAULT, 'cyk_pecera', 'pdv_pecera_1', 'La Pecera', 2, 'https://goo.gl/maps/eJknMANFcBzuo6gi9', 'Abierto', 'null');
+INSERT INTO `Toppick_Schema`.`PuntoDeVenta` (`idPuntodeVenta`, `Usuario_nombreUsuario`, `Usuario_contraseña`, `nombre`, `tipoPuntoVenta`, `urlUbicacion`, `Estado`, `urlImagen`) VALUES (DEFAULT, 'cyk_atico', 'pdv_atico_1', 'Ático', 2, 'https://goo.gl/maps/C3pAJGPrT6zP3VX9A', 'Abierto', 'null');
+INSERT INTO `Toppick_Schema`.`PuntoDeVenta` (`idPuntodeVenta`, `Usuario_nombreUsuario`, `Usuario_contraseña`, `nombre`, `tipoPuntoVenta`, `urlUbicacion`, `Estado`, `urlImagen`) VALUES (DEFAULT, 'cyk_cataluña', 'pdv_cataluña_1', 'Cataluña', 2, 'https://goo.gl/maps/yeacZTe6ZV29fSpQA', 'Abierto', 'null');
+INSERT INTO `Toppick_Schema`.`PuntoDeVenta` (`idPuntodeVenta`, `Usuario_nombreUsuario`, `Usuario_contraseña`, `nombre`, `tipoPuntoVenta`, `urlUbicacion`, `Estado`, `urlImagen`) VALUES (DEFAULT, 'cyk_ingenieria', 'pdv_ingenieria_1', 'Ingeniería', 2, 'https://goo.gl/maps/jbjgSfuyNUnh87UPA', 'Abierto', 'null');
+INSERT INTO `Toppick_Schema`.`PuntoDeVenta` (`idPuntodeVenta`, `Usuario_nombreUsuario`, `Usuario_contraseña`, `nombre`, `tipoPuntoVenta`, `urlUbicacion`, `Estado`, `urlImagen`) VALUES (DEFAULT, 'sal_frutera', 'pdv_frutera_1', 'La Frutera', 3, 'https://goo.gl/maps/qfnhFoRT49DNRHsm8', 'Abierto', 'null');
+INSERT INTO `Toppick_Schema`.`PuntoDeVenta` (`idPuntodeVenta`, `Usuario_nombreUsuario`, `Usuario_contraseña`, `nombre`, `tipoPuntoVenta`, `urlUbicacion`, `Estado`, `urlImagen`) VALUES (DEFAULT, 'sal_frutera_basicas', 'pdv_s_basicas_1', 'Saludable Básicas', 3, 'https://goo.gl/maps/HoGQWioWKf5ywMme8', 'Abierto', 'null');
+INSERT INTO `Toppick_Schema`.`PuntoDeVenta` (`idPuntodeVenta`, `Usuario_nombreUsuario`, `Usuario_contraseña`, `nombre`, `tipoPuntoVenta`, `urlUbicacion`, `Estado`, `urlImagen`) VALUES (DEFAULT, 'sal_frutera_giraldo', 'pdv_s_giraldo_1', 'Saludable Giraldo', 3, 'https://goo.gl/maps/KyQXtSx5hLAZTPcB6', 'Abierto', 'null');
+INSERT INTO `Toppick_Schema`.`PuntoDeVenta` (`idPuntodeVenta`, `Usuario_nombreUsuario`, `Usuario_contraseña`, `nombre`, `tipoPuntoVenta`, `urlUbicacion`, `Estado`, `urlImagen`) VALUES (DEFAULT, 'sal_frutera_central', 'pdv_s_central_1', 'Saludable Central', 3, 'https://goo.gl/maps/9o3G8fSyrHgXDo3W6', 'Abierto', 'null');
+INSERT INTO `Toppick_Schema`.`PuntoDeVenta` (`idPuntodeVenta`, `Usuario_nombreUsuario`, `Usuario_contraseña`, `nombre`, `tipoPuntoVenta`, `urlUbicacion`, `Estado`, `urlImagen`) VALUES (DEFAULT, 'res_italiano', 'pdv_italiano_1', 'El Italiano', 4, 'https://goo.gl/maps/HoGQWioWKf5ywMme8', 'Abierto', 'null');
+INSERT INTO `Toppick_Schema`.`PuntoDeVenta` (`idPuntodeVenta`, `Usuario_nombreUsuario`, `Usuario_contraseña`, `nombre`, `tipoPuntoVenta`, `urlUbicacion`, `Estado`, `urlImagen`) VALUES (DEFAULT, 'res_creperia', 'pdv_creperia_1', 'La Creperia', 4, 'https://goo.gl/maps/ZHQW7QnDrSVhXvN57', 'Abierto', 'null');
+INSERT INTO `Toppick_Schema`.`PuntoDeVenta` (`idPuntodeVenta`, `Usuario_nombreUsuario`, `Usuario_contraseña`, `nombre`, `tipoPuntoVenta`, `urlUbicacion`, `Estado`, `urlImagen`) VALUES (DEFAULT, 'res_mirador', 'pdv_mirador_1', 'Mirador', 4, 'https://goo.gl/maps/SYRgcDJBkARa6Jqy6', 'Abierto', 'null');
+INSERT INTO `Toppick_Schema`.`PuntoDeVenta` (`idPuntodeVenta`, `Usuario_nombreUsuario`, `Usuario_contraseña`, `nombre`, `tipoPuntoVenta`, `urlUbicacion`, `Estado`, `urlImagen`) VALUES (DEFAULT, 'res_il_posto', 'pdv_il_posto_1', 'Il Posto', 4, 'https://goo.gl/maps/XWxPh58DwAePPhhH9', 'Abierto', 'null');
 
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `Toppick_Schema`.`Día`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `Toppick_Schema`;
+INSERT INTO `Toppick_Schema`.`Día` (`idDía`, `nombre`) VALUES (1, 'Lunes');
+INSERT INTO `Toppick_Schema`.`Día` (`idDía`, `nombre`) VALUES (2, 'Martes');
+INSERT INTO `Toppick_Schema`.`Día` (`idDía`, `nombre`) VALUES (3, 'Miércoles');
+INSERT INTO `Toppick_Schema`.`Día` (`idDía`, `nombre`) VALUES (4, 'Jueves');
+INSERT INTO `Toppick_Schema`.`Día` (`idDía`, `nombre`) VALUES (5, 'Viernes');
+INSERT INTO `Toppick_Schema`.`Día` (`idDía`, `nombre`) VALUES (6, 'Sábado');
+INSERT INTO `Toppick_Schema`.`Día` (`idDía`, `nombre`) VALUES (7, 'Domingo');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `Toppick_Schema`.`HoraApertura`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `Toppick_Schema`;
+INSERT INTO `Toppick_Schema`.`HoraApertura` (`idHoraApertura`, `horaApertura`) VALUES (1, '00:00:00');
+INSERT INTO `Toppick_Schema`.`HoraApertura` (`idHoraApertura`, `horaApertura`) VALUES (2, '06:00');
+INSERT INTO `Toppick_Schema`.`HoraApertura` (`idHoraApertura`, `horaApertura`) VALUES (3, '06:30');
+INSERT INTO `Toppick_Schema`.`HoraApertura` (`idHoraApertura`, `horaApertura`) VALUES (4, '07:00');
+INSERT INTO `Toppick_Schema`.`HoraApertura` (`idHoraApertura`, `horaApertura`) VALUES (5, '12:00');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `Toppick_Schema`.`HoraCierre`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `Toppick_Schema`;
+INSERT INTO `Toppick_Schema`.`HoraCierre` (`idHoraCierre`, `horaCierre`) VALUES (1, '13:00');
+INSERT INTO `Toppick_Schema`.`HoraCierre` (`idHoraCierre`, `horaCierre`) VALUES (2, '13:30');
+INSERT INTO `Toppick_Schema`.`HoraCierre` (`idHoraCierre`, `horaCierre`) VALUES (3, '14:00');
+INSERT INTO `Toppick_Schema`.`HoraCierre` (`idHoraCierre`, `horaCierre`) VALUES (4, '15:00');
+INSERT INTO `Toppick_Schema`.`HoraCierre` (`idHoraCierre`, `horaCierre`) VALUES (5, '16:00');
+INSERT INTO `Toppick_Schema`.`HoraCierre` (`idHoraCierre`, `horaCierre`) VALUES (6, '18:00');
+INSERT INTO `Toppick_Schema`.`HoraCierre` (`idHoraCierre`, `horaCierre`) VALUES (7, '19:00');
+INSERT INTO `Toppick_Schema`.`HoraCierre` (`idHoraCierre`, `horaCierre`) VALUES (8, '19:30');
+INSERT INTO `Toppick_Schema`.`HoraCierre` (`idHoraCierre`, `horaCierre`) VALUES (9, '20:00');
+INSERT INTO `Toppick_Schema`.`HoraCierre` (`idHoraCierre`, `horaCierre`) VALUES (10, '20:30');
+INSERT INTO `Toppick_Schema`.`HoraCierre` (`idHoraCierre`, `horaCierre`) VALUES (11, '21:00');
+INSERT INTO `Toppick_Schema`.`HoraCierre` (`idHoraCierre`, `horaCierre`) VALUES (12, '22:00');
+INSERT INTO `Toppick_Schema`.`HoraCierre` (`idHoraCierre`, `horaCierre`) VALUES (13, '23:59:59');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `Toppick_Schema`.`Horario`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `Toppick_Schema`;
+INSERT INTO `Toppick_Schema`.`Horario` (`idHorario`, `HoraApertura_idHoraApertura`, `HoraCierre_idHoraApertura`) VALUES (1, 2, 11);
+INSERT INTO `Toppick_Schema`.`Horario` (`idHorario`, `HoraApertura_idHoraApertura`, `HoraCierre_idHoraApertura`) VALUES (2, 4, 3);
+INSERT INTO `Toppick_Schema`.`Horario` (`idHorario`, `HoraApertura_idHoraApertura`, `HoraCierre_idHoraApertura`) VALUES (3, 1, 13);
+INSERT INTO `Toppick_Schema`.`Horario` (`idHorario`, `HoraApertura_idHoraApertura`, `HoraCierre_idHoraApertura`) VALUES (4, 3, 10);
+INSERT INTO `Toppick_Schema`.`Horario` (`idHorario`, `HoraApertura_idHoraApertura`, `HoraCierre_idHoraApertura`) VALUES (5, 3, 11);
+INSERT INTO `Toppick_Schema`.`Horario` (`idHorario`, `HoraApertura_idHoraApertura`, `HoraCierre_idHoraApertura`) VALUES (6, 4, 5);
+INSERT INTO `Toppick_Schema`.`Horario` (`idHorario`, `HoraApertura_idHoraApertura`, `HoraCierre_idHoraApertura`) VALUES (7, 3, 9);
+INSERT INTO `Toppick_Schema`.`Horario` (`idHorario`, `HoraApertura_idHoraApertura`, `HoraCierre_idHoraApertura`) VALUES (8, 4, 1);
+INSERT INTO `Toppick_Schema`.`Horario` (`idHorario`, `HoraApertura_idHoraApertura`, `HoraCierre_idHoraApertura`) VALUES (9, 3, 8);
+INSERT INTO `Toppick_Schema`.`Horario` (`idHorario`, `HoraApertura_idHoraApertura`, `HoraCierre_idHoraApertura`) VALUES (10, 3, 12);
+INSERT INTO `Toppick_Schema`.`Horario` (`idHorario`, `HoraApertura_idHoraApertura`, `HoraCierre_idHoraApertura`) VALUES (11, 4, 4);
+INSERT INTO `Toppick_Schema`.`Horario` (`idHorario`, `HoraApertura_idHoraApertura`, `HoraCierre_idHoraApertura`) VALUES (12, 4, 7);
+INSERT INTO `Toppick_Schema`.`Horario` (`idHorario`, `HoraApertura_idHoraApertura`, `HoraCierre_idHoraApertura`) VALUES (13, 4, 2);
+INSERT INTO `Toppick_Schema`.`Horario` (`idHorario`, `HoraApertura_idHoraApertura`, `HoraCierre_idHoraApertura`) VALUES (14, 5, 7);
+INSERT INTO `Toppick_Schema`.`Horario` (`idHorario`, `HoraApertura_idHoraApertura`, `HoraCierre_idHoraApertura`) VALUES (15, 3, 6);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `Toppick_Schema`.`PuntoDeVentaXHorario`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `Toppick_Schema`;
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (1, 1, 1);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (1, 1, 2);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (1, 1, 3);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (1, 1, 4);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (1, 1, 5);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (1, 2, 6);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (2, 3, 1);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (2, 3, 2);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (2, 3, 3);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (2, 3, 4);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (2, 3, 5);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (2, 3, 6);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (2, 3, 7);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (3, 4, 1);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (3, 4, 2);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (3, 4, 3);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (3, 4, 4);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (3, 4, 5);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (3, 2, 6);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (4, 5, 1);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (4, 5, 2);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (4, 5, 3);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (4, 5, 4);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (4, 5, 5);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (4, 2, 6);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (5, 6, 1);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (5, 6, 2);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (5, 6, 3);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (5, 6, 4);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (5, 6, 5);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (6, 9, 1);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (6, 9, 2);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (6, 9, 3);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (6, 9, 4);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (6, 9, 5);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (6, 2, 6);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (7, 10, 1);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (7, 10, 2);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (7, 10, 3);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (7, 10, 4);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (7, 10, 5);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (7, 11, 6);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (8, 3, 1);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (8, 3, 2);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (8, 3, 3);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (8, 3, 4);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (8, 3, 5);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (8, 3, 6);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (8, 3, 7);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (9, 4, 1);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (9, 4, 2);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (9, 4, 3);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (9, 4, 4);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (9, 4, 5);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (9, 2, 6);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (10, 3, 1);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (10, 3, 2);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (10, 3, 3);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (10, 3, 4);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (10, 3, 5);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (10, 3, 6);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (10, 3, 7);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (11, 5, 1);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (11, 5, 2);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (11, 5, 3);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (11, 5, 4);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (11, 5, 5);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (11, 2, 6);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (12, 7, 1);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (12, 7, 2);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (12, 7, 3);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (12, 7, 4);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (12, 7, 5);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (12, 7, 6);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (13, 7, 1);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (13, 7, 2);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (13, 7, 3);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (13, 7, 4);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (13, 7, 5);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (13, 8, 6);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (14, 9, 1);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (14, 9, 2);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (14, 9, 3);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (14, 9, 4);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (14, 9, 5);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (14, 8, 6);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (15, 6, 1);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (15, 6, 2);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (15, 6, 3);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (15, 6, 4);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (15, 6, 5);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (16, 4, 1);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (16, 4, 2);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (16, 4, 3);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (16, 4, 4);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (16, 4, 5);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (16, 2, 6);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (18, 4, 1);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (18, 4, 2);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (18, 4, 3);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (18, 4, 4);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (18, 4, 5);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (18, 2, 6);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (19, 5, 1);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (19, 5, 2);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (19, 5, 3);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (19, 5, 4);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (19, 5, 5);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (19, 2, 6);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (20, 1, 1);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (20, 1, 2);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (20, 1, 3);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (20, 1, 4);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (20, 1, 5);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (20, 2, 6);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (21, 14, 1);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (21, 14, 2);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (21, 14, 3);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (21, 14, 4);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (21, 14, 5);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (22, 15, 1);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (22, 15, 2);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (22, 15, 3);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (22, 15, 4);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (22, 15, 5);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (23, 11, 1);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (23, 11, 2);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (23, 11, 3);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (23, 11, 4);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (23, 11, 5);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (24, 12, 1);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (24, 12, 2);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (24, 12, 3);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (24, 12, 4);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (24, 12, 5);
+INSERT INTO `Toppick_Schema`.`PuntoDeVentaXHorario` (`PuntoDeVenta_idPuntodeVenta`, `Horario_idHorario`, `Día_idDía`) VALUES (24, 13, 6);
 
 COMMIT;
 
