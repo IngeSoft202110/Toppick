@@ -1,9 +1,18 @@
 import '../Models/tienda.dart';
 
 class StoreQueries {
-  List<Tienda> getAllAvailableStores() {
+  List<Tienda> getAllAvailableStores() /*async*/ {
     List<Tienda> queryResult = [];
-    //queryResult = dio("url server")
+    /*
+    final response =await http.get('https://');
+     if (response.statusCode == 200) {
+        //the call to the server was successful, 
+         Iterable l = json.decode(response.body);
+         List<Tienda> queryResult = List<Post>.from(l.map((model)=> Post.fromJson(model)));  
+    
+        throw Exception('Failed to load post');
+        }
+    */
     queryResult = [
       Tienda(
         1,
@@ -70,9 +79,19 @@ class StoreQueries {
     return queryResult;
   }
 
-  Tienda getStoreById(int id) {
+  Tienda getStoreById(int id) /*async*/ {
     Tienda queryResult;
-    //queryResult = dio("url server")
+    /*
+    final response =await http.get('https://');
+     if (response.statusCode == 200) {
+        //the call to the server was successful, 
+         Iterable l = json.decode(response.body);
+         List<Tienda> queryResult = List<Post>.from(l.map((model)=> Post.fromJson(model))); 
+    } else {
+    
+        throw Exception('Failed to load post');
+        }
+    */
     queryResult = Tienda(
       1,
       "La Central",
@@ -86,9 +105,19 @@ class StoreQueries {
     return queryResult;
   }
 
-  List<Tienda> getAvailableStoresByProduct(int productId) {
+  List<Tienda> getAvailableStoresByProduct(int productId) /*async*/ {
     List<Tienda> queryResult = [];
-    //queryResult = dio("url server")
+    /*
+    final response =await http.get('https://');
+     if (response.statusCode == 200) {
+        //the call to the server was successful, 
+         Iterable l = json.decode(response.body);
+         List<Tienda> queryResult = List<Post>.from(l.map((model)=> Post.fromJson(model)));  
+    } else {
+    
+        throw Exception('Failed to load post');
+        }
+    */
     queryResult = [
       Tienda(
         1,

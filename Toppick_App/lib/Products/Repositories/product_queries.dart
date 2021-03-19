@@ -1,12 +1,20 @@
 import '../Models/combo.dart';
 import '../Models/producto.dart';
-import '../Models/producto.dart';
-import '../Models/producto.dart';
 
 class ProductQueries {
-  List<Producto> getAllAvailableProducts() {
+  List<Producto> getAllAvailableProducts() /*async*/ {
     List<Producto> queryResult = [];
-    //queryResult = dio("url server")
+    /*
+    final response =await http.get('https://');
+     if (response.statusCode == 200) {
+        //the call to the server was successful, 
+         Iterable l = json.decode(response.body);
+         List<Producto> queryResult = List<Post>.from(l.map((model)=> Post.fromJson(model)));  aqi antes de toca mirar que tipo de producto es
+    } else {
+    
+        throw Exception('Failed to load post');
+        }
+    */
     queryResult = [
       Producto(
           1,
@@ -59,10 +67,20 @@ class ProductQueries {
     return queryResult;
   }
 
-  List<Producto> getAllAvailableComboProducts() {
+  List<Producto> getAllAvailableComboProducts() /*async*/ {
     List<Combo> queryResult = [];
     List<Producto> productList = [];
-    //queryResult = dio("url server")
+    /*
+    final response =await http.get('https://');
+     if (response.statusCode == 200) {
+        //the call to the server was successful, 
+         Iterable l = json.decode(response.body);
+         List<Producto> queryResult = List<Post>.from(l.map((model)=> Post.fromJson(model)));  aqi antes de toca mirar que tipo de producto es
+    } else {
+    
+        throw Exception('Failed to load post');
+        }
+    */
     productList = [
       Producto(
           1,
@@ -92,7 +110,6 @@ class ProductQueries {
           4.5,
           "Bebidas")
     ];
-    //queryResult = dio("url server")
     queryResult = [
       Combo(
           DateTime.parse("2021-03-01 00:01:00Z"),
@@ -134,9 +151,19 @@ class ProductQueries {
     return queryResult;
   }
 
-  List<Producto> getProductCatalogueById(int storeId) {
+  List<Producto> getProductCatalogueById(int storeId) /*async*/ {
     List<Producto> queryResult = [];
-    //queryResult = dio("url server")
+    /*
+    final response =await http.get('https://');
+     if (response.statusCode == 200) {
+        //the call to the server was successful, 
+         Iterable l = json.decode(response.body);
+         List<Producto> queryResult = List<Post>.from(l.map((model)=> Post.fromJson(model)));  aqi antes de toca mirar que tipo de producto es
+    } else {
+    
+        throw Exception('Failed to load post');
+        }
+    */
     queryResult = [
       Producto(
           1,
@@ -189,9 +216,19 @@ class ProductQueries {
     return queryResult;
   }
 
-  Producto getProductById(int id) {
+  Producto getProductById(int id) /*async*/ {
     Producto queryResult;
-    //queryResult = dio("url server")
+    /*
+    final response =await http.get('https://');
+     if (response.statusCode == 200) {
+        //the call to the server was successful, 
+         Iterable l = json.decode(response.body);
+         List<Producto> queryResult = List<Post>.from(l.map((model)=> Post.fromJson(model)));  aqi antes de toca mirar que tipo de producto es
+    } else {
+    
+        throw Exception('Failed to load post');
+        }
+    */
     queryResult = Producto(
         1,
         "Pescadito",
