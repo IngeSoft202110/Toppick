@@ -4,7 +4,6 @@ import 'package:Toppick_App/Products/UserInterfaces/combo_product_card.dart';
 import '../../GeneralUserInterfaces/generic_button.dart';
 import '../../Shops/Models/tienda.dart';
 import '../Models/combo.dart';
-import '../Models/producto.dart';
 import 'radio_buttons.dart';
 
 Widget image(String pathImage, double w, double h) {
