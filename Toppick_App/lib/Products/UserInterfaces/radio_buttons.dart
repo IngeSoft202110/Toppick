@@ -3,48 +3,50 @@ import '../../Shops/Models/tienda.dart';
 import '../Models/producto.dart';
 
 class RadioButtonListStore extends StatelessWidget {
-  RadioButtonListStore(this.selected, this.storeList, this.storeID);
+  RadioButtonListStore(this.selected, this.storeList, this.storeID, this.notifyParent);
   final Producto selected;
   final List<Tienda> storeList;
   final int storeID;
+  final Function (Tienda? selectd) notifyParent;
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
       child: Center(
-        child: RadioButtonsStore(selected, storeList, this.storeID),
+        child: RadioButtonsStore(selected, storeList, this.storeID, this.notifyParent,)
       ),
     );
   }
 }
 
 class RadioButtonsStore extends StatefulWidget {
-  RadioButtonsStore(this.selected, this.storeList, this.storeID);
+  RadioButtonsStore(this.selected, this.storeList, this.storeID, this.notifyParent);
   final Producto selected;
   final List<Tienda> storeList;
   final int storeID;
+  final Function (Tienda? selectd) notifyParent;
   @override
   _RadioButtonsStoreState createState() =>
-      _RadioButtonsStoreState((this.storeID==-1) ? this.storeList[0].id : this.storeID);
+      _RadioButtonsStoreState(this.notifyParent);
 }
 
 class _RadioButtonsStoreState extends State<RadioButtonsStore> {
-  _RadioButtonsStoreState(this._optionSelected);
-  int? _optionSelected;
+  _RadioButtonsStoreState(this.notifyParent);
+  final Function (Tienda? selectd) notifyParent;
+  Tienda? shopSelected;
   @override
   Widget build(BuildContext context) {
-    print("${this._optionSelected}");
     List<Widget> aux = [];
     for (var store in widget.storeList) {
       var radio = ListTile(
         title: Text(store.name),
-        leading: Radio<int>(
-          value: store.id,
-          groupValue: _optionSelected,
-          onChanged: (int? value) {
+        leading: Radio<Tienda>(
+          value: store,
+          groupValue: shopSelected,
+          onChanged: (Tienda? value) {
             setState(() {
-              _optionSelected = value;
-              print(_optionSelected);
+              shopSelected = value;
+              notifyParent(shopSelected);
             });
           },
         ),

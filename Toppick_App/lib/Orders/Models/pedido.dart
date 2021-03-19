@@ -8,6 +8,6 @@ class Pedido{
   int tiempoReclamo;
   String estadoPedido;
   String razonRechazo;
-  Map<Tienda, List<Producto>> carrito = Map<Tienda, List<Producto>>();
+  Map<Tienda?, Map<Producto, int>> carrito = Map<Tienda?, Map<Producto, int>>();
   Pedido(this.idPedido, this.fecha, this.costoTotal, this.tiempoReclamo, this.estadoPedido, {this.razonRechazo = ""});
 }

@@ -1,3 +1,4 @@
+import 'package:Toppick_App/Orders/Models/pedido.dart';
 import 'package:Toppick_App/Products/Models/producto.dart';
 import 'package:Toppick_App/Products/Models/combo.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/listmaintext.dart';
@@ -131,13 +132,15 @@ List<Producto> filterProducts(List<Producto> products, String category) {
 }
 
 class ProductList extends StatefulWidget {
-  ProductList({this.storeID = -1});
+  ProductList(this.current,{this.storeID = -1});
   final int storeID;
+  final Pedido current;
   @override
   ProductListState createState() => ProductListState();
 }
 
 class ProductListState extends State<ProductList> {
+  ProductListState();
   List<ProductCategoryCard> widgets = [];
   String currentTitle = "";
   String currentDescription = "";
@@ -169,9 +172,9 @@ class ProductListState extends State<ProductList> {
                                 builder: (context) =>
                                     (selected[index].category == "Combos")
                                         ? HomeCombosCard(
-                                            quemado, storeList, widget.storeID)
+                                            quemado, storeList, widget.storeID, widget.current)
                                         : HomeProductCard(selected[index],
-                                            storeList, widget.storeID)))
+                                            storeList, widget.storeID, widget.current)))
                       },
                       child: Padding(
                         padding: const EdgeInsets.only(left: 15.0),
@@ -199,7 +202,7 @@ class ProductListState extends State<ProductList> {
             width: double.infinity,
             child: ListView(
               children: <Widget>[
-                Header(),
+                Header(widget.current),
                 SearchButton("Buscar productos", 3),
                 ListMainText("Escoge la", "comida que amas"),
                 Padding(

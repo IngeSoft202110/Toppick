@@ -24,9 +24,9 @@ class OrderCard extends StatefulWidget {
   int calculateTotal(){
     int total = 0;
     this.actual.carrito.forEach((key, value) {
-      for(Producto prod in value){
-        total+=prod.price;
-      }
+      value.forEach((key, value) {
+        total+=key.price*value;
+      });
     });
     return total;
   }
@@ -64,7 +64,7 @@ class _OrderCardState extends State<OrderCard> {
         ),
       )
     );
-    this.actual.carrito.forEach((key, value) {result.add(ShopxProductContent(key.name, value, refresh));});
+    this.actual.carrito.forEach((key, value) {result.add(ShopxProductContent(key!.name, value, refresh));});
     result.add(
       Center(
         child: Padding(
@@ -112,7 +112,7 @@ class _OrderCardState extends State<OrderCard> {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.only(bottom: 15.0),
-                  child: Header(),
+                  child: Header(this.actual),
                 ),
                 Container(
                   decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40)), color: Colors.white,),
@@ -132,7 +132,7 @@ class _OrderCardState extends State<OrderCard> {
   }
 }
 
-Widget element(Producto current, Function(int value, String operationType) toCallSum){
+Widget element(Producto current, int currentQuantity, Function(int value, String operationType) toCallSum){
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: <Widget>[
@@ -143,7 +143,7 @@ Widget element(Producto current, Function(int value, String operationType) toCal
               fontSize: 30,
               color: Color(0xFFB7B7B7))),
       ),
-      AddSubstract(current, toCallSum),
+      AddSubstract(current, currentQuantity, toCallSum),
     ],
   );
 }
@@ -151,7 +151,7 @@ Widget element(Producto current, Function(int value, String operationType) toCal
 class ShopxProductContent extends StatelessWidget{
   ShopxProductContent(this.storeName, this.products, this.notifyParent);
   final String storeName;
-  final List<Producto> products;
+  final Map<Producto, int> products;
   final Function(int value,  String operationType) notifyParent;
 
   List<Widget> fill(){
@@ -162,9 +162,9 @@ class ShopxProductContent extends StatelessWidget{
         child: Text("${this.storeName}", style: TextStyle(color: Color(0xFFD76060), fontSize: 25, fontWeight: FontWeight.bold),),
       )
     );
-    for(Producto el in this.products){
-      result.add(element(el, notifyParent));
-    }
+    this.products.forEach((key, value) {
+      result.add(element(key, value, notifyParent));
+    });
     return result;
   }
   @override

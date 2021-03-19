@@ -1,3 +1,4 @@
+import 'package:Toppick_App/Orders/Models/pedido.dart';
 import 'package:flutter/material.dart';
 import 'package:Toppick_App/Products/UserInterfaces/add_substract.dart';
 import '../../GeneralUserInterfaces/generic_button.dart';
@@ -19,7 +20,7 @@ Widget image(String pathImage, double w, double h) {
   );
 }
 
-Widget productHead(String name, Producto a) {
+Widget productHead(String name, Producto a, Function(String type) notifyParent) {
   return Container(
     margin: EdgeInsets.only(top: 15.0, left: 30.0),
     width: double.infinity,
@@ -33,7 +34,7 @@ Widget productHead(String name, Producto a) {
               fontSize: 40,
               color: Color(0xFFD76060)),
         ),
-        AddSubstract(a),
+        AddSubstract(a, notifyParent),
       ],
     ),
   );
@@ -76,11 +77,41 @@ Widget place() {
   );
 }
 
+// ignore: must_be_immutable
 class HomeProductCard extends StatelessWidget {
-  HomeProductCard(this.selected, this.available, this.storeID);
+  HomeProductCard(this.selected, this.available, this.storeID, this.current);
   final Producto selected;
   final List<Tienda> available;
   final int storeID;
+  final Pedido current;
+  int quantity = 1;
+  Tienda? shopSelected;
+
+  void updateStore(Tienda? selected){
+    this.shopSelected = selected;
+  }
+
+  void updateQuantity(String type){
+    if(type=="Add"){
+      this.quantity+=1;
+    }else if(type == "Substract"){
+      this.quantity-=1;
+    }
+  }
+  
+  void addProduct (){
+    if(this.current.carrito.containsKey(shopSelected)){
+      if(this.current.carrito[shopSelected]!.containsKey(selected)){
+        int newValue = this.current.carrito[shopSelected]![selected]! + quantity;
+        this.current.carrito[shopSelected]![selected] = newValue;
+      }else{
+        this.current.carrito[shopSelected]!.addAll({this.selected: this.quantity});
+      }
+    }else{
+      this.current.carrito[shopSelected] = {this.selected: this.quantity};
+    }
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,20 +128,20 @@ class HomeProductCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     image("assets/img/pescadito.jpg", double.infinity, 315),
-                    productHead(this.selected.name, this.selected),
+                    productHead(this.selected.name, this.selected, updateQuantity),
                     productDescription(this.selected.description),
                     if (this.selected.category == "A la carta")
                       GenericButton("Personalizar", Color(0xFF0CC665), 160, 36,
                           15.0, 0, 0, 30.0, 22, 30, () => {}),
                     place(),
-                    RadioButtonListStore(this.selected, this.available, this.storeID),
+                    RadioButtonListStore(this.selected, this.available, this.storeID, updateStore),
                     Center(
                       child: GenericButton("Ver Reseñas", Color(0xFF2196F3),
                           274, 45, 15.0, 0, 0, 0, 22, 30, () => {}),
                     ),
                     Center(
                       child: GenericButton("Agregar", Color(0xFF0CC665), 274,
-                          45, 15.0, 0, 0, 0, 22, 30, () => {}),
+                          45, 15.0, 0, 0, 0, 22, 30, () => addProduct()),
                     ),
                     SizedBox(
                       height: 40,

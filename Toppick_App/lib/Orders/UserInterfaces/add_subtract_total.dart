@@ -3,16 +3,17 @@ import 'package:flutter/material.dart';
 
 
 class AddSubstract extends StatefulWidget {
-  AddSubstract(this.selected, this.notifyParent);
+  AddSubstract(this.selected, this.quantity, this.notifyParent);
   final Producto selected;
+  final int quantity;
   final Function(int value, String operationType) notifyParent;
   @override
-  _AddSubstractState createState() => _AddSubstractState(this.selected.price, this.selected.price, this.notifyParent);
+  _AddSubstractState createState() => _AddSubstractState(this.selected.price, this.selected.price, this.notifyParent, this.quantity);
 }
 
 class _AddSubstractState extends State<AddSubstract> {
-  _AddSubstractState(this._defaultValue, this._price, this.notifyParent);
-  int _units = 1;
+  _AddSubstractState(this._defaultValue, this._price, this.notifyParent, this._units);
+  int _units;
   int _defaultValue;
   int _price;
   final Function(int value, String operationType) notifyParent;

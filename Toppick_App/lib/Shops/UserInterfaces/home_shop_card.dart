@@ -1,3 +1,4 @@
+import 'package:Toppick_App/Orders/Models/pedido.dart';
 import 'package:Toppick_App/Products/UserInterfaces/productlist.dart';
 import 'package:Toppick_App/Shops/Models/tienda.dart';
 import 'package:flutter/material.dart';
@@ -113,11 +114,12 @@ Widget cardSchedule(String schedule) {
 }
 
 class HomeShopCard extends StatelessWidget {
-  HomeShopCard(this.selected);
+  HomeShopCard(this.selected, this.current);
   final Tienda selected;
+  final Pedido current;
   @override
   Widget build(BuildContext context) {
-    var transition = () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProductList(storeID: this.selected.id,)));
+    var transition = () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProductList(this.current, storeID: this.selected.id)));
     return Container(
       margin: EdgeInsets.only(top: 18.0, left: 10.0, right: 10.0),
       width: 392,

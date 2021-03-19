@@ -1,3 +1,4 @@
+import 'package:Toppick_App/Orders/Models/pedido.dart';
 import 'package:Toppick_App/Shops/Models/tienda.dart';
 import 'package:Toppick_App/Shops/UserInterfaces/home_shop.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/gradiant.dart';
@@ -7,10 +8,11 @@ import 'package:Toppick_App/Shops/UserInterfaces/shopcard.dart';
 import 'package:flutter/material.dart';
 
 class ShopList extends StatelessWidget {
-  ShopList(this.category, this.categoryImagePath, this.stores);
+  ShopList(this.category, this.categoryImagePath, this.stores, this.current);
   final String category;
   final String categoryImagePath;
   final List<Tienda> stores;
+  final Pedido current;
 
   List<Widget> buildShopCards(BuildContext context){
     List<Widget> result = [];
@@ -18,7 +20,7 @@ class ShopList extends StatelessWidget {
       result.add(Padding(
           padding: const EdgeInsets.only(left:5.0, right: 5.0, bottom: 5.0),
           child: GestureDetector(
-            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=> HomeShop(this.stores[i]))),
+            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=> HomeShop(this.stores[i], this.current))),
             child: ShopCard(this.stores[i], this.categoryImagePath)
           ),
         )
@@ -39,7 +41,7 @@ class ShopList extends StatelessWidget {
             width: double.infinity,
             child: ListView(
               children: <Widget>[
-                Header(),
+                Header(this.current),
                 SearchButton("Buscar puntos de venta", 2),
                 Padding(
                   padding: const EdgeInsets.only(top:10.0, left:10.0),
