@@ -22,12 +22,15 @@ class _AddSubstractState extends State<AddSubstract> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          "\$$_price",
-          style: TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: 30,
-              color: Color(0xFFB7B7B7)),
+        Padding(
+          padding: const EdgeInsets.only(right: 8.0),
+          child: Text(
+            "\$$_price",
+            style: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 20,
+                color: Color(0xFFB7B7B7)),
+          ),
         ),
         Container(
           width: 140,

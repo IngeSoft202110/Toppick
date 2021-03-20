@@ -1,14 +1,14 @@
 import '../Models/tienda.dart';
 
-class StoreQueries {
-  List<Tienda> getAllAvailableStores() /*async*/ {
+class ShopQueries {
+  List<Tienda> getAllAvailableShops() /*async*/ {
     List<Tienda> queryResult = [];
     /*
     final response =await http.get('https://');
-     if (response.statusCode == 200) {
+    if (response.statusCode == 200) {
         //the call to the server was successful, 
-         Iterable l = json.decode(response.body);
-         List<Tienda> queryResult = List<Post>.from(l.map((model)=> Post.fromJson(model)));  
+        Iterable l = json.decode(response.body);
+        List<Tienda> queryResult = List<Post>.from(l.map((model)=> Post.fromJson(model)));  
     
         throw Exception('Failed to load post');
         }
@@ -79,14 +79,14 @@ class StoreQueries {
     return queryResult;
   }
 
-  Tienda getStoreById(int id) /*async*/ {
+  Tienda getShopById(int id) /*async*/ {
     Tienda queryResult;
     /*
     final response =await http.get('https://');
-     if (response.statusCode == 200) {
+    if (response.statusCode == 200) {
         //the call to the server was successful, 
-         Iterable l = json.decode(response.body);
-         List<Tienda> queryResult = List<Post>.from(l.map((model)=> Post.fromJson(model))); 
+        Iterable l = json.decode(response.body);
+        List<Tienda> queryResult = List<Post>.from(l.map((model)=> Post.fromJson(model))); 
     } else {
     
         throw Exception('Failed to load post');
@@ -105,14 +105,14 @@ class StoreQueries {
     return queryResult;
   }
 
-  List<Tienda> getAvailableStoresByProduct(int productId) /*async*/ {
+  List<Tienda> getAvailableShopsByProduct(int productId) /*async*/ {
     List<Tienda> queryResult = [];
     /*
     final response =await http.get('https://');
-     if (response.statusCode == 200) {
+    if (response.statusCode == 200) {
         //the call to the server was successful, 
-         Iterable l = json.decode(response.body);
-         List<Tienda> queryResult = List<Post>.from(l.map((model)=> Post.fromJson(model)));  
+        Iterable l = json.decode(response.body);
+        List<Tienda> queryResult = List<Post>.from(l.map((model)=> Post.fromJson(model)));  
     } else {
     
         throw Exception('Failed to load post');

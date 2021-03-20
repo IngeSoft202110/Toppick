@@ -99,7 +99,7 @@ class HomeProductCard extends StatelessWidget {
   }
   
   void addProduct (){
-    if(shopSelected !=null){
+    if(shopSelected!.id !=-1){
       if(this.current.carrito.containsKey(shopSelected)){
         if(this.current.carrito[shopSelected]!.containsKey(selected)){
           int newValue = this.current.carrito[shopSelected]![selected]! + quantity;

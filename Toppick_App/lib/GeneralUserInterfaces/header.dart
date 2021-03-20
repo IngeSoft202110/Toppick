@@ -16,9 +16,34 @@ Map<Tienda?, Map<Producto, int>> solicitados2 = {Tienda(0, "La central","","",""
   Producto(0, "Te", 2000, "", 0, 4.0, "") : 1,
   Producto(0, "Mani", 1000, "", 0, 4.0, "") : 1
 }};
-Pedido current3 = Pedido(0, DateTime.now(), 9000, 0, "Listo");
 
-List<Pedido> pedidos = [current2, current3];
+Pedido current3 = Pedido(0, DateTime.now(), 9000, 0, "Listo");/*
+Pedido current4 = Pedido(0, DateTime.now(), 9000, 0, "Cocinando");
+Map<Tienda?, Map<Producto, int>> solicitados3 = {Tienda(0, "Tepanyaki","","","","",true,""):{
+  Producto(0, "Pescadito", 6000, "", 0, 4.0, "") : 2,
+  Producto(0, "Te", 2000, "", 0, 4.0, "") : 1,
+  Producto(0, "Mani", 1000, "", 0, 4.0, "") : 1
+}};
+Map<Tienda?, Map<Producto, int>> solicitados4 = {Tienda(0, "La central","","","","",true,""):{
+  Producto(0, "Pescadito", 6000, "", 0, 4.0, "") : 2,
+  Producto(0, "Te", 2000, "", 0, 4.0, "") : 1,
+  Producto(0, "Mani", 1000, "", 0, 4.0, "") : 1
+}};
+Pedido current5 = Pedido(0, DateTime.now(), 9000, 0, "Listo");
+Pedido current6 = Pedido(0, DateTime.now(), 9000, 0, "Cocinando");
+Map<Tienda?, Map<Producto, int>> solicitados5 = {Tienda(0, "Tepanyaki","","","","",true,""):{
+  Producto(0, "Pescadito", 6000, "", 0, 4.0, "") : 2,
+  Producto(0, "Te", 2000, "", 0, 4.0, "") : 1,
+  Producto(0, "Mani", 1000, "", 0, 4.0, "") : 1
+}};
+Map<Tienda?, Map<Producto, int>> solicitados6 = {Tienda(0, "La central","","","","",true,""):{
+  Producto(0, "Pescadito", 6000, "", 0, 4.0, "") : 2,
+  Producto(0, "Te", 2000, "", 0, 4.0, "") : 1,
+  Producto(0, "Mani", 1000, "", 0, 4.0, "") : 1
+}};
+Pedido current7 = Pedido(0, DateTime.now(), 9000, 0, "Listo");*/
+
+List<Pedido> pedidos = [current2, current3,];
 
 class Header extends StatelessWidget {
   Header(this.actual);
@@ -27,6 +52,10 @@ class Header extends StatelessWidget {
   Widget build(BuildContext context) {
     current2.carrito = solicitados1;
     current3.carrito = solicitados2;
+    //current4.carrito = solicitados3;
+    //current5.carrito = solicitados4;
+    //current6.carrito = solicitados5;
+    //current7.carrito = solicitados6;
     var f1 = () => Navigator.push(context, MaterialPageRoute(builder: (context) => OrderCard(actual)));
     var f2 = () => Navigator.push(context, MaterialPageRoute(builder: (context) => ActiveOrdersHome(pedidos, this.actual)));
     return SafeArea(

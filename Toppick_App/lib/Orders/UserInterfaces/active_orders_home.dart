@@ -9,7 +9,7 @@ class ActiveOrdersHome extends StatelessWidget {
   final List<Pedido> activeOrders;
   final Pedido actual;
 
-  List<Widget> fill(){
+  List<Widget> fill( BuildContext context ){
     List<Widget> result = [];
     result.add(
       Center(
@@ -24,6 +24,7 @@ class ActiveOrdersHome extends StatelessWidget {
       result.add(ActiveOrderCard(element, count));
       count+=1;
     });
+    result.add(SizedBox(height: MediaQuery.of(context).size.height*0.4,));
     return result;
   }
   @override
@@ -45,11 +46,10 @@ class ActiveOrdersHome extends StatelessWidget {
                 ),
                 Container(
                   decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40)), color: Colors.white,),
-                  height: MediaQuery.of(context).size.height,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: fill(),
+                    children: fill(context),
                   ),
                 )
               ],

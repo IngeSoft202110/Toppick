@@ -1,4 +1,5 @@
 import 'package:Toppick_App/Orders/Models/pedido.dart';
+import 'package:Toppick_App/Shops/Bloc/shop_controller.dart';
 import 'package:Toppick_App/Shops/Models/tienda.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/gradiant.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/header.dart';
@@ -8,120 +9,39 @@ import 'package:Toppick_App/Shops/UserInterfaces/shopcategorycard.dart';
 import 'package:Toppick_App/Shops/UserInterfaces/shoplits.dart';
 import 'package:flutter/material.dart';
 
-List<String> categories = [
-  'Cafeterias',
-  'Cafes y Kioskos',
-  'Saludable',
-  'Restaurantes',
-];
-
-List<String> descriptions = [
-  'Cafeterias de la universidad',
-  'Cafes y Kioscos ubicados en la universidad, los puedes encontrar en muchos lugares',
-  'Puntos de venta de comida saludable',
-  'Restaurantes de la universidad',
-];
-
-List<String> logoPahts = [
-  'assets/icons/cafeteria.png',
-  'assets/icons/cafesykioskos.png',
-  'assets/icons/saludable.png',
-  'assets/icons/restaurantes.png',
-];
-
-List<Tienda> storeList = [
-  Tienda(
-    1,
-    "La Central", 
-    "Cafeterias", 
-    "L-V: 6:00 A.M - 9:00 P.M \n S: 8:00 am a 4:00pm",
-    "En el restaurante La Central brindamos gran variedad de productos: desayunos, almuerzos, comidas rapidas, pizzas, opciones para llevar y un espacio comodo, una experiencia unica ",
-    "assets/img/central.PNG",
-    true,
-    "https://www.google.com/maps/dir//la+central+javeriana/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x8e3f9b5f5fdde08f:0x19a674df1df81bae?sa=X&ved=2ahUKEwiBnN-jyKnvAhVju1kKHewoCP4Q9RcwAHoECAQQAw",
-  ),
-  Tienda(
-    1,
-    "La Central", 
-    "Cafeterias", 
-    "L-V: 6:00 A.M - 9:00 P.M \n S: 8:00 am a 4:00pm",
-    "En el restaurante La Central brindamos gran variedad de productos: desayunos, almuerzos, comidas rapidas, pizzas, opciones para llevar y un espacio comodo, una experiencia unica ",
-    "assets/img/central.PNG",
-    true,
-    "https://www.google.com/maps/dir//la+central+javeriana/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x8e3f9b5f5fdde08f:0x19a674df1df81bae?sa=X&ved=2ahUKEwiBnN-jyKnvAhVju1kKHewoCP4Q9RcwAHoECAQQAw",
-  ),
-  Tienda(
-    1,
-    "La Central", 
-    "Cafeterias", 
-    "L-V: 6:00 A.M - 9:00 P.M \n S: 8:00 am a 4:00pm",
-    "En el restaurante La Central brindamos gran variedad de productos: desayunos, almuerzos, comidas rapidas, pizzas, opciones para llevar y un espacio comodo, una experiencia unica ",
-    "assets/img/central.PNG",
-    true,
-    "https://www.google.com/maps/dir//la+central+javeriana/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x8e3f9b5f5fdde08f:0x19a674df1df81bae?sa=X&ved=2ahUKEwiBnN-jyKnvAhVju1kKHewoCP4Q9RcwAHoECAQQAw",
-  ),
-  Tienda(
-    1,
-    "La Central", 
-    "Cafeterias", 
-    "L-V: 6:00 A.M - 9:00 P.M \n S: 8:00 am a 4:00pm",
-    "En el restaurante La Central brindamos gran variedad de productos: desayunos, almuerzos, comidas rapidas, pizzas, opciones para llevar y un espacio comodo, una experiencia unica ",
-    "assets/img/central.PNG",
-    true,
-    "https://www.google.com/maps/dir//la+central+javeriana/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x8e3f9b5f5fdde08f:0x19a674df1df81bae?sa=X&ved=2ahUKEwiBnN-jyKnvAhVju1kKHewoCP4Q9RcwAHoECAQQAw",
-  ),
-  Tienda(
-    1,
-    "La Central", 
-    "Cafeterias", 
-    "L-V: 6:00 A.M - 9:00 P.M \n S: 8:00 am a 4:00pm",
-    "En el restaurante La Central brindamos gran variedad de productos: desayunos, almuerzos, comidas rapidas, pizzas, opciones para llevar y un espacio comodo, una experiencia unica ",
-    "assets/img/central.PNG",
-    true,
-    "https://www.google.com/maps/dir//la+central+javeriana/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x8e3f9b5f5fdde08f:0x19a674df1df81bae?sa=X&ved=2ahUKEwiBnN-jyKnvAhVju1kKHewoCP4Q9RcwAHoECAQQAw",
-  ),
-  Tienda(
-    1,
-    "La Central", 
-    "Cafes y Kioskos", 
-    "L-V: 6:00 A.M - 9:00 P.M \n S: 8:00 am a 4:00pm",
-    "En el restaurante La Central brindamos gran variedad de productos: desayunos, almuerzos, comidas rapidas, pizzas, opciones para llevar y un espacio comodo, una experiencia unica ",
-    "assets/img/central.PNG",
-    true,
-    "https://www.google.com/maps/dir//la+central+javeriana/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x8e3f9b5f5fdde08f:0x19a674df1df81bae?sa=X&ved=2ahUKEwiBnN-jyKnvAhVju1kKHewoCP4Q9RcwAHoECAQQAw",
-  ),
-];
-
-List<Tienda> filterShops(List<Tienda> shops, String category){
-  List<Tienda> filtered = [];
-  for(Tienda shop in shops){
-    if(shop.category == category)
-      filtered.add(shop);
-  }
-  return filtered;
-}
-
-List<Widget> buildCategoriesCard(BuildContext context, Pedido current){
-  List<Widget> results = [];
-  for(int i = 0; i < categories.length; i++){
-    results.add(GestureDetector(
-      onTap: (){
-        List<Tienda> filtered = filterShops(storeList, categories[i]);
-        Navigator.push(context, MaterialPageRoute(builder: (context)=> ShopList(categories[i], logoPahts[i], filtered, current)));
-      },
-      child: Padding(
-        padding: const EdgeInsets.only(left:5.0, right: 5.0, bottom: 5.0),
-        child: ShopCategoryCard(categories[i], descriptions[i], logoPahts[i]),
-      ),
-    ));
-  }
-  return results;
-}
+// ignore: must_be_immutable
 class ShopCategoryList extends StatelessWidget {
   ShopCategoryList(this.current);
   final Pedido current;
+  final ShopController controller = ShopController();
+  List<String> categories = [];
+  List<String> descriptions = [];
+  List<String> logoPahts = [];
+  List<Tienda> shopList = [];
+
+  List<Widget> buildCategoriesCard(BuildContext context, Pedido current){
+    List<Widget> results = [];
+    for(int i = 0; i < categories.length; i++){
+      results.add(GestureDetector(
+        onTap: (){
+          List<Tienda> filtered = this.controller.filterShops(this.shopList, categories[i]);
+          Navigator.push(context, MaterialPageRoute(builder: (context)=> ShopList(categories[i], logoPahts[i], filtered, current)));
+        },
+        child: Padding(
+          padding: const EdgeInsets.only(left:5.0, right: 5.0, bottom: 5.0),
+          child: ShopCategoryCard(categories[i], descriptions[i], logoPahts[i]),
+        ),
+      ));
+    }
+    return results;
+  }
+
   @override
   Widget build(BuildContext context) {
+    this.categories = this.controller.getShopCategories();
+    this.descriptions = this.controller.getCategoryDescription();
+    this.logoPahts = this.controller.getCategoryImagePath();
+    this.shopList = this.controller.getAllAvailableShops();
     return Scaffold(
       body: Stack(
         children: <Widget>[

@@ -1,5 +1,5 @@
 import 'package:Toppick_App/Orders/Models/pedido.dart';
-import 'package:Toppick_App/Products/Models/producto.dart';
+import 'package:Toppick_App/Products/Bloc/product_controller.dart';
 import 'package:Toppick_App/Products/Models/combo.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/listmaintext.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/gradiant.dart';
@@ -9,123 +9,10 @@ import 'package:Toppick_App/Products/UserInterfaces/home_combos_card.dart';
 import 'package:Toppick_App/Products/UserInterfaces/productcategorycard.dart';
 import 'package:Toppick_App/Products/UserInterfaces/productcategorydisplay.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/search_bar_button.dart';
+import 'package:Toppick_App/Shops/Bloc/shop_controller.dart';
 import 'package:flutter/material.dart';
 import '../../Shops/Models/tienda.dart';
 import 'package:Toppick_App/Products/UserInterfaces/home_product_card.dart';
-
-List<String> categories = [
-  'Horneados',
-  'Empaquetados',
-  'Bebidas',
-  'A la carta',
-  'Combos',
-  'Otros',
-];
-
-List<String> descriptions = [
-  'Productos horneados',
-  'Productos Empaquetados',
-  'Bebidas refrescantes',
-  'Platos personalizables',
-  'Combo de productos',
-  'Productos que no cumplen con las caracteristicas de los demas',
-];
-
-List<String> logoPahts = [
-  'assets/icons/horneados.png',
-  'assets/icons/empaquetados.png',
-  'assets/icons/bebidas.png',
-  'assets/icons/alacarta.png',
-  'assets/icons/combos.png',
-  'assets/icons/otros.png',
-];
-
-/*Esta lista de productos se cargara con el ID de la tienda pasado al ProductList, si no le dan
-ese parametro se listan todos los productos.*/
-
-List<Producto> productList = [
-  Producto(
-      1,
-      "Pescadito",
-      3000,
-      "Hojaldre relleno de arequipe, preparado por los mejores cocineros de toda la universidad.",
-      20,
-      4.5,
-      "Horneados"),
-  Producto(
-      2,
-      "Hamburguesa",
-      10000,
-      "Rica hamburguesa de la PUJ, preparada con la mejor carne y vegetales de Colombia.",
-      20,
-      4.5,
-      "A la carta"),
-  Producto(
-      3,
-      "Te",
-      2000,
-      "Te frio de la PUJ, perfecto para combinar con otras comidas que ofrece la universidad.",
-      20,
-      4.5,
-      "Bebidas"),
-  Producto(
-      4,
-      "Avena",
-      1200,
-
-      "Avena alpina como la conoces, simple pero muy rica.",
-      20,
-      4.5,
-      "Bebidas"),
-  Producto(5, "Chocorramo", 2000,
-      "Ponque de vainilla recubierto en chocolate", 20, 4.5, "Empaquetados"),
-  Producto(6, "Combo del mes", 5000, "NINFO", 20, 4.5,
-      "Combos"),
-];
-
-Combo quemado = Combo(
-    DateTime.parse("2021-03-01 00:01:00Z"),
-    DateTime.parse("2021-03-31 23:59:00Z"),
-    productList,
-    1,
-    "Pescadito",
-    3000,
-    "Hojaldre relleno de arequipe, preparado por los mejores cocineros de toda la universidad.",
-    20,
-    4.5,
-    "Horneados");
-
-//tiendas para el widget de producto propio
-List<Tienda> storeList = [
-  Tienda(
-    1,
-    "La Central",
-    "Cafeterias",
-    "L-V: 6:00 A.M - 9:00 P.M \n S: 8:00 am a 4:00pm",
-    "En el restaurante La Central brindamos gran variedad de productos: desayunos, almuerzos, comidas rapidas, pizzas, opciones para llevar y un espacio comodo, una experiencia unica ",
-    "assets/img/central.PNG",
-    true,
-    "https://www.google.com/maps/dir//la+central+javeriana/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x8e3f9b5f5fdde08f:0x19a674df1df81bae?sa=X&ved=2ahUKEwiBnN-jyKnvAhVju1kKHewoCP4Q9RcwAHoECAQQAw",
-  ),
-  Tienda(
-    2,
-    "La Pecera",
-    "Cafeterias",
-    "L-V: 6:00 A.M - 9:00 P.M \n S: 8:00 am a 4:00pm",
-    "En el restaurante La Central brindamos gran variedad de productos: desayunos, almuerzos, comidas rapidas, pizzas, opciones para llevar y un espacio comodo, una experiencia unica ",
-    "assets/img/central.PNG",
-    true,
-    "https://www.google.com/maps/dir//la+central+javeriana/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x8e3f9b5f5fdde08f:0x19a674df1df81bae?sa=X&ved=2ahUKEwiBnN-jyKnvAhVju1kKHewoCP4Q9RcwAHoECAQQAw",
-  )
-];
-
-List<Producto> filterProducts(List<Producto> products, String category) {
-  List<Producto> filtered = [];
-  for (Producto product in products) {
-    if (product.category == category) filtered.add(product);
-  }
-  return filtered;
-}
 
 class ProductList extends StatefulWidget {
   ProductList(this.current,this.store);
@@ -137,7 +24,17 @@ class ProductList extends StatefulWidget {
 
 class ProductListState extends State<ProductList> {
   ProductListState();
+  ProductController controller = ProductController();
+  ShopController shopController = ShopController();
+  List<String> categories = [];
+  List<String> descriptions = [];
+  List<String> logoPahts = [];
   List<ProductCategoryCard> widgets = [];
+  /*Esta lista de productos se cargara con el ID de la tienda pasado al ProductList, si no le dan
+  ese parametro se listan todos los productos.*/
+  List<dynamic> productList = [];
+  //Esta es la lista de tiendas donde se puede conseguir el producto
+  List<Tienda> shopList = [];
   String currentTitle = "";
   String currentDescription = "";
   ListView products = ListView(
@@ -154,8 +51,8 @@ class ProductListState extends State<ProductList> {
             if (selectedCard != null) {
               this.currentTitle = selectedCard.categoryName;
               this.currentDescription = selectedCard.categoryDescription;
-              List<Producto> selected =
-                  filterProducts(productList, this.currentTitle);
+              List<dynamic> selected =[];
+              selected = controller.filterProducts(this.productList, this.currentTitle);
               this.products = ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: selected.length,
@@ -165,12 +62,17 @@ class ProductListState extends State<ProductList> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    (selected[index].category == "Combos")
-                                        ? HomeCombosCard(
-                                            quemado, storeList, widget.store, widget.current)
-                                        : HomeProductCard(selected[index],
-                                            storeList, widget.store, widget.current)))
+                                builder: (context) {
+                                    if(selected[index] is Combo){
+                                      return HomeCombosCard(
+                                            selected[index], this.shopList, widget.store, widget.current);
+                                    }else{
+                                      return HomeProductCard(selected[index],
+                                            this.shopList, widget.store, widget.current);
+                                    }
+                                }
+                            )
+                        )
                       },
                       child: Padding(
                         padding: const EdgeInsets.only(left: 15.0),
@@ -218,7 +120,7 @@ class ProductListState extends State<ProductList> {
                 SizedBox(
                   height: 150,
                   child: ListView.builder(
-                    itemCount: categories.length,
+                    itemCount: this.categories.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: selectProductsFromCategory,
                   ),
@@ -240,9 +142,14 @@ class ProductListState extends State<ProductList> {
   void initState() {
     super.initState();
     setState(() {
-      for (int i = 0; i < categories.length; i++) {
+      this.categories = this.controller.getProductCategories();
+      this.descriptions = this.controller.getCategoryDescription();
+      this.logoPahts = this.controller.getCategoryImagePath();
+      this.productList = this.controller.getAllAvailableProducts();
+      this.shopList = this.shopController.getAllAvailableShops(); //Esta es la lista de tiendas donde se puede conseguir el producto
+      for (int i = 0; i < this.categories.length; i++) {
         widgets.add(
-            ProductCategoryCard(categories[i], descriptions[i], logoPahts[i]));
+            ProductCategoryCard(this.categories[i], this.descriptions[i], this.logoPahts[i]));
       }
     });
   }

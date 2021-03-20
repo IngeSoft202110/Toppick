@@ -73,7 +73,7 @@ class _OrderCardState extends State<OrderCard> {
     this.actual.carrito.forEach((key, value) {result.add(ShopxProductContent(key!.name, value, refresh));});
     result.add(
       Padding(
-        padding: const EdgeInsets.only(left: 10.0,),
+        padding: const EdgeInsets.only(left: 10.0, top: 30.0),
         child: Text("¿En cuántos minutos pasas?", style: TextStyle(color: Color(0xFFD76060), fontSize: 25, fontWeight: FontWeight.bold)),
       )
     );
@@ -93,7 +93,7 @@ class _OrderCardState extends State<OrderCard> {
     );
     result.add(
       Padding(
-        padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+        padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 15.0),
         child: Text("*El tiempo mínimo para pasar es el del producto que más se tarde en cocinar y el máximo es una hora*", style: TextStyle(color: Color(0xFFB7B7B7), fontSize: 15)),
       )
     );
@@ -113,6 +113,7 @@ class _OrderCardState extends State<OrderCard> {
         }
     })));
     result.add(Center(child: GenericButton("Cancelar predido", Color(0xFFFB2900), 274, 45, 15.0, 0, 0, 0, 22, 30, cancelTransition)));
+    result.add(SizedBox(height: 30,));
     return result;
   }
 
@@ -154,7 +155,6 @@ class _OrderCardState extends State<OrderCard> {
                 ),
                 Container(
                   decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40)), color: Colors.white,),
-                  height: MediaQuery.of(context).size.height,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -174,12 +174,14 @@ Widget element(Producto current, int currentQuantity, Function(int value, String
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: <Widget>[
-      Padding(
-        padding: const EdgeInsets.only(left: 10.0, bottom: 7.0),
-        child: Text("${current.name}", style: TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: 30,
-              color: Color(0xFFB7B7B7))),
+      Flexible(
+        child: Container(
+          padding: new EdgeInsets.only(right: 13.0, left: 10.0),
+          child: Text("${current.name}", style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 25,
+                  color: Color(0xFFB7B7B7)), overflow: TextOverflow.ellipsis,),
+        ),
       ),
       AddSubstract(current, currentQuantity, toCallSum),
     ],
@@ -196,7 +198,7 @@ class ShopxProductContent extends StatelessWidget{
     List<Widget> result = [];
     result.add(
       Padding(
-        padding: const EdgeInsets.only(left: 10.0,  bottom: 10.0),
+        padding: const EdgeInsets.only(left: 10.0, right: 10, bottom: 10.0),
         child: Text("${this.storeName}", style: TextStyle(color: Color(0xFFD76060), fontSize: 25, fontWeight: FontWeight.bold),),
       )
     );
