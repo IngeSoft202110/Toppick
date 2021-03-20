@@ -79,10 +79,9 @@ Widget place() {
 
 // ignore: must_be_immutable
 class HomeProductCard extends StatelessWidget {
-  HomeProductCard(this.selected, this.available, this.storeID, this.current);
+  HomeProductCard(this.selected, this.available, this.shopSelected, this.current);
   final Producto selected;
   final List<Tienda> available;
-  final int storeID;
   final Pedido current;
   int quantity = 1;
   Tienda? shopSelected;
@@ -100,15 +99,19 @@ class HomeProductCard extends StatelessWidget {
   }
   
   void addProduct (){
-    if(this.current.carrito.containsKey(shopSelected)){
-      if(this.current.carrito[shopSelected]!.containsKey(selected)){
-        int newValue = this.current.carrito[shopSelected]![selected]! + quantity;
-        this.current.carrito[shopSelected]![selected] = newValue;
+    if(shopSelected !=null){
+      if(this.current.carrito.containsKey(shopSelected)){
+        if(this.current.carrito[shopSelected]!.containsKey(selected)){
+          int newValue = this.current.carrito[shopSelected]![selected]! + quantity;
+          this.current.carrito[shopSelected]![selected] = newValue;
+        }else{
+          this.current.carrito[shopSelected]!.addAll({this.selected: this.quantity});
+        }
       }else{
-        this.current.carrito[shopSelected]!.addAll({this.selected: this.quantity});
+        this.current.carrito[shopSelected] = {this.selected: this.quantity};
       }
     }else{
-      this.current.carrito[shopSelected] = {this.selected: this.quantity};
+      print("No se ha seleccionado una tienda");
     }
   }
   
@@ -134,7 +137,7 @@ class HomeProductCard extends StatelessWidget {
                       GenericButton("Personalizar", Color(0xFF0CC665), 160, 36,
                           15.0, 0, 0, 30.0, 22, 30, () => {}),
                     place(),
-                    RadioButtonListStore(this.selected, this.available, this.storeID, updateStore),
+                    RadioButtonListStore(this.selected, this.available, this.shopSelected, updateStore),
                     Center(
                       child: GenericButton("Ver Reseñas", Color(0xFF2196F3),
                           274, 45, 15.0, 0, 0, 0, 22, 30, () => {}),

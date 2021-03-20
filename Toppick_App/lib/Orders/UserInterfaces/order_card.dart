@@ -6,9 +6,10 @@ import 'package:Toppick_App/Orders/Models/metodopago.dart';
 import 'package:Toppick_App/Orders/Models/nequi.dart';
 import 'package:Toppick_App/Orders/Models/pedido.dart';
 import 'package:Toppick_App/Orders/UserInterfaces/add_subtract_total.dart';
-import 'package:Toppick_App/Orders/UserInterfaces/paymentcard.dart';
-import 'package:Toppick_App/Orders/UserInterfaces/paymentselection.dart';
+import 'package:Toppick_App/Orders/UserInterfaces/payment_card.dart';
+import 'package:Toppick_App/Orders/UserInterfaces/payment_selection.dart';
 import 'package:Toppick_App/Products/Models/producto.dart';
+import 'package:Toppick_App/main.dart';
 import 'package:flutter/material.dart';
 
 List<MetodoPago> methods =[
@@ -39,6 +40,10 @@ class _OrderCardState extends State<OrderCard> {
   final Pedido actual;
   int total;
   MetodoPago? selected;
+  int selectedTime = 0;
+  int minTime = 5;
+  TextEditingController controller = TextEditingController();
+
   void refresh(int value, String operationType){
     setState(() {
       if(operationType == "Sum"){
@@ -53,6 +58,7 @@ class _OrderCardState extends State<OrderCard> {
   }
 
   List<Widget> fill(var transitionToPay){
+    var cancelTransition = () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MyApp()),  ModalRoute.withName('/'));
     Widget showMethods = methods.isNotEmpty ? RadioButtonPaymentList(methods, updateMethod) :
       Center(child: GenericButton("Registrar métodos de pago", Color(0xFF0CC665), 274, 45, 15.0, 0, 0, 0, 22, 30, () => {}));
     List<Widget> result = [];
@@ -66,12 +72,36 @@ class _OrderCardState extends State<OrderCard> {
     );
     this.actual.carrito.forEach((key, value) {result.add(ShopxProductContent(key!.name, value, refresh));});
     result.add(
-      Center(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 10.0,),
-          child: Text("Métodos de pago", style: TextStyle(color: Color(0xFFD76060), fontSize: 30, fontWeight: FontWeight.bold),),
+      Padding(
+        padding: const EdgeInsets.only(left: 10.0,),
+        child: Text("¿En cuántos minutos pasas?", style: TextStyle(color: Color(0xFFD76060), fontSize: 25, fontWeight: FontWeight.bold)),
+      )
+    );
+    //Calcular valor mínimo del tiempo del pedido
+    result.add(
+      Padding(
+        padding: const EdgeInsets.only(left:10.0, right: 40.0,),
+        child: TextField(
+          controller: controller,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+            hintText: "Tiempo mínimo es de $minTime minutos",
+            hintStyle: TextStyle(color: Color(0xFFB7B7B7)),
+          ),
         ),
       )
+    );
+    result.add(
+      Padding(
+        padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+        child: Text("*El tiempo mínimo para pasar es el del producto que más se tarde en cocinar y el máximo es una hora*", style: TextStyle(color: Color(0xFFB7B7B7), fontSize: 15)),
+      )
+    );
+    result.add(
+      Padding(
+        padding: const EdgeInsets.only(left: 10.0,),
+        child: Text("Métodos de pago", style: TextStyle(color: Color(0xFFD76060), fontSize: 30, fontWeight: FontWeight.bold),),
+      ),
     );
     result.add(showMethods);
     result.add(Center(child: GenericButton("Total: \$${this.total}", Color(0xFFBB4900), 274, 45, 15.0, 0, 0, 0, 22, 0, () => {})));
@@ -82,20 +112,28 @@ class _OrderCardState extends State<OrderCard> {
           transitionToPay()
         }
     })));
+    result.add(Center(child: GenericButton("Cancelar predido", Color(0xFFFB2900), 274, 45, 15.0, 0, 0, 0, 22, 30, cancelTransition)));
     return result;
   }
 
   @override
   Widget build(BuildContext context) {
     Widget build(BuildContext context){
-      if(this.selected.runtimeType.toString()=="DaviPlata"){
-        return PaymentCard("assets/img/daviplata.png", total, selected, this.actual);
+      if(this.controller.text == ""){
+        this.selectedTime = this.minTime;
+      }else{
+        this.selectedTime = int.parse(this.controller.text);
       }
-      else if(this.selected.runtimeType.toString()=="Nequi"){
-        return PaymentCard("assets/img/nequi.jpg", total, selected, this.actual);
-      }
-      else if(this.selected.runtimeType.toString()=="PSE"){
-        return PaymentCard("assets/img/pse.jpg", total, selected, this.actual);
+      if(this.selectedTime > 0 && this.selectedTime<= 60){
+        if(this.selected.runtimeType.toString()=="DaviPlata"){
+          return PaymentCard("assets/img/daviplata.png", total, selected, this.actual);
+        }
+        else if(this.selected.runtimeType.toString()=="Nequi"){
+          return PaymentCard("assets/img/nequi.jpg", total, selected, this.actual);
+        }
+        else if(this.selected.runtimeType.toString()=="PSE"){
+          return PaymentCard("assets/img/pse.jpg", total, selected, this.actual);
+        }
       }
       return OrderCard(this.actual);
     }

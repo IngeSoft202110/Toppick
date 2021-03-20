@@ -119,7 +119,7 @@ class HomeShopCard extends StatelessWidget {
   final Pedido current;
   @override
   Widget build(BuildContext context) {
-    var transition = () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProductList(this.current, storeID: this.selected.id)));
+    var transition = () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProductList(this.current, this.selected)));
     return Container(
       margin: EdgeInsets.only(top: 18.0, left: 10.0, right: 10.0),
       width: 392,

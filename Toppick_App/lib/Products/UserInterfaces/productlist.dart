@@ -48,7 +48,6 @@ List<Producto> productList = [
       1,
       "Pescadito",
       3000,
-      "NINFO",
       "Hojaldre relleno de arequipe, preparado por los mejores cocineros de toda la universidad.",
       20,
       4.5,
@@ -57,7 +56,6 @@ List<Producto> productList = [
       2,
       "Hamburguesa",
       10000,
-      "NINFO",
       "Rica hamburguesa de la PUJ, preparada con la mejor carne y vegetales de Colombia.",
       20,
       4.5,
@@ -66,7 +64,6 @@ List<Producto> productList = [
       3,
       "Te",
       2000,
-      "NINFO",
       "Te frio de la PUJ, perfecto para combinar con otras comidas que ofrece la universidad.",
       20,
       4.5,
@@ -75,14 +72,14 @@ List<Producto> productList = [
       4,
       "Avena",
       1200,
-      "NINFO",
+
       "Avena alpina como la conoces, simple pero muy rica.",
       20,
       4.5,
       "Bebidas"),
-  Producto(5, "Chocorramo", 2000, "NINFO",
+  Producto(5, "Chocorramo", 2000,
       "Ponque de vainilla recubierto en chocolate", 20, 4.5, "Empaquetados"),
-  Producto(6, "Combo del mes", 5000, "NINFO", "Pescadito con Te.", 20, 4.5,
+  Producto(6, "Combo del mes", 5000, "NINFO", 20, 4.5,
       "Combos"),
 ];
 
@@ -93,7 +90,6 @@ Combo quemado = Combo(
     1,
     "Pescadito",
     3000,
-    "NINFO",
     "Hojaldre relleno de arequipe, preparado por los mejores cocineros de toda la universidad.",
     20,
     4.5,
@@ -132,8 +128,8 @@ List<Producto> filterProducts(List<Producto> products, String category) {
 }
 
 class ProductList extends StatefulWidget {
-  ProductList(this.current,{this.storeID = -1});
-  final int storeID;
+  ProductList(this.current,this.store);
+  final Tienda? store;
   final Pedido current;
   @override
   ProductListState createState() => ProductListState();
@@ -172,9 +168,9 @@ class ProductListState extends State<ProductList> {
                                 builder: (context) =>
                                     (selected[index].category == "Combos")
                                         ? HomeCombosCard(
-                                            quemado, storeList, widget.storeID, widget.current)
+                                            quemado, storeList, widget.store, widget.current)
                                         : HomeProductCard(selected[index],
-                                            storeList, widget.storeID, widget.current)))
+                                            storeList, widget.store, widget.current)))
                       },
                       child: Padding(
                         padding: const EdgeInsets.only(left: 15.0),

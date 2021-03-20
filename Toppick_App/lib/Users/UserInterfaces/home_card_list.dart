@@ -2,6 +2,7 @@ import 'package:Toppick_App/GeneralUserInterfaces/header.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/search_bar_button.dart';
 import 'package:Toppick_App/Orders/Models/pedido.dart';
 import 'package:Toppick_App/Products/UserInterfaces/productlist.dart';
+import 'package:Toppick_App/Shops/Models/tienda.dart';
 import 'package:Toppick_App/Shops/UserInterfaces/shopcategorylist.dart';
 import 'package:flutter/material.dart';
 
@@ -15,9 +16,9 @@ class HomeCardList extends StatelessWidget {
     var f1 = () => Navigator.push(
         context, MaterialPageRoute(builder: (context) => ShopCategoryList(this.current)));
     var f2 = () => Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ProductList(this.current)));
+        context, MaterialPageRoute(builder: (context) => ProductList(this.current, new Tienda(-1, "", "", "", "", "", false, ""))));
     var f3 = () => Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ProductList(this.current)));
+        context, MaterialPageRoute(builder: (context) => ProductList(this.current, new Tienda(-1, "", "", "", "", "", false, ""))));
     return Container(
       margin: EdgeInsets.only(top: 5.0),
       height: MediaQuery.of(context).size.height,

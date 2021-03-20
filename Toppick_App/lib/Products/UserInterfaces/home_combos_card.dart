@@ -98,10 +98,9 @@ Widget comboProductList(Combo a) {
 
 // ignore: must_be_immutable
 class HomeCombosCard extends StatelessWidget {
-  HomeCombosCard(this.selected, this.available, this.storeID, this.current);
+  HomeCombosCard(this.selected, this.available, this.shopSelected, this.current);
   final Combo selected;
   final List<Tienda> available;
-  final int storeID;
   final Pedido current;
   int quantity = 1;
   Tienda? shopSelected;
@@ -119,15 +118,19 @@ class HomeCombosCard extends StatelessWidget {
   }
 
   void addProduct (){
-    if(this.current.carrito.containsKey(shopSelected)){
-      if(this.current.carrito[shopSelected]!.containsKey(selected)){
-        int newValue = this.current.carrito[shopSelected]![selected]! + quantity;
-        this.current.carrito[shopSelected]![selected] = newValue;
+    if(shopSelected !=null){
+      if(this.current.carrito.containsKey(shopSelected)){
+        if(this.current.carrito[shopSelected]!.containsKey(selected)){
+          int newValue = this.current.carrito[shopSelected]![selected]! + quantity;
+          this.current.carrito[shopSelected]![selected] = newValue;
+        }else{
+          this.current.carrito[shopSelected]!.addAll({this.selected: this.quantity});
+        }
       }else{
-        this.current.carrito[shopSelected]!.addAll({this.selected: this.quantity});
+        this.current.carrito[shopSelected] = {this.selected: this.quantity};
       }
     }else{
-      this.current.carrito[shopSelected] = {this.selected: this.quantity};
+      print("No se ha seleccionado una tienda");
     }
   }
 
@@ -163,7 +166,7 @@ class HomeCombosCard extends StatelessWidget {
                     comboProductList(this.selected),
                     place(),
                     RadioButtonListStore(
-                        this.selected, this.available, this.storeID, updateStore),
+                        this.selected, this.available, this.shopSelected, updateStore),
                     Center(
                       child: GenericButton("Ver Reseñas", Color(0xFF2196F3),
                           274, 45, 15.0, 0, 0, 0, 22, 30, () => {}),

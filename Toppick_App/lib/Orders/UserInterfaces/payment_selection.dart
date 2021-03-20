@@ -42,7 +42,6 @@ class _RadioButtonsStoreState extends State<RadioButtonsStore> {
             setState(() {
               _optionSelected = value;
               widget.notifyParent(_optionSelected);
-              print(_optionSelected);
             });
           },
         ),

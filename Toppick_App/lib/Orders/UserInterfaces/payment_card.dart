@@ -1,7 +1,7 @@
 import 'package:Toppick_App/GeneralUserInterfaces/generic_button.dart';
 import 'package:Toppick_App/Orders/Models/metodopago.dart';
 import 'package:Toppick_App/Orders/Models/pedido.dart';
-import 'package:Toppick_App/Orders/UserInterfaces/ordercard.dart';
+import 'package:Toppick_App/Orders/UserInterfaces/order_card.dart';
 import 'package:Toppick_App/main.dart';
 import 'package:flutter/material.dart';
 
@@ -52,7 +52,7 @@ class PaymentCard extends StatelessWidget {
       this.actual.tiempoReclamo = 0;
       return MyApp();
     }
-    var transitionFinishOrder = () => Navigator.push(context, MaterialPageRoute(builder: finish));
+    var transitionFinishOrder = () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: finish),  ModalRoute.withName('/'));
     var transitionBack = () => Navigator.push(context, MaterialPageRoute(builder: (context)=>OrderCard(this.actual)));
     return Scaffold(
       body: Container(
