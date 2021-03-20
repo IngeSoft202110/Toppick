@@ -1,10 +1,10 @@
+import 'package:Toppick_App/Orders/Models/pedido.dart';
 import 'package:flutter/material.dart';
 import 'package:Toppick_App/Products/UserInterfaces/add_substract.dart';
 import 'package:Toppick_App/Products/UserInterfaces/combo_product_card.dart';
 import '../../GeneralUserInterfaces/generic_button.dart';
 import '../../Shops/Models/tienda.dart';
 import '../Models/combo.dart';
-import '../Models/producto.dart';
 import 'radio_buttons.dart';
 
 Widget image(String pathImage, double w, double h) {
@@ -21,7 +21,7 @@ Widget image(String pathImage, double w, double h) {
   );
 }
 
-Widget productHead(String name, Combo a) {
+Widget productHead(String name, Combo a, Function(String type) notifyParent) {
   return Container(
     margin: EdgeInsets.only(top: 15.0, left: 30.0),
     width: double.infinity,
@@ -35,7 +35,7 @@ Widget productHead(String name, Combo a) {
               fontSize: 40,
               color: Color(0xFFD76060)),
         ),
-        AddSubstract(a),
+        AddSubstract(a, notifyParent),
       ],
     ),
   );
@@ -96,11 +96,43 @@ Widget comboProductList(Combo a) {
   );
 }
 
+// ignore: must_be_immutable
 class HomeCombosCard extends StatelessWidget {
-  HomeCombosCard(this.selected, this.available, this.storeID);
+  HomeCombosCard(this.selected, this.available, this.shopSelected, this.current);
   final Combo selected;
   final List<Tienda> available;
-  final int storeID;
+  final Pedido current;
+  int quantity = 1;
+  Tienda? shopSelected;
+
+  void updateStore(Tienda? selected){
+    this.shopSelected = selected;
+  }
+
+  void updateQuantity(String type){
+    if(type=="Add"){
+      this.quantity+=1;
+    }else if(type == "Substract"){
+      this.quantity-=1;
+    }
+  }
+
+  void addProduct (){
+    if(shopSelected !=null){
+      if(this.current.carrito.containsKey(shopSelected)){
+        if(this.current.carrito[shopSelected]!.containsKey(selected)){
+          int newValue = this.current.carrito[shopSelected]![selected]! + quantity;
+          this.current.carrito[shopSelected]![selected] = newValue;
+        }else{
+          this.current.carrito[shopSelected]!.addAll({this.selected: this.quantity});
+        }
+      }else{
+        this.current.carrito[shopSelected] = {this.selected: this.quantity};
+      }
+    }else{
+      print("No se ha seleccionado una tienda");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +150,7 @@ class HomeCombosCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     image("assets/img/pescadito.jpg", double.infinity, 315),
-                    productHead(this.selected.name, this.selected),
+                    productHead(this.selected.name, this.selected, updateQuantity),
                     productDescription(this.selected.description),
                     Container(
                       margin:
@@ -134,14 +166,14 @@ class HomeCombosCard extends StatelessWidget {
                     comboProductList(this.selected),
                     place(),
                     RadioButtonListStore(
-                        this.selected, this.available, this.storeID),
+                        this.selected, this.available, this.shopSelected, updateStore),
                     Center(
                       child: GenericButton("Ver Reseñas", Color(0xFF2196F3),
                           274, 45, 15.0, 0, 0, 0, 22, 30, () => {}),
                     ),
                     Center(
                       child: GenericButton("Agregar", Color(0xFF0CC665), 274,
-                          45, 15.0, 0, 0, 0, 22, 30, () => {}),
+                          45, 15.0, 0, 0, 0, 22, 30, () => addProduct()),
                     ),
                     SizedBox(
                       height: 40,

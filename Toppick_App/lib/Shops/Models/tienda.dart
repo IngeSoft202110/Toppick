@@ -9,4 +9,9 @@ class Tienda {
   String ubication;
   Tienda(this.id, this.name, this.category, this.schedule, this.description, this.url,
       this.status, this.ubication);
+  @override
+  // ignore: hash_and_equals
+  bool operator ==(object){
+    return (object is Tienda) && object.id == this.id;
+  }
 }

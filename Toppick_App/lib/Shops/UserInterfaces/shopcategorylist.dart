@@ -1,3 +1,4 @@
+import 'package:Toppick_App/Orders/Models/pedido.dart';
 import 'package:Toppick_App/Shops/Models/tienda.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/gradiant.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/header.dart';
@@ -100,13 +101,13 @@ List<Tienda> filterShops(List<Tienda> shops, String category){
   return filtered;
 }
 
-List<Widget> buildCategoriesCard(BuildContext context){
+List<Widget> buildCategoriesCard(BuildContext context, Pedido current){
   List<Widget> results = [];
   for(int i = 0; i < categories.length; i++){
     results.add(GestureDetector(
       onTap: (){
         List<Tienda> filtered = filterShops(storeList, categories[i]);
-        Navigator.push(context, MaterialPageRoute(builder: (context)=> ShopList(categories[i], logoPahts[i], filtered)));
+        Navigator.push(context, MaterialPageRoute(builder: (context)=> ShopList(categories[i], logoPahts[i], filtered, current)));
       },
       child: Padding(
         padding: const EdgeInsets.only(left:5.0, right: 5.0, bottom: 5.0),
@@ -117,6 +118,8 @@ List<Widget> buildCategoriesCard(BuildContext context){
   return results;
 }
 class ShopCategoryList extends StatelessWidget {
+  ShopCategoryList(this.current);
+  final Pedido current;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -129,14 +132,14 @@ class ShopCategoryList extends StatelessWidget {
             width: double.infinity,
             child: ListView(
               children: <Widget>[
-                Header(),
+                Header(this.current),
                 SearchButton("Buscar puntos de venta", 2),
                 Padding(
                   padding: const EdgeInsets.only(top: 20.0),
                   child: ListMainText("Escoge", "Tu forma de comer"),
                 ),
                 Column(
-                  children: buildCategoriesCard(context),
+                  children: buildCategoriesCard(context, this.current),
                 ),
                 SizedBox(
                   height: 10,

@@ -1,7 +1,7 @@
 import 'package:Toppick_App/GeneralUserInterfaces/generic_button.dart';
 import 'package:Toppick_App/Orders/Models/metodopago.dart';
 import 'package:Toppick_App/Orders/Models/pedido.dart';
-import 'package:Toppick_App/Orders/UserInterfaces/ordercard.dart';
+import 'package:Toppick_App/Orders/UserInterfaces/order_card.dart';
 import 'package:Toppick_App/main.dart';
 import 'package:flutter/material.dart';
 
@@ -44,7 +44,15 @@ class PaymentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var transitionFinishOrder = () => Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
+    Widget finish(BuildContext context){
+      //Enviar el pedido al servidor, también mandarlo con el DateTime.now() en caso de que incluya horas
+      this.actual.carrito.clear();
+      this.actual.costoTotal = 0;
+      this.actual.fecha = DateTime.now();
+      this.actual.tiempoReclamo = 0;
+      return MyApp();
+    }
+    var transitionFinishOrder = () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: finish),  ModalRoute.withName('/'));
     var transitionBack = () => Navigator.push(context, MaterialPageRoute(builder: (context)=>OrderCard(this.actual)));
     return Scaffold(
       body: Container(

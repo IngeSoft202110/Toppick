@@ -1,20 +1,24 @@
 import 'package:Toppick_App/GeneralUserInterfaces/header.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/search_bar_button.dart';
+import 'package:Toppick_App/Orders/Models/pedido.dart';
 import 'package:Toppick_App/Products/UserInterfaces/productlist.dart';
+import 'package:Toppick_App/Shops/Models/tienda.dart';
 import 'package:Toppick_App/Shops/UserInterfaces/shopcategorylist.dart';
 import 'package:flutter/material.dart';
 
 import '../../UserInterfaces/../Users/UserInterfaces/home_card.dart';
 
 class HomeCardList extends StatelessWidget {
+  HomeCardList(this.current);
+  final Pedido current;
   @override
   Widget build(BuildContext context) {
     var f1 = () => Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ShopCategoryList()));
+        context, MaterialPageRoute(builder: (context) => ShopCategoryList(this.current)));
     var f2 = () => Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ProductList()));
+        context, MaterialPageRoute(builder: (context) => ProductList(this.current, new Tienda(-1, "", "", "", "", "", false, ""))));
     var f3 = () => Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ProductList()));
+        context, MaterialPageRoute(builder: (context) => ProductList(this.current, new Tienda(-1, "", "", "", "", "", false, ""))));
     return Container(
       margin: EdgeInsets.only(top: 5.0),
       height: MediaQuery.of(context).size.height,
@@ -22,7 +26,7 @@ class HomeCardList extends StatelessWidget {
       child: ListView(
         scrollDirection: Axis.vertical,
         children: [
-          Header(),
+          Header(this.current),
           SearchButton("Buscar Tiendas/Productos", 1),
           HomeCard(
               "Puntos de venta",

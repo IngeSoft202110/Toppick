@@ -3,18 +3,20 @@ import 'package:flutter/material.dart';
 import '../Models/producto.dart';
 
 class AddSubstract extends StatefulWidget {
-  AddSubstract(this.selected);
+  AddSubstract(this.selected, this.notifyParent);
   final Producto selected;
+  final Function(String type) notifyParent;
   @override
   _AddSubstractState createState() =>
-      _AddSubstractState(this.selected.price, this.selected.price);
+      _AddSubstractState(this.selected.price, this.selected.price, this.notifyParent);
 }
 
 class _AddSubstractState extends State<AddSubstract> {
-  _AddSubstractState(this._defaultValue, this._price);
+  _AddSubstractState(this._defaultValue, this._price, this.notifyParent);
   int _units = 1;
   int _defaultValue;
   int _price;
+  final Function(String type) notifyParent;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -37,10 +39,14 @@ class _AddSubstractState extends State<AddSubstract> {
                 child: InkWell(
                   onTap: () {
                     setState(() {
-                      (this._units == 1) ? this._units = 1 : this._units -= 1;
-                      (this._units == 1)
-                          ? this._price = this._defaultValue
-                          : this._price -= this._defaultValue;
+                      if(this._units == 1){
+                        this._units = 1;
+                        this._price = this._defaultValue;
+                      }else{
+                        this._units -= 1;
+                        this._price -= this._defaultValue;
+                        notifyParent("Substract");
+                      }
                     });
                   },
                   child: Container(
@@ -76,6 +82,7 @@ class _AddSubstractState extends State<AddSubstract> {
                     setState(() {
                       this._units += 1;
                       this._price += this._defaultValue;
+                      notifyParent("Add");
                     });
                   },
                   child: Container(
