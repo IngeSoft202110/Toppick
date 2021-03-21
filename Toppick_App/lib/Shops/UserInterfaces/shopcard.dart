@@ -21,7 +21,7 @@ class ShopCard extends StatelessWidget {
     return Container(
       height: 185,
       child: Card(
-        color: Colors.white,
+        color: Color(0xFFFFFEEE),
         shadowColor: Colors.white24,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
         child: Row(

@@ -54,7 +54,7 @@ class _ActiveOrderCardState extends State<ActiveOrderCard> {
       padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color:Color(0xFFFFFEEE),
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
@@ -73,10 +73,10 @@ class _ActiveOrderCardState extends State<ActiveOrderCard> {
               child: Column(
                 children: <Widget>[
                   Text("${widget.current.estadoPedido}", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15,color: Color(0xFF0791E6)),),
-                  Divider(),
+                  Divider(color: Color(0xFFFFFEEE)),
                   Text("${store!.name}", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: Color(0xFFD76060)),),
-                  Divider(),
-                  Divider(),
+                  Divider(color: Color(0xFFFFFEEE)),
+                  Divider(color: Color(0xFFFFFEEE)),
                 ],
               ),
             )

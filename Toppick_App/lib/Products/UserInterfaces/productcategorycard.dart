@@ -30,7 +30,7 @@ class _ProductCategoryCardState extends State<ProductCategoryCard> {
     return Container(
       width: 150,
       child: Card(
-        color: Colors.white,
+        color: Color(0xFFFFFEEE),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,

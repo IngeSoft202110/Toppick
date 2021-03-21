@@ -19,6 +19,7 @@ class _AddSubstractState extends State<AddSubstract> {
   final Function(int value, String operationType) notifyParent;
   @override
   Widget build(BuildContext context) {
+    _price *= this._units;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
