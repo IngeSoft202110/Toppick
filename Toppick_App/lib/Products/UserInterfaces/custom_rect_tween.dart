@@ -1,10 +1,11 @@
 import 'dart:ui';
+
 import 'package:flutter/widgets.dart';
 
 class CustomRectTween extends RectTween {
   CustomRectTween({
-    required Rect begin,
-    required Rect end,
+    Rect? begin,
+    Rect? end,
   }) : super(begin: begin, end: end);
 
   @override

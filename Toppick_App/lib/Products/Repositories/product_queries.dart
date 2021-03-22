@@ -1,3 +1,6 @@
+import 'package:Toppick_App/Products/Models/a_la_carta.dart';
+import 'package:Toppick_App/Products/Models/ingrediente.dart';
+
 import '../Models/combo.dart';
 import '../Models/producto.dart';
 
@@ -15,7 +18,17 @@ class ProductQueries {
         throw Exception('Failed to load post');
         }
     */
-    List<Producto> productList = [];
+
+    List<Ingrediente> ingredients = [
+      Ingrediente(1, "tomate", false),
+      Ingrediente(2, "cebolla", false),
+      Ingrediente(3, "aguacate", false),
+      Ingrediente(4, "cilantro", false),
+      Ingrediente(5, "carne de res", true),
+      Ingrediente(6, "pan", true),
+    ];
+
+    List<dynamic> productList = [];
     productList = [
       Producto(
           1,
@@ -51,7 +64,10 @@ class ProductQueries {
           20,
           4.5,
           "Horneados"),
-      Producto(
+      ALaCarta(
+          DateTime.now(),
+          DateTime.now(),
+          ingredients,
           2,
           "Hamburguesa",
           10000,
@@ -230,8 +246,8 @@ class ProductQueries {
           20,
           4.5,
           "Empaquetados"),
-      Producto(6, "Combo del mes", 5000, "Pescadito con Te.", 20, 4.5,
-          "Combos"),
+      Producto(
+          6, "Combo del mes", 5000, "Pescadito con Te.", 20, 4.5, "Combos"),
     ];
     return queryResult;
   }

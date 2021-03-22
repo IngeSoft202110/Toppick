@@ -1,8 +1,10 @@
+import 'package:Toppick_App/Products/Models/a_la_carta.dart';
+import 'package:Toppick_App/Products/Models/ingrediente.dart';
 import 'package:flutter/material.dart';
 import 'generic_button_for_modal.dart';
 import 'checkbox.dart';
 
-Widget listaCheck(Map<String, bool> seleccionados) {
+Widget listaCheck(Map<Ingrediente, bool> seleccionados) {
   List<Widget> aux = [];
   seleccionados.forEach((key, value) {
     aux.add(CheckboxRow(seleccionados, key));
@@ -35,7 +37,7 @@ Widget title(String name) {
   );
 }
 
-Widget obligatoryList(List<String> obligatorios) {
+Widget obligatoryList(List<Ingrediente> obligatorios) {
   List<Widget> aux = [];
   for (var i = 0; i < obligatorios.length; i++) {
     aux.add(Container(
@@ -47,7 +49,7 @@ Widget obligatoryList(List<String> obligatorios) {
             color: Color(0xFF9C9C9C),
           ),
           Text(
-            obligatorios[i],
+            obligatorios[i].nombre,
             style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -77,17 +79,20 @@ Widget obligatoryList(List<String> obligatorios) {
   );
 }
 
-Widget buttonsSection(BuildContext context) {
+Widget buttonsSection(BuildContext context, ALaCarta selected,
+    Map<Ingrediente, bool> seleccionados) {
   return Container(
     margin: EdgeInsets.only(top: 10, left: 50, bottom: 10),
-    child: Row(
+    child: Column(
       children: [
         GenericButton1(
             "Guardar", Color(0xFF00FF00), 90, 25, 10, 10, 10, 10, 20, 20, () {
+          selected.selecciones = seleccionados;
           Navigator.pop(context);
         }),
         GenericButton1(
             "Volver", Color(0xFFFF0000), 90, 25, 10, 10, 10, 10, 20, 20, () {
+          selected.selecciones.clear();
           Navigator.pop(context);
         }),
       ],
@@ -97,32 +102,31 @@ Widget buttonsSection(BuildContext context) {
 
 // ignore: must_be_immutable
 class ModalScreen extends StatelessWidget {
-  ModalScreen(this.name);
-  final String name;
-  Map<String, bool> seleccionados = Map<String, bool>();
-  List<String> obligatorios = [];
-  List<String> opcionales = [];
+  ModalScreen(this.selected);
+  final dynamic selected;
+  Map<Ingrediente, bool> seleccionados = Map<Ingrediente, bool>();
+  List<Ingrediente> obligatorios = [];
+  List<Ingrediente> opcionales = [];
 
-  List<String> llenarDatosObligatorios() {
-    List<String> obligatorios = [];
-    for (var i = 0; i < 3; i++) {
-      obligatorios.add("obligatorio" + i.toString());
-    }
-    return obligatorios;
-  }
-
-  List<String> llenarDatosOpcionales() {
-    List<String> obligatorios = [];
-    for (var i = 0; i < 10; i++) {
-      obligatorios.add("opcional" + i.toString());
-    }
-    return obligatorios;
-  }
-
-  Map<String, bool> llenarDatosModal(List<String> ingredientes) {
-    Map<String, bool> mapa = Map<String, bool>();
+  List<Ingrediente> llenarDatosObligatorios(List<Ingrediente> ingredientes) {
+    List<Ingrediente> obligatorios = [];
     for (var i = 0; i < ingredientes.length; i++) {
-      //if(ingredientes[i].tipo == opcional)
+      if (ingredientes[i].obligatorio) obligatorios.add(ingredientes[i]);
+    }
+    return obligatorios;
+  }
+
+  List<Ingrediente> llenarDatosOpcionales(List<Ingrediente> ingredientes) {
+    List<Ingrediente> obligatorios = [];
+    for (var i = 0; i < ingredientes.length; i++) {
+      if (!ingredientes[i].obligatorio) obligatorios.add(ingredientes[i]);
+    }
+    return obligatorios;
+  }
+
+  Map<Ingrediente, bool> llenarDatosModal(List<Ingrediente> ingredientes) {
+    Map<Ingrediente, bool> mapa = Map<Ingrediente, bool>();
+    for (var i = 0; i < ingredientes.length; i++) {
       mapa[ingredientes[i]] = false;
     }
     return mapa;
@@ -130,8 +134,8 @@ class ModalScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    this.obligatorios = llenarDatosObligatorios();
-    this.opcionales = llenarDatosOpcionales();
+    this.obligatorios = llenarDatosObligatorios(this.selected.ingredientes);
+    this.opcionales = llenarDatosOpcionales(this.selected.ingredientes);
     this.seleccionados = llenarDatosModal(this.opcionales);
     return Material(
       color: Color(0xFFFFFEEE),
@@ -143,7 +147,7 @@ class ModalScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Center(child: title(this.name)),
+                Center(child: title(this.selected.name)),
                 obligatoryList(this.obligatorios),
                 Container(
                   margin: EdgeInsets.only(top: 12.0, left: 18.0),
@@ -156,7 +160,7 @@ class ModalScreen extends StatelessWidget {
                   ),
                 ),
                 listaCheck(this.seleccionados),
-                buttonsSection(context)
+                buttonsSection(context, this.selected, this.seleccionados)
               ],
             )),
       ),

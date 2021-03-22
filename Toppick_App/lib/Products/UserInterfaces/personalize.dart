@@ -1,3 +1,4 @@
+import 'package:Toppick_App/Products/Models/a_la_carta.dart';
 import 'package:flutter/material.dart';
 import 'generic_button_for_modal.dart';
 import 'custom_rect_tween.dart';
@@ -5,6 +6,8 @@ import 'hero_dialog_route.dart';
 import 'modal_screen.dart';
 
 class AddTodoButton extends StatelessWidget {
+  AddTodoButton(this.selected);
+  final dynamic selected;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -12,7 +15,7 @@ class AddTodoButton extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           Navigator.of(context).push(HeroDialogRoute(builder: (context) {
-            return const _AddTodoPopupCard();
+            return _AddTodoPopupCard(this.selected);
           }));
         },
         child: Hero(
@@ -32,8 +35,8 @@ class AddTodoButton extends StatelessWidget {
 const String _heroAddTodo = 'add-todo-hero';
 
 class _AddTodoPopupCard extends StatelessWidget {
-  const _AddTodoPopupCard({Key key}) : super(key: key);
-
+  _AddTodoPopupCard(this.selected);
+  final dynamic selected;
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -44,7 +47,7 @@ class _AddTodoPopupCard extends StatelessWidget {
           createRectTween: (begin, end) {
             return CustomRectTween(begin: begin, end: end);
           },
-          child: ModalScreen("Burrito de Res"),
+          child: ModalScreen(selected),
         ),
       ),
     );
