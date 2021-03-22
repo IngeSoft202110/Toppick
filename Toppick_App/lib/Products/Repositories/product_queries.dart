@@ -20,12 +20,12 @@ class ProductQueries {
     */
 
     List<Ingrediente> ingredients = [
-      Ingrediente(1, "tomate", false),
-      Ingrediente(2, "cebolla", false),
-      Ingrediente(3, "aguacate", false),
-      Ingrediente(4, "cilantro", false),
-      Ingrediente(5, "carne de res", true),
-      Ingrediente(6, "pan", true),
+      Ingrediente(1, "Tomate", false),
+      Ingrediente(2, "Cebolla", false),
+      Ingrediente(3, "Aguacate", false),
+      Ingrediente(4, "Cilantro", false),
+      Ingrediente(5, "Carne de res", true),
+      Ingrediente(6, "Pan", true),
     ];
 
     List<dynamic> productList = [];
@@ -38,7 +38,10 @@ class ProductQueries {
           20,
           4.5,
           "Horneados"),
-      Producto(
+      ALaCarta(
+          DateTime.now(),
+          DateTime.now(),
+          ingredients,
           2,
           "Hamburguesa",
           10000,
@@ -48,9 +51,9 @@ class ProductQueries {
           "A la carta"),
       Producto(
           3,
-          "Te",
+          "Té",
           2000,
-          "Te frio de la PUJ, perfecto para combinar con otras comidas que ofrece la universidad.",
+          "Té frio de la PUJ, perfecto para combinar con otras comidas que ofrece la universidad.",
           20,
           4.5,
           "Bebidas")
@@ -77,7 +80,7 @@ class ProductQueries {
           "A la carta"),
       Producto(
           3,
-          "Te",
+          "Té",
           2000,
           "Te frio de la PUJ, perfecto para combinar con otras comidas que ofrece la universidad.",
           20,
@@ -95,7 +98,7 @@ class ProductQueries {
           5,
           "Chocorramo",
           2000,
-          "Ponque de vainilla recubierto en chocolate",
+          "Ponque de vainilla recubierto en chocolate.",
           20,
           4.5,
           "Empaquetados"),
@@ -147,9 +150,9 @@ class ProductQueries {
           "A la carta"),
       Producto(
           3,
-          "Te",
+          "Té",
           2000,
-          "Te frio de la PUJ, perfecto para combinar con otras comidas que ofrece la universidad.",
+          "Té frio de la PUJ, perfecto para combinar con otras comidas que ofrece la universidad.",
           20,
           4.5,
           "Bebidas")
@@ -224,9 +227,9 @@ class ProductQueries {
           "A la carta"),
       Producto(
           3,
-          "Te",
+          "Té",
           2000,
-          "Te frio de la PUJ, perfecto para combinar con otras comidas que ofrece la universidad.",
+          "Té frio de la PUJ, perfecto para combinar con otras comidas que ofrece la universidad.",
           20,
           4.5,
           "Bebidas"),

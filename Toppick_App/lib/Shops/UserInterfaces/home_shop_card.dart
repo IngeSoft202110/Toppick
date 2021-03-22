@@ -56,7 +56,7 @@ Widget cardDescription(String description) {
         Container(
           margin: EdgeInsets.only(bottom: 10.0),
           child: Text(
-            "Description",
+            "Descripción",
             style: TextStyle(
                 fontWeight: FontWeight.w700,
                 fontSize: 25,
@@ -135,7 +135,7 @@ class HomeShopCard extends StatelessWidget {
               this.selected.ubication),
           cardDescription(this.selected.description),
           cardSchedule(this.selected.schedule),
-          GenericButton("Ver Catalogo", Color(0xFF0CC665), 233.0, 55.0, 10.0,
+          GenericButton("Ver Catálogo", Color(0xFF0CC665), 233.0, 55.0, 10.0,
               10.0, 10.0, 10.0, 30.0, 20.0, transition)
         ],
       ),

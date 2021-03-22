@@ -43,7 +43,7 @@ class ShopCategoryCard extends StatelessWidget {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.only(top: 15.0),
-                    child: Text("Descripcion", style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+                    child: Text("Descripción", style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 10.0, right: 5.0),

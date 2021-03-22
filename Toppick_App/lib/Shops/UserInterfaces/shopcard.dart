@@ -47,7 +47,7 @@ class ShopCard extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    Text("Descripcion", style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),),
+                    Text("Descripción", style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),),
                     Spacer(),
                     Padding(
                       padding: const EdgeInsets.only(top:10.0, bottom: 5.0),

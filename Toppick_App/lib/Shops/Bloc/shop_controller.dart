@@ -3,12 +3,12 @@ import '../Repositories/shop_queries.dart';
 
 class ShopController {
   ShopQueries shopQueries = new ShopQueries();
-  List<String> categories = ['Cafeterias', 'Cafes y Kioskos', 'Saludable', 'Restaurantes',];
+  List<String> categories = ['Cafeterías', 'Cafés y Kioskos', 'Saludable', 'Restaurantes',];
   List<String> descriptions = [
-    'Cafeterias de la universidad',
-    'Cafes y Kioscos ubicados en la universidad, los puedes encontrar en muchos lugares',
-    'Puntos de venta de comida saludable',
-    'Restaurantes de la universidad',
+    'Cafeterías de la universidad.',
+    'Cafés y Kioscos ubicados en la universidad, los puedes encontrar en muchos lugares.',
+    'Puntos de venta de comida saludable.',
+    'Restaurantes de la universidad.',
   ];
   List<String> logoPahts = [
     'assets/icons/cafeteria.png',

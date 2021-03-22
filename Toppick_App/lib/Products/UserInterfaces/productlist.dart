@@ -109,7 +109,7 @@ class ProductListState extends State<ProductList> {
                   child: Container(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "Categorias",
+                      "Categorías",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,

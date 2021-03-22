@@ -7,12 +7,12 @@ class ProductController {
   ProductQueries productqueries = new ProductQueries();
   List<String> categories = ['Horneados', 'Empaquetados', 'Bebidas', 'A la carta', 'Combos', 'Otros',];
   List<String> descriptions = [
-    'Productos horneados',
-    'Productos Empaquetados',
-    'Bebidas refrescantes',
-    'Platos personalizables',
-    'Combo de productos',
-    'Productos que no cumplen con las caracteristicas de los demas',
+    'Productos horneados.',
+    'Productos Empaquetados.',
+    'Bebidas refrescantes.',
+    'Platos personalizables.',
+    'Combo de productos.',
+    'Productos que no cumplen con las caracteristicas de los demás.',
   ];
   List<String> logoPahts = [
     'assets/icons/horneados.png',

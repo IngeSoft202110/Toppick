@@ -11,7 +11,6 @@ class AddTodoButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(32.0),
       child: GestureDetector(
         onTap: () {
           Navigator.of(context).push(HeroDialogRoute(builder: (context) {
@@ -24,7 +23,7 @@ class AddTodoButton extends StatelessWidget {
             return CustomRectTween(begin: begin, end: end);
           },
           child: GenericButton2(
-              "personalizar", Color(0xFF0CC665), 160, 36, 30, 0, 0, 10, 22, 20),
+              "Personalizar", Color(0xFF0CC665), 160, 36, 30, 0, 0, 10, 22, 20),
         ),
       ),
     );

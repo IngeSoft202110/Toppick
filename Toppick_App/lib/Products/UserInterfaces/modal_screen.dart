@@ -84,14 +84,15 @@ Widget buttonsSection(BuildContext context, ALaCarta selected,
   return Container(
     margin: EdgeInsets.only(top: 10, left: 50, bottom: 10),
     child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         GenericButton1(
-            "Guardar", Color(0xFF00FF00), 90, 25, 10, 10, 10, 10, 20, 20, () {
+            "Guardar", Color(0xFF0CC665), 90, 25, 10, 10, 10, 10, 20, 20, () {
           selected.selecciones = seleccionados;
           Navigator.pop(context);
         }),
         GenericButton1(
-            "Volver", Color(0xFFFF0000), 90, 25, 10, 10, 10, 10, 20, 20, () {
+            "Volver", Color(0xFFFB2900), 90, 25, 10, 10, 10, 10, 20, 20, () {
           selected.selecciones.clear();
           Navigator.pop(context);
         }),
@@ -160,7 +161,20 @@ class ModalScreen extends StatelessWidget {
                   ),
                 ),
                 listaCheck(this.seleccionados),
-                buttonsSection(context, this.selected, this.seleccionados)
+                Center(
+                  child: GenericButton1("Guardar", Color(0xFF0CC665), 100, 32,
+                      10, 10, 10, 10, 20, 20, () {
+                    selected.selecciones = seleccionados;
+                    Navigator.pop(context);
+                  }),
+                ),
+                Center(
+                  child: GenericButton1("Volver", Color(0xFFFB2900), 100, 32,
+                      10, 10, 10, 10, 20, 20, () {
+                    selected.selecciones.clear();
+                    Navigator.pop(context);
+                  }),
+                ),
               ],
             )),
       ),

@@ -1,3 +1,4 @@
+import 'package:Toppick_App/Products/UserInterfaces/personalize.dart';
 import 'package:flutter/material.dart';
 
 import '../../GeneralUserInterfaces/generic_button.dart';
@@ -48,8 +49,7 @@ class ComboProductCard extends StatelessWidget {
           image("assets/img/pescadito.jpg", double.infinity, 120),
           productTitle(this.selected.name),
           (this.selected.category == "A la carta")
-              ? GenericButton("personalizar", Color(0xFF0CC665), 115, 20, 10, 0,
-                  5, 0, 18, 20, () {/*modal*/})
+              ? AddTodoButton(this.selected)
               : GenericButton("personalizar", Color(0xFF9C9C9C), 115, 20, 10, 0,
                   5, 0, 18, 20, () {/*nada deshabilitado*/}),
         ],

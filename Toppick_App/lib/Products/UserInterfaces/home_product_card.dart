@@ -142,7 +142,7 @@ class HomeProductCard extends StatelessWidget {
                         this.selected.name, this.selected, updateQuantity),
                     productDescription(this.selected.description),
                     if (this.selected.category == "A la carta")
-                      AddTodoButton(this.selected),
+                      Center(child: AddTodoButton(this.selected)),
                     place(),
                     RadioButtonListStore(this.selected, this.available,
                         this.shopSelected, updateStore),
