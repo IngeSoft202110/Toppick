@@ -159,6 +159,7 @@ footer{
   .columna {
     flex: 1;
     justify-content: center;
+    font-family: Roboto, sans-serif;
     
   }
   .full{
@@ -183,7 +184,7 @@ footer{
     font-size: medium;
   }
   .botonRojo{
-    background-color: #981515;
+    background-color: #b41010;
     border: none;
     width: 100%;
     height: 100%;
