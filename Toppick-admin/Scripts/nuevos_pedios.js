@@ -23,8 +23,7 @@ var plantilla = `
 `;
 function plantilla_nuevo_producto(){
     var nuevoPedi = document.createDocumentFragment();
-    v
-
+    
 }
 
 function nuevoPedido() {
