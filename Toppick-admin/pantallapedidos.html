@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Css/pantallapedidos.css">
+    <title>Toppick Admin - pantalla pedidos </title>
+</head>
+
+<body>
+    <header>
+        <nav class='navbar'>
+            <div class="titulo">
+                <h1> Toppick </h1>
+                <p>Admin</p>
+            </div>
+            <ul>
+                <li> <a> Pedidos </a></li>
+                <li> <a href="historial_pedidos.html"> Historial de pedidos </a></li>
+                <li><a>Cierre de caja </a></li>
+                <li><button> Cerrar sesión </button> </li>
+            </ul>
+
+        </nav>
+    </header>
+    <main>
+        <section class='ppc'>
+            <!-- clase para pedidos por confirmar -->
+            <div class="titulo-contenedor">
+                <h2>
+                    Pedidos
+                </h2>
+                <p> por confirmar:</p>
+            </div>
+            <div class="cajita">
+                <div class="carta1"><!-- Hacer diseño carata para ppc -->
+                    <div class="pedidoNuevo">
+                        <div class="pedido">
+                            <div class="parte">
+                                <div class="columna" style="font-size: medium;">
+                                    <p style="justify-content: center;"><b> TEXPrueba</b></p>
+                                </div>
+                                <div class="columna">
+                                    <button class="botonVerde">Aceptar </button>
+                                </div>
+                            </div>
+                            <div class="parte">
+                                <div class="columna">
+                                    <button class="botonAzul">Ver detalles</button>
+                                </div>
+                                <div class="columna">
+                                    <button class="botonRojo">Rechazar </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!--fin carata pcc-->
+            </div>
+        </section>
+        <section class='pec'><!-- clase para pedidos en curso  -->
+            <div class="titulo-contenedor">
+                <h2>
+                    Pedidos
+                </h2>
+                <p> en curso:</p>
+            </div>
+            <div class="cajita">
+                <div class="carta2"> <!-- Hacer diseño carata para pec -->
+                    <div class="pedidoNuevo">
+                        <div class="pedido">
+                            <div class="parte">
+                                <div class="columna" style="font-size: medium;">
+                                    <p style="justify-content: center;"><b> texto</b></p>
+                                    <p><button class="botonAzul">Ver detalles</button></p>
+                                </div>
+
+                                <div id="columna" class="full">
+                                    <button class="botonVerde">Aceptar </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!--fin carata pec-->
+            </div>
+        </section>
+        <section class='pl'>
+            <!-- clase para pedidos listos -->
+            <div class="titulo-contenedor">
+                <h2>
+                    Pedidos
+                </h2>
+                <p> listos:</p>
+            </div>
+            <div class="cajita">
+                <div class="carta3"> <!-- Hacer diseño carata para pl -->
+                    <div class="pedidoNuevo">
+                        <div class = "pedido" >
+                            <div class = "parte">
+                                <div class="columna" style="font-size: medium;"> 
+                                    <p style="justify-content: center;"><b> texto</b></p>
+                                    <p><button class="botonAzul">Ver detalles</button></p>
+                                </div>
+                               
+                                <div id="columna" class="full">
+                                    <button class="botonVerde">Aceptar </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!--fin carata pl-->
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p class="text-center text-muted"> Developed by ©Alpha </p>
+    </footer>
+</body>
+
+</html>
