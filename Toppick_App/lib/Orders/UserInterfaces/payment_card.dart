@@ -1,10 +1,52 @@
 import 'package:Toppick_App/GeneralUserInterfaces/generic_button.dart';
 import 'package:Toppick_App/Orders/Models/metodopago.dart';
 import 'package:Toppick_App/Orders/Models/pedido.dart';
-import 'package:Toppick_App/Orders/UserInterfaces/order_card.dart';
-import 'package:Toppick_App/main.dart';
 import 'package:flutter/material.dart';
 
+showCorrectPayment(BuildContext context){
+  Widget okButton = TextButton(
+    child: Text("OK"),
+    onPressed: () { Navigator.of(context).pop(); Navigator.of(context).pop();Navigator.of(context).pop();}
+  );
+  AlertDialog alert = AlertDialog(
+    title: Text("Pedido realizado", style: TextStyle(color: Color(0xFF0CC665)),),
+    content: Text("Pedido realizado, muchas gracias por elegirnos."),
+    actions: [
+      okButton,
+    ],
+  );
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+showBackWarning(BuildContext context){
+  Widget yesButton = TextButton(
+    child: Text("Si"),
+    onPressed: () { Navigator.of(context).pop(); Navigator.of(context).pop();},
+  );
+  Widget noButton = TextButton(
+    child: Text("No"),
+    onPressed: () { Navigator.of(context).pop();},
+  );
+  AlertDialog alert = AlertDialog(
+    title: Text("Cancelar pago", style: TextStyle(color: Color(0xFFD76060)),),
+    content: Text("¿Está seguro de querer volver al pedido?"),
+    actions: [
+      yesButton,
+      noButton,
+    ],
+  );
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
 class PaymentCard extends StatelessWidget {
   PaymentCard(this.imagePath, this.totalValue, this.paymentMethod, this.actual);
   final String imagePath;
@@ -44,16 +86,16 @@ class PaymentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget finish(BuildContext context){
+    void finish(BuildContext context){
       //Enviar el pedido al servidor, también mandarlo con el DateTime.now() en caso de que incluya horas
       this.actual.carrito.clear();
       this.actual.costoTotal = 0;
       this.actual.fecha = DateTime.now();
       this.actual.tiempoReclamo = 0;
-      return MyApp();
+      showCorrectPayment(context);
     }
-    var transitionFinishOrder = () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: finish),  ModalRoute.withName('/'));
-    var transitionBack = () => Navigator.push(context, MaterialPageRoute(builder: (context)=>OrderCard(this.actual)));
+    var transitionFinishOrder = () => finish(context);
+    var transitionBack = () => showBackWarning(context);
     return Scaffold(
       body: Container(
         margin: EdgeInsets.only(top: 5.0),

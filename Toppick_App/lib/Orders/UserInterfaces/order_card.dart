@@ -9,7 +9,6 @@ import 'package:Toppick_App/Orders/UserInterfaces/add_subtract_total.dart';
 import 'package:Toppick_App/Orders/UserInterfaces/payment_card.dart';
 import 'package:Toppick_App/Orders/UserInterfaces/payment_selection.dart';
 import 'package:Toppick_App/Products/Models/producto.dart';
-import 'package:Toppick_App/main.dart';
 import 'package:flutter/material.dart';
 
 List<MetodoPago> methods =[
@@ -35,6 +34,51 @@ class OrderCard extends StatefulWidget {
   _OrderCardState createState() => _OrderCardState(this.actual,calculateTotal());
 }
 
+showPayMethodWarning(BuildContext context){
+  Widget okButton = TextButton(
+    child: Text("OK"),
+    onPressed: () { Navigator.of(context).pop();},
+  );
+  AlertDialog alert = AlertDialog(
+    title: Text("No se ha seleccionado un método de pago", style: TextStyle(color: Color(0xFFD76060)),),
+    content: Text("Por favor seleccione alguno de sus métodos de pago para poder realizar el pedido."),
+    actions: [
+      okButton,
+    ],
+  );
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+cancelOrderWarning(BuildContext context){
+  Widget yesButton = TextButton(
+    child: Text("Si"),
+    onPressed: () { Navigator.of(context).pop(); Navigator.of(context).pop();},
+  );
+  Widget noButton = TextButton(
+    child: Text("No"),
+    onPressed: () { Navigator.of(context).pop();},
+  );
+  AlertDialog alert = AlertDialog(
+    title: Text("Cancelar pedido", style: TextStyle(color: Color(0xFFD76060)),),
+    content: Text("¿Está seguro de querer borrar el pedido"),
+    actions: [
+      yesButton,
+      noButton,
+    ],
+  );
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
 class _OrderCardState extends State<OrderCard> {
   _OrderCardState(this.actual, this.total);
   final Pedido actual;
@@ -58,7 +102,7 @@ class _OrderCardState extends State<OrderCard> {
   }
 
   List<Widget> fill(var transitionToPay){
-    var cancelTransition = () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MyApp()),  ModalRoute.withName('/'));
+    var cancelTransition = () => cancelOrderWarning(context);
     Widget showMethods = methods.isNotEmpty ? RadioButtonPaymentList(methods, updateMethod) :
       Center(child: GenericButton("Registrar métodos de pago", Color(0xFF0CC665), 274, 45, 15.0, 0, 0, 0, 22, 30, () => {}));
     List<Widget> result = [];
@@ -107,7 +151,7 @@ class _OrderCardState extends State<OrderCard> {
     result.add(Center(child: GenericButton("Total: \$${this.total}", Color(0xFFBB4900), 274, 45, 15.0, 0, 0, 0, 22, 0, () => {})));
     result.add(Center(child: GenericButton("Realizar Pedido", Color(0xFF0CC665), 274, 45, 15.0, 0, 0, 0, 22, 30, () => {
       if(selected==null){
-        print("No se ha seleccionado un metodo de pago")}
+        showPayMethodWarning(context)}
         else{
           transitionToPay()
         }
