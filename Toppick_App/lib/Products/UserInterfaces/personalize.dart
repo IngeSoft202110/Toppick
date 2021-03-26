@@ -22,8 +22,11 @@ class AddTodoButton extends StatelessWidget {
           createRectTween: (begin, end) {
             return CustomRectTween(begin: begin, end: end);
           },
-          child: GenericButton2(
-              "Personalizar", Color(0xFF0CC665), 160, 36, 30, 0, 0, 10, 22, 20),
+          child: Material(
+            type: MaterialType.transparency,
+            child: GenericButton2("Personalizar", Color(0xFF0CC665), 160, 36,
+                30, 0, 0, 10, 22, 20),
+          ),
         ),
       ),
     );

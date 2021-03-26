@@ -138,46 +138,54 @@ class ModalScreen extends StatelessWidget {
     this.obligatorios = llenarDatosObligatorios(this.selected.ingredientes);
     this.opcionales = llenarDatosOpcionales(this.selected.ingredientes);
     this.seleccionados = llenarDatosModal(this.opcionales);
-    return Material(
-      color: Color(0xFFFFFEEE),
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
-      child: SingleChildScrollView(
-        child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(child: title(this.selected.name)),
-                obligatoryList(this.obligatorios),
-                Container(
-                  margin: EdgeInsets.only(top: 12.0, left: 18.0),
-                  child: Text(
-                    "Personalizables",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 20,
-                        color: Color(0xFFD76060)),
-                  ),
-                ),
-                listaCheck(this.seleccionados),
-                Center(
-                  child: GenericButton1("Guardar", Color(0xFF0CC665), 100, 32,
-                      10, 10, 10, 10, 20, 20, () {
-                    selected.selecciones = seleccionados;
-                    Navigator.pop(context);
-                  }),
-                ),
-                Center(
-                  child: GenericButton1("Volver", Color(0xFFFB2900), 100, 32,
-                      10, 10, 10, 10, 20, 20, () {
-                    selected.selecciones.clear();
-                    Navigator.pop(context);
-                  }),
-                ),
-              ],
-            )),
-      ),
+    return Row(
+      children: [
+        Expanded(
+          flex: 2,
+          child: Material(
+            color: Color(0xFFFFFEEE),
+            elevation: 2,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+            child: SingleChildScrollView(
+              child: Padding(
+                  padding: const EdgeInsets.all(0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(child: title(this.selected.name)),
+                      obligatoryList(this.obligatorios),
+                      Container(
+                        margin: EdgeInsets.only(top: 12.0, left: 18.0),
+                        child: Text(
+                          "Personalizables",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 20,
+                              color: Color(0xFFD76060)),
+                        ),
+                      ),
+                      listaCheck(this.seleccionados),
+                      Center(
+                        child: GenericButton1("Guardar", Color(0xFF0CC665), 100,
+                            32, 10, 10, 10, 10, 20, 20, () {
+                          selected.selecciones = seleccionados;
+                          Navigator.pop(context);
+                        }),
+                      ),
+                      Center(
+                        child: GenericButton1("Volver", Color(0xFFFB2900), 100,
+                            32, 10, 10, 10, 10, 20, 20, () {
+                          selected.selecciones.clear();
+                          Navigator.pop(context);
+                        }),
+                      ),
+                    ],
+                  )),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
