@@ -79,6 +79,46 @@ Widget place() {
   );
 }
 
+showCorrectAdd(BuildContext context, String productName){
+  Widget okButton = TextButton(
+    child: Text("OK"),
+    onPressed: () { Navigator.of(context).pop();},
+  );
+  AlertDialog alert = AlertDialog(
+    title: Text("Producto seleccionado", style: TextStyle(color: Color(0xFF0CC665)),),
+    content: Text("Se ha agregado $productName al pedido."),
+    actions: [
+      okButton,
+    ],
+  );
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+showStoreWarning(BuildContext context){
+  Widget okButton = TextButton(
+    child: Text("OK"),
+    onPressed: () { Navigator.of(context).pop();},
+  );
+  AlertDialog alert = AlertDialog(
+    title: Text("No se ha seleccionado un punto de venta", style: TextStyle(color: Color(0xFFD76060)),),
+    content: Text("Por favor seleccione alguno de los puntos de venta para poder agregar el producto al pedido."),
+    actions: [
+      okButton,
+    ],
+  );
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
 // ignore: must_be_immutable
 class HomeProductCard extends StatelessWidget {
   HomeProductCard(
@@ -101,24 +141,27 @@ class HomeProductCard extends StatelessWidget {
     }
   }
 
-  void addProduct() {
+  void addProduct(BuildContext context) {
     if (shopSelected!.id != -1) {
       if (this.current.carrito.containsKey(shopSelected)) {
         if (this.current.carrito[shopSelected]!.containsKey(selected)) {
           int newValue =
               this.current.carrito[shopSelected]![selected]! + quantity;
           this.current.carrito[shopSelected]![selected] = newValue;
+          showCorrectAdd(context, this.selected.name);
         } else {
           this
               .current
               .carrito[shopSelected]!
               .addAll({this.selected: this.quantity});
+              showCorrectAdd(context, this.selected.name);
         }
       } else {
         this.current.carrito[shopSelected] = {this.selected: this.quantity};
+        showCorrectAdd(context, this.selected.name);
       }
     } else {
-      print("No se ha seleccionado una tienda");
+      showStoreWarning(context);
     }
   }
 
@@ -152,7 +195,7 @@ class HomeProductCard extends StatelessWidget {
                     ),
                     Center(
                       child: GenericButton("Agregar", Color(0xFF0CC665), 274,
-                          45, 15.0, 0, 0, 0, 22, 30, () => addProduct()),
+                          45, 15.0, 0, 0, 0, 22, 30, () => addProduct(context)),
                     ),
                     SizedBox(
                       height: 40,
