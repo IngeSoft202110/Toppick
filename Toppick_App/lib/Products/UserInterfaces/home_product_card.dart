@@ -79,6 +79,32 @@ Widget place() {
   );
 }
 
+Widget comments(TextEditingController controller) {
+  return Container(
+    margin: EdgeInsets.only(top: 15.0, left: 30.0, right: 15.0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text("¿Comó lo quieres?",
+            style: TextStyle(
+                color: Color(0xFFD76060),
+                fontSize: 25,
+                fontWeight: FontWeight.bold)),
+        TextField(
+          maxLines: 5,
+          minLines: 1,
+          controller: controller,
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+            hintText: "indicaciones de preparación",
+            hintStyle: TextStyle(color: Color(0xFFB7B7B7)),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
 // ignore: must_be_immutable
 class HomeProductCard extends StatelessWidget {
   HomeProductCard(
@@ -88,6 +114,7 @@ class HomeProductCard extends StatelessWidget {
   final Pedido current;
   int quantity = 1;
   Tienda? shopSelected;
+  TextEditingController controller = TextEditingController();
 
   void updateStore(Tienda? selected) {
     this.shopSelected = selected;
@@ -143,6 +170,8 @@ class HomeProductCard extends StatelessWidget {
                     productDescription(this.selected.description),
                     if (this.selected.category == "A la carta")
                       Center(child: AddTodoButton(this.selected)),
+                    if (this.selected.category == "Horneados")
+                      comments(this.controller),
                     place(),
                     RadioButtonListStore(this.selected, this.available,
                         this.shopSelected, updateStore),
