@@ -21,6 +21,26 @@ Pedido current3 = Pedido(0, DateTime.now(), 9000, 0, "Listo");
 
 List<Pedido> pedidos = [current2, current3,];
 
+showAlert(BuildContext context){
+  Widget okButton = TextButton(
+    child: Text("OK"),
+    onPressed: () { Navigator.of(context).pop();},
+  );
+  AlertDialog alert = AlertDialog(
+    title: Text("No hay un pedido", style: TextStyle(color: Color(0xFFD76060)),),
+    content: Text("Agrega productos a tu pedido para poder acceder a la pantalla de pedido."),
+    actions: [
+      okButton,
+    ],
+  );
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
 class Header extends StatelessWidget {
   Header(this.actual);
   final Pedido actual;
@@ -49,7 +69,7 @@ class Header extends StatelessWidget {
               height: 85,
             ),
             GestureDetector(
-              onTap: (){(actual.carrito.isNotEmpty)?f1():print("no se puede");},
+              onTap: (){(actual.carrito.isNotEmpty)?f1():showAlert(context);},
               child: Icon(
                 Icons.shopping_bag_outlined,
                 color: Colors.white,
