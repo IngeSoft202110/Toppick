@@ -81,11 +81,7 @@ function nuevoPedido(numero) {
     listaPedidos.append(pedido);
 }
 
-class hola{
-    constructor(){
 
-    }
-}
 nuevoPedido(5);
 
 nuevoPedido(4);
