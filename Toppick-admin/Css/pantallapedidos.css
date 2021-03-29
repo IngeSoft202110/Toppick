@@ -183,6 +183,7 @@ footer{
     border-radius: 5px;
     color: aliceblue;
     font-size: medium;
+    box-shadow: 2px 2px 10px  rgba(0, 0, 0, 10%);
   }
   .botonAzul {
     background-color: #0C5DB6;
@@ -194,6 +195,7 @@ footer{
     border-radius: 5px;
     color: aliceblue;
     font-size: medium;
+    box-shadow: 2px 2px 10px  rgba(0, 0, 0, 20%);
   }
   .botonRojo{
     background-color: #B90003;
@@ -205,4 +207,5 @@ footer{
     border-radius: 5px;
     color: aliceblue;
     font-size: medium;
+    box-shadow: 2px 2px 10px  rgba(0, 0, 0, 20%);
   }
