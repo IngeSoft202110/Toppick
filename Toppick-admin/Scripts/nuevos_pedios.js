@@ -1,18 +1,69 @@
 'use strict'
+/*
+estructura de JSON de los pedidos
+{
+    id:123,
+    horaEntrga: 5:30pm,
+    productos: [
+        {
+            idProducto: 1,
+            nombreProducto: pescadito,
+            comentarios:"cualquier cosa"
+        }
+    ]
+}
+*/
+var p1 = {
+    id: 1,
+    horaEntrega: "5:30 pm",
+    productos: [
+        {
+            idProducto: 1,
+            nombreProducto: "pescadito",
+            comentario: "sin comentario"
+        }
+    ]
+}
+var listaConfirmar = [];
+var listaEnCurso = [];
+var listaListos = [];
+
 function removeAllChildNodes(parent) {
     while (parent.firstChild) {
         parent.removeChild(parent.firstChild);
     }
 }
+function listarProductos(numero) {
+    let prducts;
+    if (listaConfirmar.findIndex(p => p.id == numero) != -1) {
+        prducts = listaConfirmar.find(p => p.id == numero);
+    } else if (listaEnCurso.findIndex(p => p.id == numero) != -1) {
+        prducts = listaConfirmar.find(p => p.id == numero);
+    }
+    else if (listaListos.findIndex(p => p.id == numero) != -1) {
+        prducts = listaListos.find(p => p.id == numero);
+    }
+    for(let p in prducts.productos){
+        
+    }
+    console.log(prducts);
+}
+function verDetalles(papa, numero) {
+    let div = document.createElement("div");
+    let line = document.createElement("div");
+    line.className = "linea";
+    div.appendChild(line);
+    div.appendChild(document.createElement("br"));
+    let produ = listarProductos(numero);
+    /*div.appendChild(produ);
+    papa.append(div);
+    console.log(papa);*/
+}
 /*--------parte de nuevos pedidos---------*/
-function plantilla_nuevo_producto(numero){
-    
-    let fragmento = document.createDocumentFragment();
-    
+function plantilla_nuevo_producto(numero) {
     //div pedido nuevo
     let divPedido = document.createElement("div");
     divPedido.className = "pedidoNuevo";
-    fragmento.appendChild(divPedido);
 
     // contendor de clase pedido
     let pedido = document.createElement("div");
@@ -33,7 +84,7 @@ function plantilla_nuevo_producto(numero){
     //numero del pedido
     let numeroPed = document.createElement("p");
     numeroPed.style.justifyContent = "center";
-    numeroPed.innerHTML = "Pedido #"+ numero;
+    numeroPed.innerHTML = "Pedido #" + numero;
     colum1.appendChild(numeroPed);
 
     //columna 2
@@ -47,7 +98,7 @@ function plantilla_nuevo_producto(numero){
     botonVerde.innerHTML = "Aceptar";
     colum2.appendChild(botonVerde);
     //evento del boton de aceptar
-    botonVerde.addEventListener("click",()=>{
+    botonVerde.addEventListener("click", () => {
         nuevoPedidoCurso(numero);
         removeAllChildNodes(divPedido);
         divPedido.remove(divPedido);
@@ -69,6 +120,9 @@ function plantilla_nuevo_producto(numero){
     botonAzul.className = "botonAzul";
     botonAzul.innerHTML = "Ver detalles";
     colum12.appendChild(botonAzul);
+    botonAzul.addEventListener("click", () => {
+        verDetalles(pedido, numero);
+    });
 
     //columna 2
     let colum22 = document.createElement("div");
@@ -81,37 +135,38 @@ function plantilla_nuevo_producto(numero){
     botonRojo.innerHTML = "Rechazar";
     colum22.appendChild(botonRojo);
 
-    botonRojo.addEventListener("click",()=>{
+    botonRojo.addEventListener("click", () => {
         removeAllChildNodes(divPedido);
         divPedido.remove(divPedido);
     });
-    
-    console.log(divPedido);
-    return fragmento;
-    
+    return divPedido;
+
 }
 
-function nuevoPedido(numero) {
+function nuevoPedido(pedido) {
+    let numero = pedido.id;
     let seccion = document.querySelector(".carta1");
     let html = plantilla_nuevo_producto(numero);
     seccion.appendChild(html);
+    setTimeout(() => {
+        html.className = "pedidoNuevo activo";
+    }, 200);
+    listaConfirmar.push(pedido);
+
 }
 /* ----------fin nuevos Pedidos--------- */
 
-nuevoPedido(5);
+nuevoPedido(p1);/*
 nuevoPedido(4);
 nuevoPedido(3);
 nuevoPedido(2);
-nuevoPedido(1);
-/* --------------parte de pedidos en curso---------------*/ 
-function plantila_General_curso(numero){
-    console.log("cea boton");
-    let fragmento = document.createDocumentFragment();
-    
+nuevoPedido(1);*/
+/* --------------parte de pedidos en curso---------------*/
+function plantila_General_curso(numero) {
+
     //div pedido nuevo
     let divPedido = document.createElement("div");
     divPedido.className = "pedidoNuevo";
-    fragmento.appendChild(divPedido);
 
     // contendor de clase pedido
     let pedido = document.createElement("div");
@@ -132,7 +187,7 @@ function plantila_General_curso(numero){
     //numero del pedido
     let numeroPed = document.createElement("p");
     numeroPed.style.justifyContent = "center";
-    numeroPed.innerHTML = "Pedido #"+ numero;
+    numeroPed.innerHTML = "Pedido #" + numero;
     colum1.appendChild(numeroPed);
 
     //boton azul ver detalles
@@ -151,38 +206,34 @@ function plantila_General_curso(numero){
     botonVerde.className = "botonVerde";
     botonVerde.innerHTML = "Aceptar";
     colum2.appendChild(botonVerde);
-    
-    botonVerde.addEventListener("click",()=>{
+
+    botonVerde.addEventListener("click", () => {
         console.log("entra");
         pedidoListo(numero);
         removeAllChildNodes(divPedido);
         divPedido.remove(divPedido);
 
     });
-
-
-    
-    return fragmento;
+    return divPedido;
 
 }
 function nuevoPedidoCurso(params) {
     let seccion = document.querySelector(".carta2");
     let html = plantila_General_curso(params);
-    
     seccion.appendChild(html);
-    
+    setTimeout(() => {
+        html.className = "pedidoNuevo activo";
+    }, 200);
+
 }
 /*---------------------------*/
 
 /*-------pedidos listos------------*/
 
-function plantila_General_listos(numero){
-    let fragmento = document.createDocumentFragment();
-    
+function plantila_General_listos(numero) {
     //div pedido nuevo
     let divPedido = document.createElement("div");
     divPedido.className = "pedidoNuevo";
-    fragmento.appendChild(divPedido);
 
     // contendor de clase pedido
     let pedido = document.createElement("div");
@@ -203,7 +254,7 @@ function plantila_General_listos(numero){
     //numero del pedido
     let numeroPed = document.createElement("p");
     numeroPed.style.justifyContent = "center";
-    numeroPed.innerHTML = "Pedido #"+ numero;
+    numeroPed.innerHTML = "Pedido #" + numero;
     colum1.appendChild(numeroPed);
 
     //boton azul ver detalles
@@ -223,17 +274,20 @@ function plantila_General_listos(numero){
     botonVerde.innerHTML = "Aceptar";
     colum2.appendChild(botonVerde);
 
-    botonVerde.addEventListener("click",()=>{
+    botonVerde.addEventListener("click", () => {
         removeAllChildNodes(divPedido);
         divPedido.remove(divPedido);
 
     });
-    return fragmento;
+    return divPedido;
 
 }
 function pedidoListo(params) {
     let seccion = document.querySelector(".carta3");
     let html = plantila_General_listos(params);
     seccion.appendChild(html);
-    
+    setTimeout(() => {
+        html.className = "pedidoNuevo activo";
+    }, 200);
+
 }
