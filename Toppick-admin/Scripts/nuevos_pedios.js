@@ -20,7 +20,23 @@ var p1 = {
         {
             idProducto: 1,
             nombreProducto: "pescadito",
-            comentario: "sin comentario"
+            comentario: "Sin comentario"
+        }
+    ]
+}
+var p2 = {
+    id: 2,
+    horaEntrega: "5:30 pm",
+    productos: [
+        {
+            idProducto: 1,
+            nombreProducto: "pescadito",
+            comentario: "Sin comentario"
+        },
+        {
+            idProducto: 5,
+            nombreProducto: "carne",
+            comentario: "sin salsa, papas en casquillos"
         }
     ]
 }
@@ -35,6 +51,10 @@ function removeAllChildNodes(parent) {
 }
 function listarProductos(numero) {
     let prducts;
+    let lista = document.createDocumentFragment();
+    let div = document.createElement("div");
+    div.className = "parte";
+    lista.appendChild(div);
     if (listaConfirmar.findIndex(p => p.id == numero) != -1) {
         prducts = listaConfirmar.find(p => p.id == numero);
     } else if (listaEnCurso.findIndex(p => p.id == numero) != -1) {
@@ -43,21 +63,78 @@ function listarProductos(numero) {
     else if (listaListos.findIndex(p => p.id == numero) != -1) {
         prducts = listaListos.find(p => p.id == numero);
     }
-    for(let p in prducts.productos){
-        
-    }
-    console.log(prducts);
+    //se crea el elemento para indicar la cantidad de productos
+    let p = document.createElement("div");
+    p.className = "columna";
+
+    p.innerHTML = "Cantidad de productos :";
+    p.style = "font-weight: bold;";
+    div.appendChild(p);
+    //se da el numero de la cantridad de producotos
+    let n = document.createElement("div");
+    n.className = "columna";
+    n.innerHTML = prducts.productos.length;
+    div.appendChild(n);
+
+    
+    let encabezado = document.createElement("div");
+    encabezado.className = "parte productos";
+    encabezado.style ="font-weight: bold;";
+    let idProducto = document.createElement("div");
+    idProducto.innerHTML = "ID";
+    idProducto.className ="encabezado";
+    encabezado.appendChild(idProducto);
+    let nombre = document.createElement("div")
+    nombre.innerHTML = "Producto";
+    nombre.className ="encabezado";
+    encabezado.appendChild(nombre);
+    let comentario = document.createElement("div");
+    comentario.innerHTML ="comentarios";
+    comentario.className = "encabezado";
+    encabezado.appendChild(comentario)
+    lista.appendChild(encabezado);
+
+    let productos = prducts.productos;
+    productos.forEach(p => {
+        let line = document.createElement("div");
+        line.className = "linea interna";
+        lista.appendChild(line);
+        let pro = document.createElement("div");
+        pro.className = "parte productos";
+        let id = document.createElement("div");
+        id.innerHTML = p.idProducto;
+        id.className ="columna pedidos";
+        pro.appendChild(id);
+        let r = document.createElement("div")
+        r.innerHTML = p.nombreProducto;
+        r.className ="columna pedidos";
+        pro.appendChild(r);
+        let c = document.createElement("div");
+        c.className ="columna pedidos";
+        if (p.comentario == "Sin comentario") {
+            c.innerHTML = "  ";
+            console.log(p);
+        }
+        else {
+            c.innerHTML = p.comentario;
+        }
+        pro.append(c);
+        console.log(pro);
+        lista.appendChild(pro);
+    });
+    return lista;
 }
 function verDetalles(papa, numero) {
     let div = document.createElement("div");
+    div.className = "detalles";
     let line = document.createElement("div");
     line.className = "linea";
     div.appendChild(line);
     div.appendChild(document.createElement("br"));
     let produ = listarProductos(numero);
-    /*div.appendChild(produ);
+    div.append(produ);
     papa.append(div);
-    console.log(papa);*/
+    
 }
 /*--------parte de nuevos pedidos---------*/
 function plantilla_nuevo_producto(numero) {
@@ -121,7 +198,24 @@ function plantilla_nuevo_producto(numero) {
     botonAzul.innerHTML = "Ver detalles";
     colum12.appendChild(botonAzul);
     botonAzul.addEventListener("click", () => {
-        verDetalles(pedido, numero);
+        if (botonAzul.innerHTML == "Ver detalles"){
+            verDetalles(pedido, numero);
+            botonAzul.innerHTML = "Menos detalles";
+            botonAzul.style = "font-size:small;";
+            setTimeout(()=>{
+                let l = pedido.lastChild;
+                console.log("aca");
+                console.log(l);
+                l.className = "detalles activo";
+            },200)
+        }
+        else{
+            let det =pedido.lastChild;
+            removeAllChildNodes(det);
+            det.remove(det);
+            botonAzul.innerHTML = "Ver detalles";
+            botonAzul.style = "font-size:medium;";
+        }
     });
 
     //columna 2
@@ -156,8 +250,8 @@ function nuevoPedido(pedido) {
 }
 /* ----------fin nuevos Pedidos--------- */
 
-nuevoPedido(p1);/*
-nuevoPedido(4);
+nuevoPedido(p1);
+nuevoPedido(p2);/*
 nuevoPedido(3);
 nuevoPedido(2);
 nuevoPedido(1);*/
@@ -195,6 +289,26 @@ function plantila_General_curso(numero) {
     botonAzul.className = "botonAzul";
     botonAzul.innerHTML = "Ver detalles";
     colum1.appendChild(botonAzul);
+    botonAzul.addEventListener("click", () => {
+        if (botonAzul.innerHTML == "Ver detalles"){
+            verDetalles(pedido, numero);
+            botonAzul.innerHTML = "Menos detalles";
+            botonAzul.style = "font-size:small;";
+            setTimeout(()=>{
+                let l = pedido.lastChild;
+                console.log("aca");
+                console.log(l);
+                l.className = "detalles activo";
+            },200)
+        }
+        else{
+            let det =pedido.lastChild;
+            removeAllChildNodes(det);
+            det.remove(det);
+            botonAzul.innerHTML = "Ver detalles";
+            botonAzul.style = "font-size:medium;";
+        }
+    });
 
     //columna 2
     let colum2 = document.createElement("div");
@@ -262,6 +376,26 @@ function plantila_General_listos(numero) {
     botonAzul.className = "botonAzul";
     botonAzul.innerHTML = "Ver detalles";
     colum1.appendChild(botonAzul);
+    botonAzul.addEventListener("click", () => {
+        if (botonAzul.innerHTML == "Ver detalles"){
+            verDetalles(pedido, numero);
+            botonAzul.innerHTML = "Menos detalles";
+            botonAzul.style = "font-size:small;";
+            setTimeout(()=>{
+                let l = pedido.lastChild;
+                console.log("aca");
+                console.log(l);
+                l.className = "detalles activo";
+            },200)
+        }
+        else{
+            let det =pedido.lastChild;
+            removeAllChildNodes(det);
+            det.remove(det);
+            botonAzul.innerHTML = "Ver detalles";
+            botonAzul.style = "font-size:medium;";
+        }
+    });
 
     //columna 2
     let colum2 = document.createElement("div");

@@ -120,7 +120,7 @@ main {
   border: 8px solid #fcdcbf;
   border-radius: 25px;
   width: 100%;
-  height: 714px;
+  height: 71.4rem;
   margin: 10px;
   flex-grow: 1;
   overflow: auto;
@@ -156,6 +156,16 @@ footer {
   opacity: 1;
   transform: translateY(0);
 }
+
+.detalles{
+    opacity: 0;
+    transition: 1s ease all;
+    transform: (translateY(-15px));
+}
+.detalles.activo{
+    opacity: 1;
+    transform: (translateY(0px));
+}
 .pedido {
   background: #fcdcbf;
   padding: 5%;
@@ -163,22 +173,39 @@ footer {
   border-radius: 12px;
   row-gap: 15px;
   height: auto;
+  width: 29.5rem;
 }
 .parte {
   column-count: 2;
   column-gap: 10px;
   row-gap: 10px;
   height: auto;
+  font-size: 1.5rem;
+}
+.parte.productos{
+    display: block;
+    column-count: 3;
+    column-gap: 5px;
+    row-gap: 10px;
+    height: auto;
+    font-size: 1.2rem; 
+    
 }
 .columna {
   flex: 1;
   width: 100%;
-  height: 100%;
-  
+  height: 25px;
   justify-self: center;
   align-items: center;
   font-family: Roboto, sans-serif;
   height: auto;
+}
+.columna.pedidos{
+    height: 3.3rem;
+}
+.encabezado{
+    width: auto;
+    height: auto;
 }
 .full {
   height: 6rem;
@@ -235,4 +262,8 @@ footer {
   align-self: center;
   border-radius: 50px;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 20%);
+}
+.linea.interna{
+    align-self: center;
+    background-color: #020f1d6e;
 }
