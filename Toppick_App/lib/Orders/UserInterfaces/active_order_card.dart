@@ -36,9 +36,9 @@ class _ActiveOrderCardState extends State<ActiveOrderCard> {
         child: Text("Valor: \$${widget.current.costoTotal}", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
       )
     );
-    String year = widget.current.fecha.year.toString();
-    String month = widget.current.fecha.month.toString();
-    String day = widget.current.fecha.day.toString();
+    String year = widget.current.fechaCreacion.year.toString();
+    String month = widget.current.fechaCreacion.month.toString();
+    String day = widget.current.fechaCreacion.day.toString();
     result.add(
       Padding(
         padding: const EdgeInsets.only(left: 10.0, top: 5.0, bottom: 5.0),

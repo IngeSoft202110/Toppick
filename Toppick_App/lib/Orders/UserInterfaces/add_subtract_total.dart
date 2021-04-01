@@ -1,25 +1,33 @@
 import 'package:Toppick_App/Products/Models/producto.dart';
+import 'package:Toppick_App/Shops/Models/tienda.dart';
 import 'package:flutter/material.dart';
 
 
 class AddSubstract extends StatefulWidget {
-  AddSubstract(this.selected, this.quantity, this.notifyParent);
+  AddSubstract(this.selected,this.currentShop, this.quantity, this.notifyParent);
   final Producto selected;
+  final Tienda currentShop;
   final int quantity;
-  final Function(int value, String operationType) notifyParent;
+  final Function(int value, String operationType, Producto selected, Tienda currentStore) notifyParent;
   @override
-  _AddSubstractState createState() => _AddSubstractState(this.selected.price, this.selected.price, this.notifyParent, this.quantity);
+  _AddSubstractState createState() => _AddSubstractState(this.selected.price, this.notifyParent, this.quantity);
 }
 
 class _AddSubstractState extends State<AddSubstract> {
-  _AddSubstractState(this._defaultValue, this._price, this.notifyParent, this._units);
+  _AddSubstractState(this._defaultValue, this.notifyParent, this._units);
   int _units;
   int _defaultValue;
-  int _price;
-  final Function(int value, String operationType) notifyParent;
+  int _price = 0;
+
+  @override
+  void initState() {
+    _price = widget.selected.price * widget.quantity;
+    super.initState();
+  }
+
+  final Function(int value, String operationType, Producto selected, Tienda currentStore) notifyParent;
   @override
   Widget build(BuildContext context) {
-    _price *= this._units;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -45,11 +53,12 @@ class _AddSubstractState extends State<AddSubstract> {
                     setState(() {
                       if(this._units == 1){
                         this._units = 1;
-                        this._price = this._defaultValue;
+                        this._price -= this._defaultValue;
+                        this.notifyParent(this._defaultValue, "Delete", widget.selected, widget.currentShop);
                       }else{
                         this._units -= 1;
                         this._price -= this._defaultValue;
-                        this.notifyParent(this._defaultValue, "Substract");
+                        this.notifyParent(this._defaultValue, "Substract", widget.selected, widget.currentShop);
                       }    
                     });
                   },
@@ -86,7 +95,7 @@ class _AddSubstractState extends State<AddSubstract> {
                     setState(() {
                       this._units += 1;
                       this._price += this._defaultValue;
-                      this.notifyParent(this._defaultValue, "Sum");
+                      this.notifyParent(this._defaultValue, "Sum", widget.selected, widget.currentShop);
                     });
                   },
                   child: Container(

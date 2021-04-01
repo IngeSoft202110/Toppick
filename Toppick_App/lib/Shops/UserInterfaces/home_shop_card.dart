@@ -97,7 +97,7 @@ Widget cardSchedule(String schedule) {
           ),
         ),
         Container(
-          width: 128,
+          width: 180,
           height: 28,
           alignment: Alignment.centerLeft,
           child: Text(
@@ -134,7 +134,7 @@ class HomeShopCard extends StatelessWidget {
           cardHeader(this.selected.name, this.selected.status,
               this.selected.ubication),
           cardDescription(this.selected.description),
-          cardSchedule(this.selected.schedule),
+          cardSchedule(this.selected.toStringSchedule()),
           GenericButton("Ver Catálogo", Color(0xFF0CC665), 233.0, 55.0, 10.0,
               10.0, 10.0, 10.0, 30.0, 20.0, transition)
         ],

@@ -1,6 +1,7 @@
 import 'package:Toppick_App/GeneralUserInterfaces/generic_button.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/gradiant.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/header.dart';
+import 'package:Toppick_App/Orders/Bloc/order_controller.dart';
 import 'package:Toppick_App/Orders/Models/daviplata.dart';
 import 'package:Toppick_App/Orders/Models/metodopago.dart';
 import 'package:Toppick_App/Orders/Models/nequi.dart';
@@ -9,6 +10,7 @@ import 'package:Toppick_App/Orders/UserInterfaces/add_subtract_total.dart';
 import 'package:Toppick_App/Orders/UserInterfaces/payment_card.dart';
 import 'package:Toppick_App/Orders/UserInterfaces/payment_selection.dart';
 import 'package:Toppick_App/Products/Models/producto.dart';
+import 'package:Toppick_App/Shops/Models/tienda.dart';
 import 'package:flutter/material.dart';
 
 List<MetodoPago> methods =[
@@ -34,66 +36,44 @@ class OrderCard extends StatefulWidget {
   _OrderCardState createState() => _OrderCardState(this.actual,calculateTotal());
 }
 
-showPayMethodWarning(BuildContext context){
-  Widget okButton = TextButton(
-    child: Text("OK"),
-    onPressed: () { Navigator.of(context).pop();},
-  );
-  AlertDialog alert = AlertDialog(
-    title: Text("No se ha seleccionado un método de pago", style: TextStyle(color: Color(0xFFD76060)),),
-    content: Text("Por favor seleccione alguno de sus métodos de pago para poder realizar el pedido."),
-    actions: [
-      okButton,
-    ],
-  );
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
-  );
-}
 
-cancelOrderWarning(BuildContext context){
-  Widget yesButton = TextButton(
-    child: Text("Si"),
-    onPressed: () { Navigator.of(context).pop(); Navigator.of(context).pop();},
-  );
-  Widget noButton = TextButton(
-    child: Text("No"),
-    onPressed: () { Navigator.of(context).pop();},
-  );
-  AlertDialog alert = AlertDialog(
-    title: Text("Cancelar pedido", style: TextStyle(color: Color(0xFFD76060)),),
-    content: Text("¿Está seguro de querer borrar el pedido"),
-    actions: [
-      yesButton,
-      noButton,
-    ],
-  );
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
-  );
-}
 
 class _OrderCardState extends State<OrderCard> {
   _OrderCardState(this.actual, this.total);
   final Pedido actual;
   int total;
   MetodoPago? selected;
-  int selectedTime = 0;
-  int minTime = 5;
-  TextEditingController controller = TextEditingController();
+  OrderController controller = OrderController();
+  TimeOfDay? minTime;
+  TimeOfDay? _actualTime = TimeOfDay.now();
+  TimeOfDay? max2Hours;
+  TimeOfDay? pickedTime;
+  TimeOfDay? maxShopTime;
+  TimeOfDay? minShopTime;
+  DateTime? finalDateSend;
 
-  void refresh(int value, String operationType){
+  Future<Null> selectTime(BuildContext context) async{
+    pickedTime = await showTimePicker(
+      context: context, 
+      initialTime: _actualTime!
+    );
+    if(pickedTime != null){
+      bool exp1 = this.controller.timeLowerOrEqualThanX(pickedTime!, _actualTime!); //Si se selecciona una hora antes a la actual
+      bool exp2 = this.controller.timeGreaterOrEqualThanX(pickedTime!, maxShopTime!); //Si se selecciona una hora luego del cierre del punto de venta
+      bool exp3 = this.controller.timeLowerOrEqualThanX(pickedTime!, minShopTime!); //Si se selecciona una hora previa a la apertura del punto de venta
+      bool exp4 = this.controller.timeGreaterOrEqualThanX(pickedTime!, max2Hours!); //Si se selecciona una hora más allá de las 2 horas y media dadas
+      if(exp1 || exp2 || exp3 || exp4){
+        this.controller.showPayHourWarning(context);
+        pickedTime = null;
+      }
+    }
+  }
+
+  void refresh(int value, String operationType, Producto selected, Tienda currentShop){
     setState(() {
-      if(operationType == "Sum"){
-        this.total+=value;
-      }else if(operationType == "Substract"){
-        this.total-=value;
+      total = this.controller.changeQuantity(value, operationType, selected, currentShop, this.total, this.actual, context);
+      if(total==0){
+        this.controller.showEmptyOrder(context);
       }
     });
   }
@@ -102,7 +82,7 @@ class _OrderCardState extends State<OrderCard> {
   }
 
   List<Widget> fill(var transitionToPay){
-    var cancelTransition = () => cancelOrderWarning(context);
+    var cancelTransition = () => this.controller.cancelOrderWarning(context, actual);
     Widget showMethods = methods.isNotEmpty ? RadioButtonPaymentList(methods, updateMethod) :
       Center(child: GenericButton("Registrar métodos de pago", Color(0xFF0CC665), 274, 45, 15.0, 0, 0, 0, 22, 30, () => {}));
     List<Widget> result = [];
@@ -114,31 +94,25 @@ class _OrderCardState extends State<OrderCard> {
         ),
       )
     );
-    this.actual.carrito.forEach((key, value) {result.add(ShopxProductContent(key!.name, value, refresh));});
+    this.actual.carrito.forEach((key, value) {result.add(ShopxProductContent(key!, value, refresh));});
     result.add(
       Padding(
         padding: const EdgeInsets.only(left: 10.0, top: 30.0),
-        child: Text("¿En cuántos minutos pasas?", style: TextStyle(color: Color(0xFFD76060), fontSize: 25, fontWeight: FontWeight.bold)),
+        child: Text("¿A qué hora pasas?", style: TextStyle(color: Color(0xFFD76060), fontSize: 25, fontWeight: FontWeight.bold)),
       )
     );
-    //Calcular valor mínimo del tiempo del pedido
     result.add(
-      Padding(
-        padding: const EdgeInsets.only(left:10.0, right: 40.0,),
-        child: TextField(
-          controller: controller,
-          keyboardType: TextInputType.number,
-          decoration: InputDecoration(
-            hintText: "Tiempo mínimo es de $minTime minutos",
-            hintStyle: TextStyle(color: Color(0xFFB7B7B7)),
-          ),
-        ),
+      Center(
+        child: ElevatedButton(
+          onPressed: () =>selectTime(context),
+          child: Text("Selecciona una hora para recoger")
+        )
       )
     );
     result.add(
       Padding(
         padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 15.0),
-        child: Text("*El tiempo mínimo para pasar es el del producto que más se tarde en cocinar y el máximo es una hora*", style: TextStyle(color: Color(0xFFB7B7B7), fontSize: 15)),
+        child: Text("*El tiempo mínimo para pasar es el del producto que más se tarde en cocinar y el máximo es de dos horas y 30 min*", style: TextStyle(color: Color(0xFFB7B7B7), fontSize: 15)),
       )
     );
     result.add(
@@ -151,9 +125,20 @@ class _OrderCardState extends State<OrderCard> {
     result.add(Center(child: GenericButton("Total: \$${this.total}", Color(0xFFBB4900), 274, 45, 15.0, 0, 0, 0, 22, 0, () => {})));
     result.add(Center(child: GenericButton("Realizar Pedido", Color(0xFF0CC665), 274, 45, 15.0, 0, 0, 0, 22, 30, () => {
       if(selected==null){
-        showPayMethodWarning(context)}
+        this.controller.showPayMethodWarning(context)}
         else{
-          transitionToPay()
+          if(this.pickedTime != null){
+            transitionToPay()
+          }else{
+            if(this.controller.timeGreaterOrEqualThanX(this.minTime!, maxShopTime!) //Si se selecciona una hora luego del cierre del punto de venta
+            || this.controller.timeLowerOrEqualThanX(this.minTime!, minShopTime!) //Si se selecciona una hora previa a la apertura del punto de venta
+            || this.controller.timeGreaterOrEqualThanX(this.minTime!, max2Hours!) //Si se selecciona una hora más allá de las 2 horas y media dadas
+            ){
+              this.controller.showMinTimeWarning(context)
+            }else{
+              transitionToPay()
+            }
+          }
         }
     })));
     result.add(Center(child: GenericButton("Cancelar predido", Color(0xFFFB2900), 274, 45, 15.0, 0, 0, 0, 22, 30, cancelTransition)));
@@ -163,26 +148,31 @@ class _OrderCardState extends State<OrderCard> {
 
   @override
   Widget build(BuildContext context) {
-    Widget build(BuildContext context){
-      if(this.controller.text == ""){
-        this.selectedTime = this.minTime;
-      }else{
-        this.selectedTime = int.parse(this.controller.text);
+    Widget construct(BuildContext context){
+      DateTime current = DateTime.now();
+      if(this.pickedTime != null){
+        this.finalDateSend = DateTime(current.year, current.month, current.day, this.pickedTime!.hour, this.pickedTime!.minute);
       }
-      if(this.selectedTime > 0 && this.selectedTime<= 60){
-        if(this.selected.runtimeType.toString()=="DaviPlata"){
-          return PaymentCard("assets/img/daviplata.png", total, selected, this.actual);
-        }
-        else if(this.selected.runtimeType.toString()=="Nequi"){
-          return PaymentCard("assets/img/nequi.jpg", total, selected, this.actual);
-        }
-        else if(this.selected.runtimeType.toString()=="PSE"){
-          return PaymentCard("assets/img/pse.jpg", total, selected, this.actual);
-        }
+      else{
+        this.pickedTime = this.minTime;
+        this.finalDateSend = DateTime(current.year, current.month, current.day, this.pickedTime!.hour, this.pickedTime!.minute);
       }
+      if(this.selected.runtimeType.toString()=="DaviPlata"){
+        return PaymentCard("assets/img/daviplata.png", total, selected, this.actual, this.finalDateSend!);
+      }
+      else if(this.selected.runtimeType.toString()=="Nequi"){
+        return PaymentCard("assets/img/nequi.jpg", total, selected, this.actual, this.finalDateSend!);
+      }
+      else if(this.selected.runtimeType.toString()=="PSE"){
+        return PaymentCard("assets/img/pse.jpg", total, selected, this.actual, this.finalDateSend!);
+      }  
       return OrderCard(this.actual);
     }
-    var payTransition = () => Navigator.push(context, MaterialPageRoute(builder: build));
+    var payTransition = () => Navigator.push(context, MaterialPageRoute(builder: construct));
+    this.maxShopTime = this.controller.getMaxShopsHour(this.actual, DateTime.now().weekday);
+    this.minShopTime = this.controller.getMinShopsHour(this.actual, DateTime.now().weekday);
+    this.max2Hours = this.controller.generateHour(2, 30, TimeOfDay.now());
+    this.minTime = this.controller.maxProductTime(this.actual);
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -200,6 +190,7 @@ class _OrderCardState extends State<OrderCard> {
                 Container(
                   decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40)), color: Color(0xFFFFFEEE),),
                   child: Column(
+                    key: Key(this.actual.carrito.length.toString()),
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: fill(payTransition),
@@ -214,7 +205,7 @@ class _OrderCardState extends State<OrderCard> {
   }
 }
 
-Widget element(Producto current, int currentQuantity, Function(int value, String operationType) toCallSum){
+Widget element(Producto current, Tienda shop, int currentQuantity, Function(int value, String operationType, Producto selected, Tienda currentShop) toCallChanges){
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: <Widget>[
@@ -227,27 +218,27 @@ Widget element(Producto current, int currentQuantity, Function(int value, String
                   color: Color(0xFFB7B7B7)), overflow: TextOverflow.ellipsis,),
         ),
       ),
-      AddSubstract(current, currentQuantity, toCallSum),
+      AddSubstract(current, shop, currentQuantity, toCallChanges),
     ],
   );
 }
 
 class ShopxProductContent extends StatelessWidget{
-  ShopxProductContent(this.storeName, this.products, this.notifyParent);
-  final String storeName;
+  ShopxProductContent(this.shop, this.products, this.notifyParent);
+  final Tienda shop;
   final Map<Producto, int> products;
-  final Function(int value,  String operationType) notifyParent;
+  final Function(int value,  String operationType, Producto selected, Tienda currentShop) notifyParent;
 
   List<Widget> fill(){
     List<Widget> result = [];
     result.add(
       Padding(
         padding: const EdgeInsets.only(left: 10.0, right: 10, bottom: 10.0),
-        child: Text("${this.storeName}", style: TextStyle(color: Color(0xFFD76060), fontSize: 25, fontWeight: FontWeight.bold),),
+        child: Text("${this.shop.name}", style: TextStyle(color: Color(0xFFD76060), fontSize: 25, fontWeight: FontWeight.bold),),
       )
     );
     this.products.forEach((key, value) {
-      result.add(element(key, value, notifyParent));
+      result.add(element(key, shop, value, notifyParent));
     });
     return result;
   }

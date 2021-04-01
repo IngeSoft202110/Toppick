@@ -1,3 +1,6 @@
+import 'package:Toppick_App/Shops/Models/horario.dart';
+import 'package:flutter/material.dart';
+
 import '../Models/tienda.dart';
 
 class ShopQueries {
@@ -13,12 +16,20 @@ class ShopQueries {
         throw Exception('Failed to load post');
         }
     */
+    List<Horario> schedule = [
+      Horario(TimeOfDay(hour: 6, minute: 0),TimeOfDay(hour: 21, minute: 0), ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"]),
+      Horario(TimeOfDay(hour: 8, minute: 0),TimeOfDay(hour: 16, minute: 0), ["Sábado", "Domingo"]),
+    ];
+    List<Horario> schedule2 = [
+      Horario(TimeOfDay(hour: 4, minute: 0),TimeOfDay(hour: 22, minute: 0), ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"]),
+      Horario(TimeOfDay(hour: 8, minute: 0),TimeOfDay(hour: 16, minute: 0), ["Sábado", "Domingo"]),
+    ];
     queryResult = [
       Tienda(
         1,
         "La Central",
         "Cafeterías",
-        "L-V: 6:00 A.M - 9:00 P.M \n S: 8:00 am a 4:00pm",
+        schedule,
         "En el restaurante La Central brindamos gran variedad de productos: desayunos, almuerzos, comidas rápidas, pizzas, opciones para llevar y un espacio cómodo, una experiencia única.",
         "assets/img/central.PNG",
         true,
@@ -28,7 +39,7 @@ class ShopQueries {
         2,
         "La Central",
         "Cafeterías",
-        "L-V: 6:00 A.M - 9:00 P.M \n S: 8:00 am a 4:00pm",
+        schedule2,
         "En el restaurante La Central brindamos gran variedad de productos: desayunos, almuerzos, comidas rápidas, pizzas, opciones para llevar y un espacio cómodo, una experiencia única.",
         "assets/img/central.PNG",
         true,
@@ -38,7 +49,7 @@ class ShopQueries {
         3,
         "La Central",
         "Cafeterías",
-        "L-V: 6:00 A.M - 9:00 P.M \n S: 8:00 am a 4:00pm",
+        schedule2,
         "En el restaurante La Central brindamos gran variedad de productos: desayunos, almuerzos, comidas rápidas, pizzas, opciones para llevar y un espacio cómodo, una experiencia única.",
         "assets/img/central.PNG",
         true,
@@ -48,7 +59,7 @@ class ShopQueries {
         4,
         "La Central",
         "Cafeterías",
-        "L-V: 6:00 A.M - 9:00 P.M \n S: 8:00 am a 4:00pm",
+        schedule2,
         "En el restaurante La Central brindamos gran variedad de productos: desayunos, almuerzos, comidas rápidas, pizzas, opciones para llevar y un espacio cómodo, una experiencia única.",
         "assets/img/central.PNG",
         true,
@@ -58,7 +69,7 @@ class ShopQueries {
         5,
         "La Central",
         "Cafeterías",
-        "L-V: 6:00 A.M - 9:00 P.M \n S: 8:00 am a 4:00pm",
+        schedule2,
         "En el restaurante La Central brindamos gran variedad de productos: desayunos, almuerzos, comidas rápidas, pizzas, opciones para llevar y un espacio cómodo, una experiencia única.",
         "assets/img/central.PNG",
         true,
@@ -68,7 +79,7 @@ class ShopQueries {
         6,
         "La Central",
         "Cafés y Kioskos",
-        "L-V: 6:00 A.M - 9:00 P.M \n S: 8:00 am a 4:00pm",
+        schedule2,
         "En el restaurante La Central brindamos gran variedad de productos: desayunos, almuerzos, comidas rápidas, pizzas, opciones para llevar y un espacio cómodo, una experiencia única.",
         "assets/img/central.PNG",
         true,
@@ -92,11 +103,15 @@ class ShopQueries {
         throw Exception('Failed to load post');
         }
     */
+    List<Horario> schedule = [
+      Horario(TimeOfDay(hour: 6, minute: 0),TimeOfDay(hour: 21, minute: 0), ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"]),
+      Horario(TimeOfDay(hour: 8, minute: 0),TimeOfDay(hour: 16, minute: 0), ["Sábado", "Domingo"]),
+    ];
     queryResult = Tienda(
       1,
       "La Central",
       "Cafeterías",
-      "L-V: 6:00 A.M - 9:00 P.M \n S: 8:00 am a 4:00pm",
+      schedule,
       "En el restaurante La Central brindamos gran variedad de productos: desayunos, almuerzos, comidas rápidas, pizzas, opciones para llevar y un espacio cómodo, una experiencia única.",
       "assets/img/central.PNG",
       true,
@@ -118,12 +133,20 @@ class ShopQueries {
         throw Exception('Failed to load post');
         }
     */
+    List<Horario> schedule = [
+      Horario(TimeOfDay(hour: 6, minute: 0),TimeOfDay(hour: 21, minute: 0), ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"]),
+      Horario(TimeOfDay(hour: 8, minute: 0),TimeOfDay(hour: 16, minute: 0), ["Sábado", "Domingo"]),
+    ];
+    List<Horario> schedule2 = [
+      Horario(TimeOfDay(hour: 4, minute: 0),TimeOfDay(hour: 22, minute: 0), ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"]),
+      Horario(TimeOfDay(hour: 8, minute: 0),TimeOfDay(hour: 16, minute: 0), ["Sábado", "Domingo"]),
+    ];
     queryResult = [
       Tienda(
         1,
         "La Central",
         "Cafeterías",
-        "L-V: 6:00 A.M - 9:00 P.M \n S: 8:00 am a 4:00pm",
+        schedule,
         "En el restaurante La Central brindamos gran variedad de productos: desayunos, almuerzos, comidas rápidas, pizzas, opciones para llevar y un espacio cómodo, una experiencia única.",
         "assets/img/central.PNG",
         true,
@@ -133,7 +156,7 @@ class ShopQueries {
         2,
         "La Central",
         "Cafeterías",
-        "L-V: 6:00 A.M - 9:00 P.M \n S: 8:00 am a 4:00pm",
+        schedule2,
         "En el restaurante La Central brindamos gran variedad de productos: desayunos, almuerzos, comidas rápidas, pizzas, opciones para llevar y un espacio cómodo, una experiencia única.",
         "assets/img/central.PNG",
         true,
@@ -143,7 +166,7 @@ class ShopQueries {
         3,
         "La Central",
         "Cafeterías",
-        "L-V: 6:00 A.M - 9:00 P.M \n S: 8:00 am a 4:00pm",
+        schedule2,
         "En el restaurante La Central brindamos gran variedad de productos: desayunos, almuerzos, comidas rápidas, pizzas, opciones para llevar y un espacio cómodo, una experiencia única.",
         "assets/img/central.PNG",
         true,
@@ -153,7 +176,7 @@ class ShopQueries {
         4,
         "La Central",
         "Cafeterías",
-        "L-V: 6:00 A.M - 9:00 P.M \n S: 8:00 am a 4:00pm",
+        schedule2,
         "En el restaurante La Central brindamos gran variedad de productos: desayunos, almuerzos, comidas rápidas, pizzas, opciones para llevar y un espacio cómodo, una experiencia única.",
         "assets/img/central.PNG",
         true,
@@ -163,7 +186,7 @@ class ShopQueries {
         5,
         "La Central",
         "Cafeterías",
-        "L-V: 6:00 A.M - 9:00 P.M \n S: 8:00 am a 4:00pm",
+        schedule2,
         "En el restaurante La Central brindamos gran variedad de productos: desayunos, almuerzos, comidas rápidas, pizzas, opciones para llevar y un espacio cómodo, una experiencia única.",
         "assets/img/central.PNG",
         true,
@@ -173,7 +196,7 @@ class ShopQueries {
         6,
         "La Central",
         "Cafés y Kioskos",
-        "L-V: 6:00 A.M - 9:00 P.M \n S: 8:00 am a 4:00pm",
+        schedule2,
         "En el restaurante La Central brindamos gran variedad de productos: desayunos, almuerzos, comidas rápidas, pizzas, opciones para llevar y un espacio cómodo, una experiencia única.",
         "assets/img/central.PNG",
         true,

@@ -11,7 +11,7 @@ void main() {
   runApp(MyApp());
 }
 
-Pedido current = Pedido(0, DateTime.now(), 0, 0, "En proceso");
+Pedido current = Pedido(0, DateTime.now(), 0, DateTime.now(), "En proceso");
 
 class MyApp extends StatelessWidget {
   @override

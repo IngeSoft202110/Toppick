@@ -85,12 +85,13 @@ Widget comments(TextEditingController controller) {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("¿Comó lo quieres?",
+        Text("¿Cómo lo quieres?",
             style: TextStyle(
                 color: Color(0xFFD76060),
                 fontSize: 25,
                 fontWeight: FontWeight.bold)),
         TextField(
+          maxLength: 150,
           maxLines: 5,
           minLines: 1,
           controller: controller,

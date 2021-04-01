@@ -46,7 +46,7 @@ class OrdersQueries {
         throw Exception('Failed to load post');
         }
     */
-    Pedido queryResult = Pedido(0, DateTime.now(), 0, 0, "En proceso");
+    Pedido queryResult = Pedido(0, DateTime.now(), 0, DateTime.now(), "En proceso");
     return queryResult;
   }
 
