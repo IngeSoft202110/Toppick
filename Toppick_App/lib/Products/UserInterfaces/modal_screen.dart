@@ -1,10 +1,10 @@
-import 'package:Toppick_App/Products/Models/a_la_carta.dart';
-import 'package:Toppick_App/Products/Models/ingrediente.dart';
+import 'package:Toppick_App/Products/Models/acompanamiento.dart';
+import 'package:Toppick_App/Products/Models/especialidad.dart';
 import 'package:flutter/material.dart';
 import 'generic_button_for_modal.dart';
 import 'checkbox.dart';
 
-Widget listaCheck(Map<Ingrediente, bool> seleccionados) {
+Widget listaCheck(Map<Acompanamiento, bool> seleccionados) {
   List<Widget> aux = [];
   seleccionados.forEach((key, value) {
     aux.add(CheckboxRow(seleccionados, key));
@@ -37,7 +37,7 @@ Widget title(String name) {
   );
 }
 
-Widget obligatoryList(List<Ingrediente> obligatorios) {
+Widget obligatoryList(List<Acompanamiento> obligatorios) {
   List<Widget> aux = [];
   for (var i = 0; i < obligatorios.length; i++) {
     aux.add(Container(
@@ -79,8 +79,8 @@ Widget obligatoryList(List<Ingrediente> obligatorios) {
   );
 }
 
-Widget buttonsSection(BuildContext context, ALaCarta selected,
-    Map<Ingrediente, bool> seleccionados) {
+Widget buttonsSection(BuildContext context, Especialidad selected,
+    Map<Acompanamiento, bool> seleccionados) {
   return Container(
     margin: EdgeInsets.only(top: 10, left: 50, bottom: 10),
     child: Column(
@@ -105,28 +105,28 @@ Widget buttonsSection(BuildContext context, ALaCarta selected,
 class ModalScreen extends StatelessWidget {
   ModalScreen(this.selected);
   final dynamic selected;
-  Map<Ingrediente, bool> seleccionados = Map<Ingrediente, bool>();
-  List<Ingrediente> obligatorios = [];
-  List<Ingrediente> opcionales = [];
+  Map<Acompanamiento, bool> seleccionados = Map<Acompanamiento, bool>();
+  List<Acompanamiento> obligatorios = [];
+  List<Acompanamiento> opcionales = [];
 
-  List<Ingrediente> llenarDatosObligatorios(List<Ingrediente> ingredientes) {
-    List<Ingrediente> obligatorios = [];
+  List<Acompanamiento> llenarDatosObligatorios(List<Acompanamiento> ingredientes) {
+    List<Acompanamiento> obligatorios = [];
     for (var i = 0; i < ingredientes.length; i++) {
       if (ingredientes[i].obligatorio) obligatorios.add(ingredientes[i]);
     }
     return obligatorios;
   }
 
-  List<Ingrediente> llenarDatosOpcionales(List<Ingrediente> ingredientes) {
-    List<Ingrediente> obligatorios = [];
+  List<Acompanamiento> llenarDatosOpcionales(List<Acompanamiento> ingredientes) {
+    List<Acompanamiento> obligatorios = [];
     for (var i = 0; i < ingredientes.length; i++) {
       if (!ingredientes[i].obligatorio) obligatorios.add(ingredientes[i]);
     }
     return obligatorios;
   }
 
-  Map<Ingrediente, bool> llenarDatosModal(List<Ingrediente> ingredientes) {
-    Map<Ingrediente, bool> mapa = Map<Ingrediente, bool>();
+  Map<Acompanamiento, bool> llenarDatosModal(List<Acompanamiento> ingredientes) {
+    Map<Acompanamiento, bool> mapa = Map<Acompanamiento, bool>();
     for (var i = 0; i < ingredientes.length; i++) {
       mapa[ingredientes[i]] = false;
     }
@@ -135,8 +135,8 @@ class ModalScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    this.obligatorios = llenarDatosObligatorios(this.selected.ingredientes);
-    this.opcionales = llenarDatosOpcionales(this.selected.ingredientes);
+    this.obligatorios = llenarDatosObligatorios(this.selected.acompanamientos);
+    this.opcionales = llenarDatosOpcionales(this.selected.acompanamientos);
     this.seleccionados = llenarDatosModal(this.opcionales);
     return Row(
       children: [

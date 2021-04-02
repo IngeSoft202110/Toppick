@@ -1,10 +1,10 @@
-import 'package:Toppick_App/Products/Models/ingrediente.dart';
+import 'package:Toppick_App/Products/Models/acompanamiento.dart';
 import 'package:flutter/material.dart';
 
 class CheckboxRow extends StatefulWidget {
   CheckboxRow(this.seleccionados, this.name);
-  final Map<Ingrediente, bool> seleccionados;
-  final Ingrediente name;
+  final Map<Acompanamiento, bool> seleccionados;
+  final Acompanamiento name;
   @override
   _CheckboxRowState createState() =>
       _CheckboxRowState(this.seleccionados, this.name);
@@ -12,8 +12,8 @@ class CheckboxRow extends StatefulWidget {
 
 class _CheckboxRowState extends State<CheckboxRow> {
   _CheckboxRowState(this.seleccionados, this.name);
-  final Map<Ingrediente, bool> seleccionados;
-  final Ingrediente name;
+  final Map<Acompanamiento, bool> seleccionados;
+  final Acompanamiento name;
   bool rememberMe = false;
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,6 @@
 import 'package:Toppick_App/Orders/Models/pedido.dart';
+import 'package:Toppick_App/Products/Bloc/product_controller.dart';
+import 'package:Toppick_App/Products/Models/especialidad.dart';
 import 'package:Toppick_App/Products/UserInterfaces/personalize.dart';
 import 'package:flutter/material.dart';
 import 'package:Toppick_App/Products/UserInterfaces/add_substract.dart';
@@ -155,7 +157,8 @@ class HomeProductCard extends StatelessWidget {
   final Pedido current;
   int quantity = 1;
   Tienda? shopSelected;
-  TextEditingController controller = TextEditingController();
+  TextEditingController textController = TextEditingController();
+  ProductController controller = ProductController();
 
   void updateStore(Tienda? selected) {
     this.shopSelected = selected;
@@ -169,7 +172,10 @@ class HomeProductCard extends StatelessWidget {
     }
   }
 
-  void addProduct(BuildContext context) {
+  void addProduct(BuildContext context, TextEditingController controller) {
+    if(this.controller.hasComments(this.selected)){
+      this.selected.addComments(controller.text);
+    }
     if (shopSelected!.id != -1) {
       if (this.current.carrito.containsKey(shopSelected)) {
         if (this.current.carrito[shopSelected]!.containsKey(selected)) {
@@ -211,11 +217,12 @@ class HomeProductCard extends StatelessWidget {
                     image("assets/img/pescadito.jpg", double.infinity, 315),
                     productHead(
                         this.selected.name, this.selected, updateQuantity),
-                    productDescription(this.selected.description),
-                    if (this.selected.category == "A la carta")
+                    if(controller.hasDescription(this.selected))
+                      productDescription(this.selected.description),
+                    if (this.selected is Especialidad)
                       Center(child: AddTodoButton(this.selected)),
-                    if (this.selected.category == "Horneados")
-                      comments(this.controller),
+                    if (controller.hasComments(this.selected))
+                      comments(this.textController),
                     place(),
                     RadioButtonListStore(this.selected, this.available,
                         this.shopSelected, updateStore),
@@ -225,7 +232,7 @@ class HomeProductCard extends StatelessWidget {
                     ),
                     Center(
                       child: GenericButton("Agregar", Color(0xFF0CC665), 274,
-                          45, 15.0, 0, 0, 0, 22, 30, () => addProduct(context)),
+                          45, 15.0, 0, 0, 0, 22, 30, () => addProduct(context, this.textController)),
                     ),
                     SizedBox(
                       height: 40,

@@ -1,13 +1,12 @@
-class Producto {
+abstract class Producto {
   int id;
   String name;
   int price;
-  String description;
   int preparationTime;
   double score;
+  String ulrImage;
   String category;
-  Producto(this.id, this.name, this.price,
-      this.description, this.preparationTime, this.score, this.category);
+  Producto(this.id, this.name, this.price, this.preparationTime, this.score, this.ulrImage, this.category);
 
   @override
   // ignore: hash_and_equals

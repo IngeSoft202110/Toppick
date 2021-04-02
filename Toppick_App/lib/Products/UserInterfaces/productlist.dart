@@ -48,39 +48,38 @@ class ProductListState extends State<ProductList> {
         onTap: () {
           setState(() {
             ProductCategoryCard selectedCard = widgets[index];
-            if (selectedCard != null) {
-              this.currentTitle = selectedCard.categoryName;
-              this.currentDescription = selectedCard.categoryDescription;
-              List<dynamic> selected =[];
-              selected = controller.filterProducts(this.productList, this.currentTitle);
-              this.products = ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: selected.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return GestureDetector(
-                      onTap: () => {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) {
-                                    if(selected[index] is Combo){
-                                      return HomeCombosCard(
-                                            selected[index], this.shopList, widget.store, widget.current);
-                                    }else{
-                                      return HomeProductCard(selected[index],
-                                            this.shopList, widget.store, widget.current);
-                                    }
-                                }
-                            )
-                        )
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 15.0),
-                        child: ProductCard(selected[index]),
-                      ),
-                    );
-                  });
-            }
+            this.currentTitle = selectedCard.categoryName;
+            this.currentDescription = selectedCard.categoryDescription;
+            List<dynamic> selected =[];
+            selected = controller.filterProducts(this.productList, this.currentTitle);
+            this.products = ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: selected.length,
+              itemBuilder: (BuildContext context, int index) {
+                return GestureDetector(
+                  onTap: () => {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          if(selected[index] is Combo){
+                            return HomeCombosCard(
+                                  selected[index], this.shopList, widget.store, widget.current);
+                          }else{
+                            return HomeProductCard(selected[index],
+                                  this.shopList, widget.store, widget.current);
+                          }
+                        }
+                      )
+                    )
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 15.0),
+                    child: ProductCard(selected[index]),
+                  ),
+                );
+              }
+            );
           });
         },
         child: widgets[index],
@@ -104,8 +103,7 @@ class ProductListState extends State<ProductList> {
                 SearchButton("Buscar productos", 3),
                 ListMainText("Escoge la", "comida que amas"),
                 Padding(
-                  padding: const EdgeInsets.only(
-                      top: 10.0, left: 10.0, bottom: 10.0),
+                  padding: const EdgeInsets.only(top: 10.0, left: 10.0, bottom: 10.0),
                   child: Container(
                     alignment: Alignment.centerLeft,
                     child: Text(

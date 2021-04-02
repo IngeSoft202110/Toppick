@@ -80,7 +80,7 @@ Widget productDescription(String description) {
 
 Widget comboProductList(Combo a) {
   List<Widget> aux = [];
-  for (var p in a.productos) {
+  for (var p in a.products) {
     aux.add(ComboProductCard(p));
   }
   return Container(

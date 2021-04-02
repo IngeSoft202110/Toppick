@@ -1,10 +1,8 @@
 import 'producto.dart';
 
 class Combo extends Producto {
-  DateTime inicio, finalizacion;
-  List<dynamic> productos = [];
-  Combo(this.inicio, this.finalizacion, this.productos, id, name, price,
-      description, preparationTime, score, category)
-      : super(id, name, price, description,
-            preparationTime, score, category);
+  String description;
+  List<dynamic> products = [];
+  Combo(this.products, this.description, int id, String name, int price, int preparationTime, double score, String urlImage, String category)
+      : super(id, name, price, preparationTime, score, urlImage, category);
 }
