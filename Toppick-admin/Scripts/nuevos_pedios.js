@@ -318,7 +318,7 @@ function plantila_General_curso(numero) {
     //boton verde aceptar
     let botonVerde = document.createElement("button");
     botonVerde.className = "botonVerde";
-    botonVerde.innerHTML = "Aceptar";
+    botonVerde.innerHTML = "Listo para entregar";
     colum2.appendChild(botonVerde);
 
     botonVerde.addEventListener("click", () => {
@@ -405,7 +405,7 @@ function plantila_General_listos(numero) {
     //boton verde aceptar
     let botonVerde = document.createElement("button");
     botonVerde.className = "botonVerde";
-    botonVerde.innerHTML = "Aceptar";
+    botonVerde.innerHTML = "Entregar";
     colum2.appendChild(botonVerde);
 
     botonVerde.addEventListener("click", () => {
