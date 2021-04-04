@@ -136,6 +136,46 @@ function verDetalles(papa, numero) {
     papa.append(div);
     
 }
+function formRechazar(papa,divPedido){
+    let div = document.createElement("div");
+    div.className = "detalles activo";
+    let line = document.createElement("div");
+    line.className = "linea";
+    div.appendChild(line);
+    let form = document.createElement("form");
+    form.setAttribute("onsubmit","return false;");
+    let label = document.createElement("p");
+    label.innerHTML = "Seleccione razón de rechazo";
+    label.fontSize ="big";
+    form.appendChild(label);
+    let select  = document.createElement("select");
+    select.className = "rechazo";
+    let  o = document.createElement("option");
+    o.innerHTML = "No hay disponibilidad";
+    select.appendChild(o);
+    o = document.createElement("option");
+    o.innerHTML = "No hay venta en esta hora";
+    select.appendChild(o);
+    o = document.createElement("option");
+    o.innerHTML = "Poca caliridad en los detalles";
+    select.appendChild(o)
+    form.appendChild(select);
+    form.appendChild(document.createElement("br"));
+    let submit =  document.createElement("input");
+    submit.type = "submit";
+    submit.value = "Enviar";
+    form.addEventListener("submit", ()=>{
+        
+        removeAllChildNodes(divPedido);
+        divPedido.remove(divPedido);
+        
+        /* generar codigo para la notifiacion */
+    });
+    form.appendChild(submit);
+    div.appendChild(form);
+    papa.appendChild(div);
+
+}
 /*--------parte de nuevos pedidos---------*/
 function plantilla_nuevo_producto(numero) {
     //div pedido nuevo
@@ -179,6 +219,7 @@ function plantilla_nuevo_producto(numero) {
         nuevoPedidoCurso(numero);
         removeAllChildNodes(divPedido);
         divPedido.remove(divPedido);
+        /* generar codigo para la notifiacion */
 
     });
 
@@ -228,10 +269,8 @@ function plantilla_nuevo_producto(numero) {
     botonRojo.className = "botonRojo";
     botonRojo.innerHTML = "Rechazar";
     colum22.appendChild(botonRojo);
-
     botonRojo.addEventListener("click", () => {
-        removeAllChildNodes(divPedido);
-        divPedido.remove(divPedido);
+        formRechazar(pedido, divPedido);
     });
     return divPedido;
 

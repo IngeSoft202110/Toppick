@@ -161,6 +161,7 @@ footer {
     opacity: 0;
     transition: 1s ease all;
     transform: (translateY(-15px));
+   
 }
 .detalles.activo{
     opacity: 1;
