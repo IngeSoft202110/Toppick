@@ -140,7 +140,7 @@ function formRechazar(papa,divPedido){
     let div = document.createElement("div");
     div.className = "detalles activo";
     let line = document.createElement("div");
-    line.className = "linea";
+    line.className = "linea rechazo";
     div.appendChild(line);
     let form = document.createElement("form");
     form.setAttribute("onsubmit","return false;");
@@ -164,6 +164,7 @@ function formRechazar(papa,divPedido){
     let submit =  document.createElement("input");
     submit.type = "submit";
     submit.value = "Enviar";
+    submit.className ="submitB"
     form.addEventListener("submit", ()=>{
         
         removeAllChildNodes(divPedido);

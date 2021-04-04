@@ -264,7 +264,28 @@ footer {
   border-radius: 50px;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 20%);
 }
+.linea.rechazo{
+  background-color: #b90003b2; 
+}
 .linea.interna{
     align-self: center;
     background-color: #020f1d6e;
+}
+.rechazo{
+  border-radius: 5px;
+  border-width: 0px;
+  background-color:#ebc19b;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.submitB{
+  width: 8rem;
+  border-width: 0;
+  border-radius: 5px;
+  background-color: #b90003;
+  color: rgb(255, 255, 255);
+  height: 2.5rem;
+}
+.submitB:hover {
+  background-color: #b90003c4;
 }
