@@ -2,13 +2,17 @@
 /* Dependencies */ 
 /****************/
 var express = require('express'); 
+var cors = require('cors'); 
 var mysql = require('mysql'); 
 
 /************************/
 /* Server configuration */
 /************************/
+const PORT = process.env.PORT || 8001;
 const app = express(); 
-const PORT = process.env.PORT || 8001; 
+
+app.use(cors()); // Alow incomming requests
+app.use(express.json()); // To handle Post requests 
 
 
 /***************************/
@@ -24,17 +28,9 @@ var connection = mysql.createConnection({
 connection.connect( () => console.log("Connection with DB, succsessful") ); 
 
 
-/***************/
-/* Middlewares */
-/***************/
-// app.use(express.json()); 
-
-
 /*****************/
 /* Web endpoints */
 /*****************/
-// Get all orders of the day (Historic)
-
 // Get a specific order info 
 app.get('/toppick/admin/:order_id', (req, res) => {
     // Url params
@@ -54,7 +50,7 @@ app.get('/toppick/admin/:order_id', (req, res) => {
 /*****************/
 /* App endpoints */
 /*****************/
-// Products from all University ----> READY
+// Products from all University 
 app.get('/toppick/app/products', (req, res) => {
     // Data base query 
     const query = 'SELECT * FROM Toppick_Schema.Producto'; 
@@ -67,7 +63,7 @@ app.get('/toppick/app/products', (req, res) => {
     });
 }); 
 
-// All oppened stores in university ----> READY
+// All oppened stores in university 
 app.get('/toppick/app/oppened-stores', (req, res) => {
     // Data base query 
     const query = "SELECT * FROM Toppick_Schema.PuntoDeVenta WHERE Estado = 'Abierto'"; 
@@ -80,7 +76,20 @@ app.get('/toppick/app/oppened-stores', (req, res) => {
     });
 }); 
 
-// Catalog from a given store ----> READY
+// Get all stores
+app.get('/toppick/app/all-stores', (req, res) => {
+    // Data base query 
+    const query = 'SELECT * FROM Toppick_Schema.PuntoDeVenta';  
+    // Query DB 
+    connection.query( query, (err, rows, fields) => {
+        // Throw error if exists 
+        if (err) throw err; 
+        // Send response 
+        res.json(rows); 
+    });    
+});
+
+// Catalog from a given store 
 app.get('/toppick/app/catalog/:store_id', (req, res) => {
     const store_id = req.params.store_id; 
     // Data base query 
@@ -96,7 +105,7 @@ app.get('/toppick/app/catalog/:store_id', (req, res) => {
     });
 }); 
 
-// Stores that have a given product -----> READY
+// Stores that have a given product 
 app.get('/toppick/app/stores-that-contains/:product_id', (req, res) => {
     // Url params
     const product_id = req.params.product_id; 
@@ -113,7 +122,7 @@ app.get('/toppick/app/stores-that-contains/:product_id', (req, res) => {
     });
 }); 
 
-// Accompaniment of a specialty ------> READY 
+// Accompaniment of a specialty 
 app.get('/toppick/app/accompaniment-of-specialty/:product_id', (req, res) => {
     // Url params
     const product_id = req.params.product_id; 
@@ -130,7 +139,7 @@ app.get('/toppick/app/accompaniment-of-specialty/:product_id', (req, res) => {
     });
 }); 
 
-// Products of a combo -----> READY  
+// Products of a combo  
 app.get('/toppick/app/products-of-combo/:product_id', (req, res) => {
     // Url params 
     const product_id = req.params.product_id; 
