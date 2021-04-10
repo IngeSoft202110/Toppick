@@ -1,4 +1,5 @@
 'use strict'
+
 /*
 estructura de JSON de los pedidos
 {
@@ -13,6 +14,7 @@ estructura de JSON de los pedidos
     ]
 }
 */
+
 var p1 = {
     id: 1,
     horaEntrega: "5:30 pm",
@@ -40,9 +42,35 @@ var p2 = {
         }
     ]
 }
+
 var listaConfirmar = [];
 var listaEnCurso = [];
 var listaListos = [];
+
+
+/**
+ * Variables para saber cuantos pedidos tiene la tienda actualmente 
+ */
+let cantidadPedidosPorConfirmar = getOrders();
+
+/**
+ *  Interval to make the request to the server 
+ */
+// setInterval( () => getOrders(), 2000); 
+
+/**
+ * Function that gets all the orders of the current store
+ */
+async function getOrders() {
+    try {
+        const response = await axios.get('http://localhost:8001/toppick/admin/1');
+        console.log(response.data); 
+        return response.data; 
+    } catch (error) {
+        console.log(error); 
+    }
+}
+
 
 function removeAllChildNodes(parent) {
     while (parent.firstChild) {
