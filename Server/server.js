@@ -96,23 +96,8 @@ app.get('/toppick/app/catalog/:store_id', (req, res) => {
     });
 }); 
 
-// Store that have a product in his catalog ------> Missing query
-app.get('/toppick/app/:product_name/in/:store_name', (req, res) => {
-    const store_name = req.params.store_name; 
-    const product_name = req.params.product_name; 
-    // Data base query 
-    const query = ``; 
-    // Query DB 
-    connection.query( query, (err, rows, fields) => {
-        // Throw error if exists 
-        if (err) throw err; 
-        // Send response
-        res.json(rows); 
-    });
-}); 
-
-// Query #1 -----> Missing endoint
-app.get('', (req, res) => {
+// Stores that have a given product -----> READY
+app.get('/toppick/app/stores-that-contains/:product_id', (req, res) => {
     // Url params
     const product_id = req.params.product_id; 
     // Data base query 
@@ -128,8 +113,8 @@ app.get('', (req, res) => {
     });
 }); 
 
-// Query #2 ------> Missing endpoint
-app.get('', (req, res) => {
+// Accompaniment of a specialty ------> READY 
+app.get('/toppick/app/accompaniment-of-specialty/:product_id', (req, res) => {
     // Url params
     const product_id = req.params.product_id; 
     // Data base query 
@@ -145,8 +130,8 @@ app.get('', (req, res) => {
     });
 }); 
 
-// Query #3 ------> Missing endpoint
-app.get('', (req, res) => {
+// Products of a combo -----> READY  
+app.get('/toppick/app/products-of-combo/:product_id', (req, res) => {
     // Url params 
     const product_id = req.params.product_id; 
     // Data base query 
