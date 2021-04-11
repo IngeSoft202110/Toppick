@@ -1,15 +1,15 @@
 /****************/
-/* Dependencies */ 
+/* Dependencies */
 /****************/
-var express = require('express'); 
-var cors = require('cors'); 
-var mysql = require('mysql'); 
+var express = require('express');
+var cors = require('cors');
+var mysql = require('mysql');
 
 /************************/
 /* Server configuration */
 /************************/
 const PORT = process.env.PORT || 8001;
-const app = express(); 
+const app = express();
 
 app.use(cors()); // Alow incomming requests
 app.use(express.json()); // To handle Post requests 
@@ -19,13 +19,18 @@ app.use(express.json()); // To handle Post requests
 /* Data base configuration */
 /***************************/
 var connection = mysql.createConnection({
-    host: 'localhost', 
-    user: 'root', 
-    password: '1234567890', 
+    host: 'localhost',
+    user: 'root',
+    password: 'julian9812',
+    //password: '1234567890',
     database: 'Toppick_Schema'
-}); 
+});
 // Connect to database
-connection.connect( () => console.log("Connection with DB, succsessful") ); 
+connection.connect((err) => {
+    if (err) console.log("error ", err)
+    else
+        console.log("Connection with DB, succsessful")
+});
 
 
 /*****************/
@@ -34,17 +39,20 @@ connection.connect( () => console.log("Connection with DB, succsessful") );
 // Get a specific order info 
 app.get('/toppick/admin/:order_id', (req, res) => {
     // Url params
-    const order_id = req.params.order_id; 
+    const order_id = req.params.order_id;
     // Data base query 
-    const query = `SELECT * FROM Toppick_Schema.Pedido WHERE idPedido = ${order_id}`; 
-    // Query DB 
-    connection.query( query, (err, rows, fields) => {
+    const query = `SELECT * 
+    FROM Toppick_Schema.Producto,Toppick_Schema.Pedido,Toppick_Schema.Carrito 
+    WHERE idPedido = ${order_id} && Pedido_idPedido= ${order_id} and producto_idProducto = idProducto `;
+    // Query DB ,
+    connection.query(query, (err, rows, fields) => {
         // Throw error if exists 
-        if (err) throw err; 
+        if (err) throw err;
         // Send response 
-        res.send(rows); 
+        console.log(rows);
+        res.send(rows);
     });
-}); 
+});
 
 
 /*****************/
@@ -53,111 +61,111 @@ app.get('/toppick/admin/:order_id', (req, res) => {
 // Products from all University 
 app.get('/toppick/app/products', (req, res) => {
     // Data base query 
-    const query = 'SELECT * FROM Toppick_Schema.Producto'; 
+    const query = 'SELECT * FROM Toppick_Schema.Producto';
     // Query DB 
-    connection.query( query, (err, rows, fields) => {
+    connection.query(query, (err, rows, fields) => {
         // Throw error if exists 
-        if (err) throw err; 
+        if (err) throw err;
         // Send response 
-        res.json(rows); 
+        res.json(rows);
     });
-}); 
+});
 
 // All oppened stores in university 
 app.get('/toppick/app/oppened-stores', (req, res) => {
     // Data base query 
-    const query = "SELECT * FROM Toppick_Schema.PuntoDeVenta WHERE Estado = 'Abierto'"; 
+    const query = "SELECT * FROM Toppick_Schema.PuntoDeVenta WHERE Estado = 'Abierto'";
     // Query DB 
-    connection.query( query, (err, rows, fields) => {
+    connection.query(query, (err, rows, fields) => {
         // Throw error if exists 
-        if (err) throw err; 
+        if (err) throw err;
         // Send response 
-        res.json(rows); 
+        res.json(rows);
     });
-}); 
+});
 
 // Get all stores
 app.get('/toppick/app/all-stores', (req, res) => {
     // Data base query 
-    const query = 'SELECT * FROM Toppick_Schema.PuntoDeVenta';  
+    const query = 'SELECT * FROM Toppick_Schema.PuntoDeVenta';
     // Query DB 
-    connection.query( query, (err, rows, fields) => {
+    connection.query(query, (err, rows, fields) => {
         // Throw error if exists 
-        if (err) throw err; 
+        if (err) throw err;
         // Send response 
-        res.json(rows); 
-    });    
+        res.json(rows);
+    });
 });
 
 // Catalog from a given store 
 app.get('/toppick/app/catalog/:store_id', (req, res) => {
-    const store_id = req.params.store_id; 
+    const store_id = req.params.store_id;
     // Data base query 
     const query = 'SELECT idProducto, nombreProducto, precio, tiempoPreparacion, Producto.calificacion, Producto.urlImagen, categoria '
-                + 'FROM toppick_schema.producto, toppick_schema.puntodeventa, toppick_schema.catalogo ' 
-                + `WHERE idPuntoDeVenta = ${store_id} and PuntodeVenta_idPuntodeVenta = idPuntodeventa and Producto_idProducto = idProducto`; 
+        + 'FROM toppick_schema.producto, toppick_schema.puntodeventa, toppick_schema.catalogo '
+        + `WHERE idPuntoDeVenta = ${store_id} and PuntodeVenta_idPuntodeVenta = idPuntodeventa and Producto_idProducto = idProducto`;
     // Query DB 
-    connection.query( query, (err, rows, fields) => {
+    connection.query(query, (err, rows, fields) => {
         // Throw error if exists 
-        if (err) throw err; 
+        if (err) throw err;
         // Send response 
-        res.json(rows); 
+        res.json(rows);
     });
-}); 
+});
 
 // Stores that have a given product 
 app.get('/toppick/app/stores-that-contains/:product_id', (req, res) => {
     // Url params
-    const product_id = req.params.product_id; 
+    const product_id = req.params.product_id;
     // Data base query 
     const query = 'SELECT idPuntodeVenta, Usuario_nombreUsuario, Usuario_contraseña, nombrePuntoDeVenta, tipoPuntoVenta, urlUbicacion, Estado, PuntoDeVenta.urlImagen '
-                + 'FROM toppick_schema.producto, toppick_schema.puntodeventa, toppick_schema.catalogo '
-                + `WHERE idProducto = ${product_id} and PuntodeVenta_idPuntodeVenta = idPuntodeventa and Producto_idProducto = idProducto;`; 
+        + 'FROM toppick_schema.producto, toppick_schema.puntodeventa, toppick_schema.catalogo '
+        + `WHERE idProducto = ${product_id} and PuntodeVenta_idPuntodeVenta = idPuntodeventa and Producto_idProducto = idProducto;`;
     // Query DB 
-    connection.query( query, (err, rows, fields) => {
+    connection.query(query, (err, rows, fields) => {
         // Throw error if exists 
-        if (err) throw err; 
+        if (err) throw err;
         // Send response
-        res.json(rows); 
+        res.json(rows);
     });
-}); 
+});
 
 // Accompaniment of a specialty 
 app.get('/toppick/app/accompaniment-of-specialty/:product_id', (req, res) => {
     // Url params
-    const product_id = req.params.product_id; 
+    const product_id = req.params.product_id;
     // Data base query 
     const query = 'SELECT idAcompañamiento, nombreAcompañamiento, tipo '
-                + 'FROM toppick_schema.Acompañamiento, toppick_schema.AcompañamientoXEspecialidad, toppick_schema.especialidad, toppick_schema.producto '
-                + `WHERE idProducto = ${product_id} and Producto_IdProducto = idProducto and Especialidad_Producto_idProducto = idProducto and idacompañamiento = acompañamiento_idacompañamiento`; 
+        + 'FROM toppick_schema.Acompañamiento, toppick_schema.AcompañamientoXEspecialidad, toppick_schema.especialidad, toppick_schema.producto '
+        + `WHERE idProducto = ${product_id} and Producto_IdProducto = idProducto and Especialidad_Producto_idProducto = idProducto and idacompañamiento = acompañamiento_idacompañamiento`;
     // Query DB 
-    connection.query( query, (err, rows, fields) => {
+    connection.query(query, (err, rows, fields) => {
         // Throw error if exists 
-        if (err) throw err; 
+        if (err) throw err;
         // Send response
-        res.json(rows); 
+        res.json(rows);
     });
-}); 
+});
 
 // Products of a combo  
 app.get('/toppick/app/products-of-combo/:product_id', (req, res) => {
     // Url params 
-    const product_id = req.params.product_id; 
+    const product_id = req.params.product_id;
     // Data base query 
     const query = 'SELECT idProducto, nombreProducto, precio, tiempoPreparacion, calificacion, urlImagen, categoria '
-                + 'from toppick_schema.Combo, toppick_schema.ProductoXCombo, toppick_schema.producto '
-                + `where toppick_schema.Combo.Producto_idProducto = ${product_id} and toppick_schema.ProductoXCombo.Producto_IdProducto = idProducto and toppick_schema.ProductoXCombo.Combo_Producto_idProducto = toppick_schema.Combo.Producto_idProducto`; 
+        + 'from toppick_schema.Combo, toppick_schema.ProductoXCombo, toppick_schema.producto '
+        + `where toppick_schema.Combo.Producto_idProducto = ${product_id} and toppick_schema.ProductoXCombo.Producto_IdProducto = idProducto and toppick_schema.ProductoXCombo.Combo_Producto_idProducto = toppick_schema.Combo.Producto_idProducto`;
     // Query DB 
-    connection.query( query, (err, rows, fields) => {
+    connection.query(query, (err, rows, fields) => {
         // Throw error if exists 
-        if (err) throw err; 
+        if (err) throw err;
         // Send response
-        res.json(rows); 
+        res.json(rows);
     });
-}); 
+});
 
 
 /*************/
 /* Listenner */
 /*************/
-app.listen(PORT, () => console.log("Listenning on localhost:" + PORT)); 
+app.listen(PORT, () => console.log("Listenning on localhost:" + PORT));
