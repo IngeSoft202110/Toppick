@@ -271,7 +271,16 @@ function plantilla_nuevo_producto(numero) {
     botonRojo.innerHTML = "Rechazar";
     colum22.appendChild(botonRojo);
     botonRojo.addEventListener("click", () => {
-        formRechazar(pedido, divPedido);
+        if(botonRojo.innerHTML == "Rechazar"){
+            formRechazar(pedido, divPedido);
+            botonRojo.innerHTML = "Cancelar";
+        }else{
+            botonRojo.innerHTML = "Rechazar";
+            let det =pedido.lastChild;
+            removeAllChildNodes(det);
+            det.remove(det);
+        }
+        
     });
     return divPedido;
 
