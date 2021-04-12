@@ -1,10 +1,10 @@
-"use strict"
 /****************/
 /* Dependencies */
 /****************/
-var express = require('express');
-var cors = require('cors');
-var mysql = require('mysql');
+const express = require('express');
+const cors = require('cors');
+const mysql = require('mysql');
+const bodyParser = require('body-parser');
 
 /************************/
 /* Server configuration */
@@ -12,8 +12,9 @@ var mysql = require('mysql');
 const PORT = process.env.PORT || 8001;
 const app = express();
 
-app.use(cors()); // Alow incomming requests
-app.use(express.json()); // To handle Post requests 
+app.use(cors()); // Get requests
+app.use(bodyParser.json()); // Post requests
+app.use(bodyParser.urlencoded({ extended: true })); // Post requests
 
 
 /***************************/
@@ -22,8 +23,8 @@ app.use(express.json()); // To handle Post requests
 var connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'julian9812',
-    //password: '1234567890',
+    // password: 'julian9812',
+    password: '1234567890',
     database: 'Toppick_Schema'
 });
 // Connect to database
@@ -94,6 +95,34 @@ app.get('/toppick/admin/:order_id', (req, res) => {
 /*****************/
 /* App endpoints */
 /*****************/
+// Insert an order in the database
+app.post('/toppick/app/insert/order', (req, res) => {
+    // 'Cart' parameters
+    let cart = req.body.carrito; 
+    // 'Order' parameters
+    const order = req.body.orden;
+    // Insert statements
+    const insert_cart = 'INSERT INTO Toppick_Schema.Carrito (Producto_idProducto, Pedido_idPedido, CantidadProducto) VALUES ?';
+    const insert_order = 'INSERT INTO Toppick_Schema.Pedido (idPedido, PuntoDeVenta_idPuntodeVenta, Cliente_idCliente, fechaCreacion, costoTotal, fechaReclamo, estadoPedido, razonRechazo) '
+                       + `VALUES (${order[0]}, ${order[1]}, ${order[2]}, STR_TO_DATE('${order[3]}','%Y-%m-%d %H:%i:%s'), ${order[4]}, STR_TO_DATE('${order[5]}','%Y-%m-%d %H:%i:%s'), '${order[6]}', ${order[7]})`;
+    // Insert 'order'
+    connection.query(insert_order, (err) => {
+        // Throw error if exists
+        if (err) throw err; 
+        console.log("Order inserted"); 
+    });
+    // Insert 'cart' 
+    // In order to insert more than one value, the second parameter is an array of arrays containing the information of the table  
+    connection.query(insert_cart, [cart], (err) => {
+        // Throw error if exists 
+        if (err) throw err;
+        console.log("Cart inserted"); 
+    });
+    
+    // Send response 
+    res.send("Post request processed"); 
+}); 
+
 // Products from all University 
 app.get('/toppick/app/products', (req, res) => {
     // Data base query 
