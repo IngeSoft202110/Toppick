@@ -96,15 +96,23 @@ app.get('/toppick/admin/:order_id', (req, res) => {
 /* App endpoints */
 /*****************/
 // Insert an order in the database
+let order_id = 10; // A random Id to start the counter  
 app.post('/toppick/app/insert/order', (req, res) => {
-    // 'Cart' parameters
-    let cart = req.body.carrito; 
-    // 'Order' parameters
-    const order = req.body.orden;
+    // Parameters
+    const _cart = req.body.carrito; // Cart
+    const order = req.body.orden; // Order 
+    const _accompaniments = req.body.acompañamientos || undefined; // Accompaniments
+    // Set order_id in cart
+    const cart = _cart.map( (product) => { return [product[0], order_id, product[2]] }); 
+    // Set order_id in accompaniments if accompaniments exists, otherwise, set undefined
+    const accompaniments = (_accompaniments) ? _accompaniments.map( (accomp) => { return [accomp[0], accomp[1], order_id] }) : undefined; 
+
     // Insert statements
+    const insert_accompaniments = 'INSERT INTO Toppick_Schema.AcompañamientoXSeleccion (Especialidad_Producto_idProducto, Acompañamiento_idAcompañamiento, Carrito_Pedido_idPedido) VALUES ?'; 
     const insert_cart = 'INSERT INTO Toppick_Schema.Carrito (Producto_idProducto, Pedido_idPedido, CantidadProducto) VALUES ?';
     const insert_order = 'INSERT INTO Toppick_Schema.Pedido (idPedido, PuntoDeVenta_idPuntodeVenta, Cliente_idCliente, fechaCreacion, costoTotal, fechaReclamo, estadoPedido, razonRechazo) '
-                       + `VALUES (${order[0]}, ${order[1]}, ${order[2]}, STR_TO_DATE('${order[3]}','%Y-%m-%d %H:%i:%s'), ${order[4]}, STR_TO_DATE('${order[5]}','%Y-%m-%d %H:%i:%s'), '${order[6]}', ${order[7]})`;
+                       + `VALUES (${order_id++}, ${order[1]}, ${order[2]}, STR_TO_DATE('${order[3]}','%Y-%m-%d %H:%i:%s'), ${order[4]}, STR_TO_DATE('${order[5]}','%Y-%m-%d %H:%i:%s'), '${order[6]}', ${order[7]})`;
+
     // Insert 'order'
     connection.query(insert_order, (err) => {
         // Throw error if exists
@@ -118,6 +126,14 @@ app.post('/toppick/app/insert/order', (req, res) => {
         if (err) throw err;
         console.log("Cart inserted"); 
     });
+    // Insert 'accompaniments' if exists
+    if (_accompaniments) { 
+        connection.query(insert_accompaniments, [accompaniments], (err) => {
+            // If an error accours
+            if (err) throw err; 
+            console.log("Accompaniments inserted"); 
+        }); 
+    }
     
     // Send response 
     res.send("Post request processed"); 
@@ -150,14 +166,13 @@ app.get('/toppick/app/oppened-stores', (req, res) => {
 });
 
 // Schedule for a store 
-app.get('toppick/app/schedule/for/:store_id', (req, res) => {
+app.get('/toppick/app/schedule/for/store/:store_id', (req, res) => {
     // Url params
     const store_id = req.params.store_id; 
     // Data base query 
-    const query = 'SELECT idPuntoDeVenta, nombrePuntoDeVenta, nombre, horaApertura, horaCierre '
-                + 'FROM toppick_schema.puntodeventa, toppick_schema.puntodeventaxhorario, toppick_schema.horario, toppick_schema.horaapertura, toppick_schema.horacierre, toppick_schema.día '
-                + `WHERE idPuntoDeVenta = ${store_id} and  PuntodeVenta_idPuntodeVenta = idPuntodeventa and Horario_idHorario = idHorario `
-                +       'and HoraApertura_idHoraApertura = idHoraApertura and HoraCierre_idHoraApertura = idHoraCierre and Día_idDía = idDía';
+    const query = 'SELECT idPuntoDeVenta, nombrePuntoDeVenta, nombreDia, horaApertura, horaCierre '
+                + 'FROM Toppick_Schema.PuntoDeVenta, Toppick_Schema.PuntoDeVentaxHorario, Toppick_Schema.Horario, Toppick_Schema.HoraApertura, Toppick_Schema.HoraCierre, Toppick_Schema.Día '
+                + `WHERE idPuntoDeVenta = ${store_id} and  PuntodeVenta_idPuntodeVenta = idPuntoDeVenta and Horario_idHorario = idHorario and HoraApertura_idHoraApertura = idHoraApertura and HoraCierre_idHoraCierre = idHoraCierre and Día_idDía = idDía`;
     // Query DB 
     connection.query(query, (err, rows, fields) => {
         // Throw error if exists 
@@ -166,6 +181,23 @@ app.get('toppick/app/schedule/for/:store_id', (req, res) => {
         res.json(rows);
     });
 });
+
+// Schedule for an specific product 
+app.get('/toppick/app/schedule/for/product/:product_id', (req, res) => {
+    // Url params
+    const product_id = req.params.product_id;
+    // Data base query 
+    const query = 'SELECT horaInicioDisponibilidad, horaFinDisponibilidad '
+                + 'FROM Toppick_Schema.Producto,  Toppick_Schema.Especialidad '
+                + `WHERE idProducto = ${product_id} and Especialidad.Producto_idProducto = idProducto`;
+    // Query DB 
+    connection.query(query, (err, rows, fields) => {
+        // Throw error if exists 
+        if (err) throw err;
+        // Send response
+        res.json(rows);
+    });
+}); 
 
 // Get all stores
 app.get('/toppick/app/all-stores', (req, res) => {
@@ -184,9 +216,10 @@ app.get('/toppick/app/all-stores', (req, res) => {
 app.get('/toppick/app/catalog/:store_id', (req, res) => {
     const store_id = req.params.store_id;
     // Data base query 
-    const query = 'SELECT idProducto, nombreProducto, precio, tiempoPreparacion, Producto.calificacion, Producto.urlImagen, categoria '
-                + 'FROM toppick_schema.producto, toppick_schema.puntodeventa, toppick_schema.catalogo '
-                + `WHERE idPuntoDeVenta = ${store_id} and PuntodeVenta_idPuntodeVenta = idPuntodeventa and Producto_idProducto = idProducto`;
+    const query = 'SELECT idProducto, nombreProducto, Producto.descripcion, precio, tiempoPreparacion, Producto.calificacion, Producto.urlImagen, categoria, tipo '
+                + 'FROM Toppick_Schema.Producto, Toppick_Schema.PuntoDeVenta, toppick_schema.Catalogo '
+                + `WHERE idPuntoDeVenta = ${store_id} and PuntodeVenta_idPuntodeVenta = idPuntodeventa and Producto_idProducto = idProducto ORDER BY categoria DESC, tipo, idProducto`;
+
     // Query DB 
     connection.query(query, (err, rows, fields) => {
         // Throw error if exists 
@@ -201,9 +234,9 @@ app.get('/toppick/app/stores-that-contains/:product_id', (req, res) => {
     // Url params
     const product_id = req.params.product_id;
     // Data base query 
-    const query = 'SELECT idPuntodeVenta, Usuario_nombreUsuario, Usuario_contraseña, nombrePuntoDeVenta, tipoPuntoVenta, urlUbicacion, Estado, PuntoDeVenta.urlImagen '
-        + 'FROM toppick_schema.producto, toppick_schema.puntodeventa, toppick_schema.catalogo '
-        + `WHERE idProducto = ${product_id} and PuntodeVenta_idPuntodeVenta = idPuntodeventa and Producto_idProducto = idProducto;`;
+    const query = 'SELECT idPuntodeVenta, Usuario_nombreUsuario, Usuario_contraseña, nombrePuntoDeVenta, tipoPuntoVenta, PuntoDeVenta.descripcion, urlUbicacion, estado, PuntoDeVenta.calificacion, PuntoDeVenta.urlImagen '
+                + 'FROM toppick_schema.producto, toppick_schema.puntodeventa, toppick_schema.catalogo '
+                + `WHERE idProducto = ${product_id} and PuntodeVenta_idPuntodeVenta = idPuntodeventa and Producto_idProducto = idProducto`;
     // Query DB 
     connection.query(query, (err, rows, fields) => {
         // Throw error if exists 
@@ -218,9 +251,9 @@ app.get('/toppick/app/accompaniment-of-specialty/:product_id', (req, res) => {
     // Url params
     const product_id = req.params.product_id;
     // Data base query 
-    const query = 'SELECT idAcompañamiento, nombreAcompañamiento, tipo '
-        + 'FROM toppick_schema.Acompañamiento, toppick_schema.AcompañamientoXEspecialidad, toppick_schema.especialidad, toppick_schema.producto '
-        + `WHERE idProducto = ${product_id} and Producto_IdProducto = idProducto and Especialidad_Producto_idProducto = idProducto and idacompañamiento = acompañamiento_idacompañamiento`;
+    const query = 'SELECT idAcompañamiento, nombreAcompañamiento, Acompañamiento.tipo '
+                + 'FROM toppick_schema.Acompañamiento, toppick_schema.AcompañamientoXEspecialidad, toppick_schema.especialidad, toppick_schema.producto '
+                + `WHERE idProducto = ${product_id} and Producto_IdProducto = idProducto and Especialidad_Producto_idProducto = idProducto and idacompañamiento = acompañamiento_idacompañamiento`;
     // Query DB 
     connection.query(query, (err, rows, fields) => {
         // Throw error if exists 
@@ -235,9 +268,10 @@ app.get('/toppick/app/products-of-combo/:product_id', (req, res) => {
     // Url params 
     const product_id = req.params.product_id;
     // Data base query 
-    const query = 'SELECT idProducto, nombreProducto, precio, tiempoPreparacion, calificacion, urlImagen, categoria '
-        + 'from toppick_schema.Combo, toppick_schema.ProductoXCombo, toppick_schema.producto '
-        + `where toppick_schema.Combo.Producto_idProducto = ${product_id} and toppick_schema.ProductoXCombo.Producto_IdProducto = idProducto and toppick_schema.ProductoXCombo.Combo_Producto_idProducto = toppick_schema.Combo.Producto_idProducto`;
+    const query = 'SELECT idProducto, nombreProducto, Producto.descripcion, precio, tiempoPreparacion, Producto.calificacion, Producto.urlImagen, categoria, tipo'
+                + 'FROM Toppick_Schema.Combo, Toppick_Schema.ProductoXCombo, Toppick_Schema.Producto '
+                + `WHERE toppick_schema.Combo.Producto_idProducto = ${product_id} and toppick_schema.ProductoXCombo.Producto_IdProducto = idProducto `
+                +       'and toppick_schema.ProductoXCombo.Combo_Producto_idProducto = toppick_schema.Combo.Producto_idProducto';
     // Query DB 
     connection.query(query, (err, rows, fields) => {
         // Throw error if exists 
