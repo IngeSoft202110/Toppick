@@ -14,7 +14,7 @@ estructura de JSON de los pedidos
     ]
 }
 */
-
+var last_id = 1;
 var p1 = {
     id: 1,
     horaEntrega: "5:30 pm",
@@ -56,19 +56,32 @@ let cantidadPedidosPorConfirmar = getOrders();
 /**
  *  Interval to make the request to the server 
  */
-// setInterval( () => getOrders(), 2000); 
+setInterval( () => getOrders(), 2000); 
 
 /**
  * Function that gets all the orders of the current store
  */
+
 async function getOrders() {
+    let numeroPedido = getLast_id();
     try {
-        const response = await axios.get('http://localhost:8001/toppick/admin/1');
-        console.log(response.data); 
+        const response = await axios.get('http://localhost:8001/toppick/admin/'+numeroPedido.toString());
+        console.log(response.data);
+        console.log(typeof response.data.horaEntrga)
+        if (response.data == "none") 
+            throw "no hay pedidos nuevos"    
+        nuevoPedido(response.data);
+        setLast_id(numeroPedido+1);
         return response.data; 
     } catch (error) {
         console.log(error); 
     }
+}
+function getLast_id(){
+    return last_id;
+}
+function setLast_id(numero){
+    last_id = numero;
 }
 
 
@@ -206,7 +219,8 @@ function formRechazar(papa,divPedido){
 
 }
 /*--------parte de nuevos pedidos---------*/
-function plantilla_nuevo_producto(numero) {
+function plantilla_nuevo_producto(p) {
+    let numero = p.id;
     //div pedido nuevo
     let divPedido = document.createElement("div");
     divPedido.className = "pedidoNuevo";
@@ -245,7 +259,7 @@ function plantilla_nuevo_producto(numero) {
     colum2.appendChild(botonVerde);
     //evento del boton de aceptar
     botonVerde.addEventListener("click", () => {
-        nuevoPedidoCurso(numero);
+        nuevoPedidoCurso(p);
         removeAllChildNodes(divPedido);
         divPedido.remove(divPedido);
         /* generar codigo para la notifiacion */
@@ -310,6 +324,23 @@ function plantilla_nuevo_producto(numero) {
         }
         
     });
+    //fila 3
+    let parte3 = document.createElement("div");
+    parte3.className = "parte";
+    pedido.append(parte3);
+    let colum31 = document.createElement("div");
+    parte3.appendChild(colum31);
+    let par = document.createElement("p");
+    par.innerHTML = "Hora de entrega";
+    colum31.appendChild(par);
+
+    let colum32 = document.createElement("div");
+    parte3.appendChild(colum32);
+    let par2 = document.createElement("p");
+    let fecha = new Date(JSON.stringify(p.horaEntrega).slice(1,-1));
+    par2.innerHTML = fecha.getHours()+":"+fecha.getMinutes();
+    colum32.appendChild(par2);
+
     return divPedido;
 
 }
@@ -317,7 +348,7 @@ function plantilla_nuevo_producto(numero) {
 function nuevoPedido(pedido) {
     let numero = pedido.id;
     let seccion = document.querySelector(".carta1");
-    let html = plantilla_nuevo_producto(numero);
+    let html = plantilla_nuevo_producto(pedido);
     seccion.appendChild(html);
     setTimeout(() => {
         html.className = "pedidoNuevo activo";
@@ -326,15 +357,15 @@ function nuevoPedido(pedido) {
 
 }
 /* ----------fin nuevos Pedidos--------- */
-
+/*
 nuevoPedido(p1);
-nuevoPedido(p2);/*
+nuevoPedido(p2);
 nuevoPedido(3);
 nuevoPedido(2);
 nuevoPedido(1);*/
 /* --------------parte de pedidos en curso---------------*/
-function plantila_General_curso(numero) {
-
+function plantila_General_curso(p) {
+    let numero = p.id;
     //div pedido nuevo
     let divPedido = document.createElement("div");
     divPedido.className = "pedidoNuevo";
@@ -400,11 +431,28 @@ function plantila_General_curso(numero) {
 
     botonVerde.addEventListener("click", () => {
         console.log("entra");
-        pedidoListo(numero);
+        pedidoListo(p);
         removeAllChildNodes(divPedido);
         divPedido.remove(divPedido);
 
     });
+    //fila 3
+    let parte3 = document.createElement("div");
+    parte3.className = "parte";
+    pedido.append(parte3);
+    let colum31 = document.createElement("div");
+    parte3.appendChild(colum31);
+    let par = document.createElement("p");
+    par.innerHTML = "Hora de entrega";
+    colum31.appendChild(par);
+
+    let colum32 = document.createElement("div");
+    parte3.appendChild(colum32);
+    let par2 = document.createElement("p");
+    let fecha = new Date(JSON.stringify(p.horaEntrega).slice(1,-1));
+    par2.innerHTML = fecha.getHours()+":"+fecha.getMinutes();
+    colum32.appendChild(par2);
+
     return divPedido;
 
 }
@@ -421,7 +469,8 @@ function nuevoPedidoCurso(params) {
 
 /*-------pedidos listos------------*/
 
-function plantila_General_listos(numero) {
+function plantila_General_listos(p) {
+    let numero = p.id;
     //div pedido nuevo
     let divPedido = document.createElement("div");
     divPedido.className = "pedidoNuevo";
@@ -490,6 +539,23 @@ function plantila_General_listos(numero) {
         divPedido.remove(divPedido);
 
     });
+    //fila 3
+    let parte3 = document.createElement("div");
+    parte3.className = "parte";
+    pedido.append(parte3);
+    let colum31 = document.createElement("div");
+    parte3.appendChild(colum31);
+    let par = document.createElement("p");
+    par.innerHTML = "Hora de entrega";
+    colum31.appendChild(par);
+
+    let colum32 = document.createElement("div");
+    parte3.appendChild(colum32);
+    let par2 = document.createElement("p");
+    let fecha = new Date(JSON.stringify(p.horaEntrega).slice(1,-1));
+    par2.innerHTML = fecha.getHours()+":"+fecha.getMinutes();
+    colum32.appendChild(par2);
+
     return divPedido;
 
 }
