@@ -28,16 +28,14 @@ var connection = mysql.createConnection({
 });
 // Connect to database
 connection.connect((err) => {
-    if (err) console.log("error ", err)
-    else
-        console.log("Connection with DB, succsessful")
+    if (err) console.log("error : ", err)
+    else console.log("Connection with DB, succsessful")
 });
 
 
 /*****************/
 /* Web endpoints */
 /*****************/
-// Get a specific order info 
 /*
 estructura de JSON de los pedidos
 {
@@ -52,6 +50,7 @@ estructura de JSON de los pedidos
     ]
 }
 */
+// Get a specific order info 
 app.get('/toppick/admin/:order_id', (req, res) => {
     // Url params
     const order_id = req.params.order_id;
@@ -121,6 +120,24 @@ app.get('/toppick/app/oppened-stores', (req, res) => {
     });
 });
 
+// Schedule for a store 
+app.get('toppick/app/schedule/for/:store_id', (req, res) => {
+    // Url params
+    const store_id = req.params.store_id; 
+    // Data base query 
+    const query = 'SELECT idPuntoDeVenta, nombrePuntoDeVenta, nombre, horaApertura, horaCierre '
+                + 'FROM toppick_schema.puntodeventa, toppick_schema.puntodeventaxhorario, toppick_schema.horario, toppick_schema.horaapertura, toppick_schema.horacierre, toppick_schema.día '
+                + `WHERE idPuntoDeVenta = ${store_id} and  PuntodeVenta_idPuntodeVenta = idPuntodeventa and Horario_idHorario = idHorario `
+                +       'and HoraApertura_idHoraApertura = idHoraApertura and HoraCierre_idHoraApertura = idHoraCierre and Día_idDía = idDía';
+    // Query DB 
+    connection.query(query, (err, rows, fields) => {
+        // Throw error if exists 
+        if (err) throw err;
+        // Send response 
+        res.json(rows);
+    });
+});
+
 // Get all stores
 app.get('/toppick/app/all-stores', (req, res) => {
     // Data base query 
@@ -139,8 +156,8 @@ app.get('/toppick/app/catalog/:store_id', (req, res) => {
     const store_id = req.params.store_id;
     // Data base query 
     const query = 'SELECT idProducto, nombreProducto, precio, tiempoPreparacion, Producto.calificacion, Producto.urlImagen, categoria '
-        + 'FROM toppick_schema.producto, toppick_schema.puntodeventa, toppick_schema.catalogo '
-        + `WHERE idPuntoDeVenta = ${store_id} and PuntodeVenta_idPuntodeVenta = idPuntodeventa and Producto_idProducto = idProducto`;
+                + 'FROM toppick_schema.producto, toppick_schema.puntodeventa, toppick_schema.catalogo '
+                + `WHERE idPuntoDeVenta = ${store_id} and PuntodeVenta_idPuntodeVenta = idPuntodeventa and Producto_idProducto = idProducto`;
     // Query DB 
     connection.query(query, (err, rows, fields) => {
         // Throw error if exists 
