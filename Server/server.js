@@ -1,3 +1,4 @@
+"use strict"
 /****************/
 /* Dependencies */
 /****************/
@@ -37,11 +38,25 @@ connection.connect((err) => {
 /* Web endpoints */
 /*****************/
 // Get a specific order info 
+/*
+estructura de JSON de los pedidos
+{
+    id:123,
+    horaEntrga: 5:30pm,
+    productos: [
+        {
+            idProducto: 1,
+            nombreProducto: pescadito,
+            comentarios:"cualquier cosa"
+        }
+    ]
+}
+*/
 app.get('/toppick/admin/:order_id', (req, res) => {
     // Url params
     const order_id = req.params.order_id;
     // Data base query 
-    const query = `SELECT * 
+    const query = `SELECT idPedido,fechaReclamo,idProducto,nombreProducto,cantidadProducto 
     FROM Toppick_Schema.Producto,Toppick_Schema.Pedido,Toppick_Schema.Carrito 
     WHERE idPedido = ${order_id} && Pedido_idPedido= ${order_id} and producto_idProducto = idProducto `;
     // Query DB ,
@@ -49,9 +64,31 @@ app.get('/toppick/admin/:order_id', (req, res) => {
         // Throw error if exists 
         if (err) throw err;
         // Send response 
-        console.log(rows);
-        res.send(rows);
-    });
+        if (rows.length > 0) {
+            let fecha = new Date((rows[0].fechaReclamo));
+            console.log(fecha);
+            let pedido = {
+                id: rows[0].idPedido,
+                horaEntrega: fecha,
+                productos: []
+            };
+            
+            rows.forEach(p => {
+                
+                let b = {
+                    idProducto: p.idProducto,
+                    nombreProducto: p.nombreProducto,
+                    comentarios: p.cantidadProducto.toString
+                };
+                pedido.productos.push(b);
+
+            });
+
+            res.send(pedido);
+        } else
+            res.send("none");
+
+    }); 
 });
 
 
