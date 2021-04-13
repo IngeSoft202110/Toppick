@@ -56,9 +56,9 @@ app.get('/toppick/admin/:order_id', (req, res) => {
     // Url params
     const order_id = req.params.order_id;
     // Data base query 
-    const query = `SELECT idPedido,fechaReclamo,idProducto,nombreProducto,cantidadProducto 
-    FROM Toppick_Schema.Producto,Toppick_Schema.Pedido,Toppick_Schema.Carrito 
-    WHERE idPedido = ${order_id} && Pedido_idPedido= ${order_id} and producto_idProducto = idProducto `;
+    const query = 'SELECT idPedido,fechaReclamo,idProducto,nombreProducto,cantidadProducto '
+                + 'FROM Toppick_Schema.Producto,Toppick_Schema.Pedido,Toppick_Schema.Carrito '
+                + `WHERE idPedido = ${order_id} && Pedido_idPedido= ${order_id} and producto_idProducto = idProducto `;
     // Query DB ,
     connection.query(query, (err, rows, fields) => {
         // Throw error if exists 
@@ -234,7 +234,7 @@ app.get('/toppick/app/stores-that-contains/:product_id', (req, res) => {
     // Url params
     const product_id = req.params.product_id;
     // Data base query 
-    const query = 'SELECT idPuntodeVenta, Usuario_nombreUsuario, Usuario_contraseña, nombrePuntoDeVenta, tipoPuntoVenta, PuntoDeVenta.descripcion, urlUbicacion, estado, PuntoDeVenta.calificacion, PuntoDeVenta.urlImagen '
+    const query = 'SELECT idPuntodeVenta, Usuario_nombreUsuario, Usuario_contraseña, nombrePuntoDeVenta, tipoPuntoVenta, PuntoDeVenta.descripcion, urlUbicacion, Estado, PuntoDeVenta.calificacion, PuntoDeVenta.urlImagen '
                 + 'FROM toppick_schema.producto, toppick_schema.puntodeventa, toppick_schema.catalogo '
                 + `WHERE idProducto = ${product_id} and PuntodeVenta_idPuntodeVenta = idPuntodeventa and Producto_idProducto = idProducto`;
     // Query DB 
@@ -268,7 +268,7 @@ app.get('/toppick/app/products-of-combo/:product_id', (req, res) => {
     // Url params 
     const product_id = req.params.product_id;
     // Data base query 
-    const query = 'SELECT idProducto, nombreProducto, Producto.descripcion, precio, tiempoPreparacion, Producto.calificacion, Producto.urlImagen, categoria, tipo'
+    const query = 'SELECT idProducto, nombreProducto, Producto.descripcion, precio, tiempoPreparacion, Producto.calificacion, Producto.urlImagen, categoria, tipo '
                 + 'FROM Toppick_Schema.Combo, Toppick_Schema.ProductoXCombo, Toppick_Schema.Producto '
                 + `WHERE toppick_schema.Combo.Producto_idProducto = ${product_id} and toppick_schema.ProductoXCombo.Producto_IdProducto = idProducto `
                 +       'and toppick_schema.ProductoXCombo.Combo_Producto_idProducto = toppick_schema.Combo.Producto_idProducto';
