@@ -1,4 +1,4 @@
-'use strict'; 
+idPuntoDeVenta = 1;
 
 /*
 estructura de JSON de los pedidos
@@ -23,24 +23,24 @@ var listaListos = [];
  * Intervalo para verificar si existen nuevos productos 
  * constantemente en la base de datos 
  */
-setInterval( () => getOrders(), 2000); 
+setInterval(() => getOrders(), 2000);
 
 /**
  * Función que obtiene las nuevas ordenes
  */
 var last_id = 1;
 async function getOrders() {
-    let numeroPedido = last_id;  
+    let numeroPedido = last_id;
     try {
         const response = await axios.get('http://localhost:3000/toppick/admin/' + numeroPedido.toString());
-        if (!response.data) 
+        if (!response.data)
             throw "no hay pedidos nuevos";
         // Crear un nuevo pedido 
         nuevoPedido(response.data);
-        last_id++; 
-        return response.data; 
+        last_id++;
+        return response.data;
     } catch (error) {
-        console.log(error); 
+        console.log(error);
     }
 }
 
@@ -50,18 +50,20 @@ async function getOrders() {
  * Recibe como parámetros la información para el cambio de un pedido 
  * y si no recibe los parámetros, los asigna por defecto 
  */
-async function cambiarEstadoPedido(idPedido = 1, idPuntoDeVenta = 1, nuevoEstado = undefined, razonRechazo = undefined) {
+async function cambiarEstadoPedido(idPedido, nuevoEstado , razonRechazo ) {
     // Declarar los parametros del cuerpo de la solicitud POST 
-    const bodyParams = { 
-                            order_id: idPedido, 
-                            store_id: idPuntoDeVenta, 
-                            new_state: nuevoEstado, 
-                            reject_reazon: razonRechazo
-                        }; 
+    console.log(nuevoEstado);
+    const bodyParams = {
+        order_id: idPedido,
+        store_id: idPuntoDeVenta,
+        new_state: nuevoEstado,
+        reject_reazon: razonRechazo
+    };
+    console.log(bodyParams);
     // Realizar la solicitud POST al servidor 
     await axios.post('http://localhost:3000/toppick/admin/change-state-order', bodyParams)
-                .then( (response) => console.log(response) )
-                .catch( (error) => console.log(error) ); 
+        .then((response) => console.log(response))
+        .catch((error) => console.log(error));
 }
 // Se prueba la petición con los siguientes parámetros 
 // cambiarEstadoPedido(2, 1, 'Nuevooo');  ----> Funciona 
@@ -103,20 +105,20 @@ function listarProductos(numero) {
     n.innerHTML = prducts.productos.length;
     div.appendChild(n);
 
-    
+
     let encabezado = document.createElement("div");
     encabezado.className = "parte productos";
-    encabezado.style ="font-weight: bold;";
+    encabezado.style = "font-weight: bold;";
     let idProducto = document.createElement("div");
     idProducto.innerHTML = "ID";
-    idProducto.className ="encabezado";
+    idProducto.className = "encabezado";
     encabezado.appendChild(idProducto);
     let nombre = document.createElement("div")
     nombre.innerHTML = "Producto";
-    nombre.className ="encabezado";
+    nombre.className = "encabezado";
     encabezado.appendChild(nombre);
     let comentario = document.createElement("div");
-    comentario.innerHTML ="comentarios";
+    comentario.innerHTML = "comentarios";
     comentario.className = "encabezado";
     encabezado.appendChild(comentario)
     lista.appendChild(encabezado);
@@ -130,14 +132,14 @@ function listarProductos(numero) {
         pro.className = "parte productos";
         let id = document.createElement("div");
         id.innerHTML = p.idProducto;
-        id.className ="columna pedidos";
+        id.className = "columna pedidos";
         pro.appendChild(id);
         let r = document.createElement("div")
         r.innerHTML = p.nombreProducto;
-        r.className ="columna pedidos";
+        r.className = "columna pedidos";
         pro.appendChild(r);
         let c = document.createElement("div");
-        c.className ="columna pedidos";
+        c.className = "columna pedidos";
         if (p.comentario == "Sin comentario") {
             c.innerHTML = "  ";
             console.log(p);
@@ -161,23 +163,27 @@ function verDetalles(papa, numero) {
     let produ = listarProductos(numero);
     div.append(produ);
     papa.append(div);
-    
+
 }
-function formRechazar(papa,divPedido){
+function formRechazar(papa, divPedido, p) {
+    /*
+    esta funcion se encarga de adicionar en la ventana del pedido un forumalario para 
+    rechazar el pedido
+    */
     let div = document.createElement("div");
     div.className = "detalles activo";
     let line = document.createElement("div");
     line.className = "linea rechazo";
     div.appendChild(line);
     let form = document.createElement("form");
-    form.setAttribute("onsubmit","return false;");
+    form.setAttribute("onsubmit", "return false;");
     let label = document.createElement("p");
     label.innerHTML = "Seleccione razón de rechazo";
-    label.fontSize ="big";
+    label.fontSize = "big";
     form.appendChild(label);
-    let select  = document.createElement("select");
+    let select = document.createElement("select");
     select.className = "rechazo";
-    let  o = document.createElement("option");
+    let o = document.createElement("option");
     o.innerHTML = "No hay disponibilidad";
     select.appendChild(o);
     o = document.createElement("option");
@@ -188,16 +194,19 @@ function formRechazar(papa,divPedido){
     select.appendChild(o)
     form.appendChild(select);
     form.appendChild(document.createElement("br"));
-    let submit =  document.createElement("input");
+    let submit = document.createElement("input");
     submit.type = "submit";
     submit.value = "Enviar";
-    submit.className ="submitB"
-    form.addEventListener("submit", ()=>{
-        
+    submit.className = "submitB"
+    /*
+    boton para confirmar el rezcho y iniciar el envio del form 
+    */
+    form.addEventListener("submit", () => {
+
         removeAllChildNodes(divPedido);
         divPedido.remove(divPedido);
-        
-        /* generar codigo para la notifiacion */
+        console.log(select.value);
+        cambiarEstadoPedido(idPedido = p.id, nuevoEstado = "Rechazado", razonRechazo = select.value);
     });
     form.appendChild(submit);
     div.appendChild(form);
@@ -206,7 +215,13 @@ function formRechazar(papa,divPedido){
 }
 /*--------parte de nuevos pedidos---------*/
 function plantilla_nuevo_producto(p) {
+
+    /*--------------
+    esta funcion se encarga de crear la ventana para el pedido nuevo(p) y luego lo retorna para
+    ser insertado en la pantalla
+    ----------------*/
     let numero = p.id;
+
     //div pedido nuevo
     let divPedido = document.createElement("div");
     divPedido.className = "pedidoNuevo";
@@ -238,7 +253,10 @@ function plantilla_nuevo_producto(p) {
     colum2.className = "columna";
     parte1.appendChild(colum2);
 
-    //boton verde aceptar
+    /*-------------------
+                    boton verde aceptar
+    aca es el boton donde se genera la opcion de aceptar pedido
+    ------------------*/
     let botonVerde = document.createElement("button");
     botonVerde.className = "botonVerde";
     botonVerde.innerHTML = "Aceptar";
@@ -248,8 +266,8 @@ function plantilla_nuevo_producto(p) {
         nuevoPedidoCurso(p);
         removeAllChildNodes(divPedido);
         divPedido.remove(divPedido);
+        cambiarEstadoPedido(idPedido = p.id, nuevoEstado = "Aceptado", razonRechazo = "");
         /* generar codigo para la notifiacion */
-
     });
 
     //fila 2 de clase parte
@@ -262,23 +280,26 @@ function plantilla_nuevo_producto(p) {
     colum12.className = "columna";
     parte2.appendChild(colum12);
 
-    //boton azul ver detalles
+    /*--------------------
+                boton azul ver detalles
+    eboton para observar los detalles de los productos que obtine el pedido
+    */
     let botonAzul = document.createElement("button");
     botonAzul.className = "botonAzul";
     botonAzul.innerHTML = "Ver detalles";
     colum12.appendChild(botonAzul);
     botonAzul.addEventListener("click", () => {
-        if (botonAzul.innerHTML == "Ver detalles"){
+        if (botonAzul.innerHTML == "Ver detalles") {
             verDetalles(pedido, numero);
             botonAzul.innerHTML = "Menos detalles";
             botonAzul.style = "font-size:small;";
-            setTimeout(()=>{
+            setTimeout(() => {
                 let l = pedido.lastChild;
                 l.className = "detalles activo";
-            },200)
+            }, 200)
         }
-        else{
-            let det =pedido.lastChild;
+        else {
+            let det = pedido.lastChild;
             removeAllChildNodes(det);
             det.remove(det);
             botonAzul.innerHTML = "Ver detalles";
@@ -291,22 +312,27 @@ function plantilla_nuevo_producto(p) {
     colum22.className = "columna";
     parte2.appendChild(colum22);
 
-    //boton rojo rechazar
+    /*------------------
+                        boton rojo rechazar
+    Boton que se encarga de ar la opcion de rezahar el pedido mostrando
+    el formulario de razon de rechazo
+    -------------------*/
     let botonRojo = document.createElement("button");
     botonRojo.className = "botonRojo";
     botonRojo.innerHTML = "Rechazar";
     colum22.appendChild(botonRojo);
     botonRojo.addEventListener("click", () => {
-        if(botonRojo.innerHTML == "Rechazar"){
-            formRechazar(pedido, divPedido);
+        if (botonRojo.innerHTML == "Rechazar") {
+            //funcion para hacer el formularo de rechazo
+            formRechazar(pedido, divPedido, p);
             botonRojo.innerHTML = "Cancelar";
-        }else{
+        } else {
             botonRojo.innerHTML = "Rechazar";
-            let det =pedido.lastChild;
+            let det = pedido.lastChild;
             removeAllChildNodes(det);
             det.remove(det);
         }
-        
+
     });
     //fila 3
     let parte3 = document.createElement("div");
@@ -321,8 +347,8 @@ function plantilla_nuevo_producto(p) {
     let colum32 = document.createElement("div");
     parte3.appendChild(colum32);
     let par2 = document.createElement("p");
-    let fecha = new Date(JSON.stringify(p.horaEntrega).slice(1,-1));
-    par2.innerHTML = fecha.getHours()+":"+fecha.getMinutes();
+    let fecha = new Date(JSON.stringify(p.horaEntrega).slice(1, -1));
+    par2.innerHTML = fecha.getHours() + ":" + fecha.getMinutes();
     colum32.appendChild(par2);
 
     return divPedido;
@@ -330,10 +356,25 @@ function plantilla_nuevo_producto(p) {
 }
 
 function nuevoPedido(pedido) {
+    /*-------------------
+    llega un JSON con la informacion del pedido
+    luego se procede a agregar los pedidos en la pantalla  
+    ---------------------*/
+
+    /*-------------------
+    Se obtiene el elemento donde se va ainsertar la ventana del pedido
+    ---------------------*/
     let numero = pedido.id;
     let seccion = document.querySelector(".carta1");
+    /*------------------
+    la funcion plantilla nueva crea la ventanta para la informacion del pedido
+    --------------------*/
     let html = plantilla_nuevo_producto(pedido);
     seccion.appendChild(html);
+
+    /*-----------------
+    intervalo para aparicion de la ventana 
+    -------------------*/
     setTimeout(() => {
         html.className = "pedidoNuevo activo";
     }, 200);
@@ -382,17 +423,17 @@ function plantila_General_curso(p) {
     botonAzul.innerHTML = "Ver detalles";
     colum1.appendChild(botonAzul);
     botonAzul.addEventListener("click", () => {
-        if (botonAzul.innerHTML == "Ver detalles"){
+        if (botonAzul.innerHTML == "Ver detalles") {
             verDetalles(pedido, numero);
             botonAzul.innerHTML = "Menos detalles";
             botonAzul.style = "font-size:small;";
-            setTimeout(()=>{
+            setTimeout(() => {
                 let l = pedido.lastChild;
                 l.className = "detalles activo";
-            },200)
+            }, 200)
         }
-        else{
-            let det =pedido.lastChild;
+        else {
+            let det = pedido.lastChild;
             removeAllChildNodes(det);
             det.remove(det);
             botonAzul.innerHTML = "Ver detalles";
@@ -416,7 +457,7 @@ function plantila_General_curso(p) {
         pedidoListo(p);
         removeAllChildNodes(divPedido);
         divPedido.remove(divPedido);
-
+        cambiarEstadoPedido(idPedido = p.id, nuevoEstado = "Listo", razonRechazo = "");
     });
     //fila 3
     let parte3 = document.createElement("div");
@@ -431,15 +472,21 @@ function plantila_General_curso(p) {
     let colum32 = document.createElement("div");
     parte3.appendChild(colum32);
     let par2 = document.createElement("p");
-    let fecha = new Date(JSON.stringify(p.horaEntrega).slice(1,-1));
-    par2.innerHTML = fecha.getHours()+":"+fecha.getMinutes();
+    let fecha = new Date(JSON.stringify(p.horaEntrega).slice(1, -1));
+    par2.innerHTML = fecha.getHours() + ":" + fecha.getMinutes();
     colum32.appendChild(par2);
 
     return divPedido;
 
 }
 function nuevoPedidoCurso(params) {
+
+    /*
+    Funcion que se encarga de cambiar la ventana a el estado de pedido  en curso 
+    solo se ejecuta si el estado es acepado
+    */
     let seccion = document.querySelector(".carta2");
+    //general la ventana que se inserta en el elemento seccion 
     let html = plantila_General_curso(params);
     seccion.appendChild(html);
     setTimeout(() => {
@@ -485,19 +532,19 @@ function plantila_General_listos(p) {
     botonAzul.innerHTML = "Ver detalles";
     colum1.appendChild(botonAzul);
     botonAzul.addEventListener("click", () => {
-        if (botonAzul.innerHTML == "Ver detalles"){
+        if (botonAzul.innerHTML == "Ver detalles") {
             verDetalles(pedido, numero);
             botonAzul.innerHTML = "Menos detalles";
             botonAzul.style = "font-size:small;";
-            setTimeout(()=>{
+            setTimeout(() => {
                 let l = pedido.lastChild;
                 console.log("aca");
                 console.log(l);
                 l.className = "detalles activo";
-            },200)
+            }, 200)
         }
-        else{
-            let det =pedido.lastChild;
+        else {
+            let det = pedido.lastChild;
             removeAllChildNodes(det);
             det.remove(det);
             botonAzul.innerHTML = "Ver detalles";
@@ -519,6 +566,7 @@ function plantila_General_listos(p) {
     botonVerde.addEventListener("click", () => {
         removeAllChildNodes(divPedido);
         divPedido.remove(divPedido);
+        cambiarEstadoPedido(idPedido = p.id, nuevoEstado = "Terminado", razonRechazo = "");
 
     });
     //fila 3
@@ -534,8 +582,8 @@ function plantila_General_listos(p) {
     let colum32 = document.createElement("div");
     parte3.appendChild(colum32);
     let par2 = document.createElement("p");
-    let fecha = new Date(JSON.stringify(p.horaEntrega).slice(1,-1));
-    par2.innerHTML = fecha.getHours()+":"+fecha.getMinutes();
+    let fecha = new Date(JSON.stringify(p.horaEntrega).slice(1, -1));
+    par2.innerHTML = fecha.getHours() + ":" + fecha.getMinutes();
     colum32.appendChild(par2);
 
     return divPedido;
