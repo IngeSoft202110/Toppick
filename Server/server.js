@@ -119,7 +119,7 @@ app.post('/toppick/app/insert/order', (req, res) => {
     const order = req.body.orden; // Order 
     const _accompaniments = req.body.acompañamientos || undefined; // Accompaniments
     // Set order_id in cart
-    const cart = _cart.map( (product) => { return [product[0], order_id, product[2]], product[3] }); 
+    const cart = _cart.map( (product) => { return [product[0], order_id, product[2], product[3]] });
     // Set order_id in accompaniments if accompaniments exists, otherwise, set undefined
     const accompaniments = (_accompaniments) ? _accompaniments.map( (accomp) => { return [accomp[0], accomp[1], order_id] }) : undefined; 
 
@@ -127,7 +127,7 @@ app.post('/toppick/app/insert/order', (req, res) => {
     const insert_accompaniments = 'INSERT INTO Toppick_Schema.AcompañamientoXSeleccion (Especialidad_Producto_idProducto, Acompañamiento_idAcompañamiento, Carrito_Pedido_idPedido) VALUES ?'; 
     const insert_cart = 'INSERT INTO Toppick_Schema.Carrito (Producto_idProducto, Pedido_idPedido, CantidadProducto, comentario) VALUES ?';
     const insert_order = 'INSERT INTO Toppick_Schema.Pedido (idPedido, PuntoDeVenta_idPuntodeVenta, Cliente_idCliente, fechaCreacion, costoTotal, fechaReclamo, estadoPedido, razonRechazo) '
-                       + `VALUES (${order_id++}, ${order[1]}, ${order[2]}, STR_TO_DATE('${order[3]}','%Y-%m-%d %H:%i:%s'), ${order[4]}, STR_TO_DATE('${order[5]}','%Y-%m-%d %H:%i:%s'), '${order[6]}', ${order[7]})`;
+                    + `VALUES (${order_id++}, ${order[1]}, ${order[2]}, STR_TO_DATE('${order[3]}','%Y-%m-%d %T'), ${order[4]}, STR_TO_DATE('${order[5]}','%Y-%m-%d %T'), '${order[6]}', ${order[7]})`;
 
     // Insert 'order'
     connection.query(insert_order, (err) => {
@@ -160,7 +160,7 @@ app.get('/toppick/app/active-orders-of/:user_id', (req, res) => {
     // Url params
     const user_id = req.params.user_id; 
     // Data base query 
-    const query = 'Select idPedido, estadoPedido, costoTotal, fechaReclamo, nombrePuntoDeVenta, nombreProducto, cantidadProducto '
+    const query = `Select idPedido, estadoPedido, costoTotal, DATE_FORMAT(fechaReclamo, '%Y-%m-%d %T') as fechaReclamo, nombrePuntoDeVenta, nombreProducto, cantidadProducto `
                 + 'FROM Toppick_Schema.Pedido, Toppick_Schema.PuntoDeVenta, Toppick_Schema.Carrito, Toppick_Schema.Producto '
                 + `WHERE Cliente_IdCliente = ${user_id} and idPuntoDeVenta =  PuntoDeVenta_idPuntoDeVenta and Pedido_idPedido = idPedido `
                 +       `and Producto_idProducto = idProducto and (estadoPedido = 'Solicitado' or estadoPedido = 'Aceptado' or estadoPedido = 'Listo')`;
