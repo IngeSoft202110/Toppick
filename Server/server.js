@@ -9,7 +9,7 @@ const bodyParser = require('body-parser');
 /************************/
 /* Server configuration */
 /************************/
-const PORT = process.env.PORT || 8001;
+const PORT = process.env.PORT || 3000;
 const app = express();
 
 app.use(cors()); // Get requests
@@ -56,9 +56,9 @@ app.get('/toppick/admin/:order_id', (req, res) => {
     // Url params
     const order_id = req.params.order_id;
     // Data base query 
-    const query = 'SELECT idPedido,fechaReclamo,idProducto,nombreProducto,cantidadProducto '
+    const query = 'SELECT idPedido,fechaReclamo,idProducto,nombreProducto,cantidadProducto, comentario '
                 + 'FROM Toppick_Schema.Producto,Toppick_Schema.Pedido,Toppick_Schema.Carrito '
-                + `WHERE idPedido = ${order_id} && Pedido_idPedido= ${order_id} and producto_idProducto = idProducto `;
+                + `WHERE idPedido = ${order_id} and Pedido_idPedido= ${order_id} and producto_idProducto = idProducto`;
     // Query DB ,
     connection.query(query, (err, rows, fields) => {
         // Throw error if exists 
@@ -74,46 +74,71 @@ app.get('/toppick/admin/:order_id', (req, res) => {
             };
             
             rows.forEach(p => {
-                
                 let b = {
                     idProducto: p.idProducto,
                     nombreProducto: p.nombreProducto,
-                    comentarios: p.cantidadProducto.toString
+                    cantidad: p.cantidadProducto,
+                    comentario: p.comentario
                 };
                 pedido.productos.push(b);
-
             });
 
             res.send(pedido);
-        } else
-            res.send("none");
+        } 
+        else res.send(undefined);
 
     }); 
 });
 
-// Change state of an order 
+// Change state of an order -> TODO : Make query with store_id 
 app.post('/toppick/admin/change-state-order', (req, res) => {
     // Body params
     const order_id = req.body.order_id; 
-    const new_state = req.body.new_state; 
+    const store_id = req.body.store_id;
+    const new_state = req.body.new_state || undefined; 
     const reject_reazon = req.body.reject_reazon || undefined; 
-    // Data base query 
-    const query = '';
-    // Query DB 
-    connection.query(query, (err, rows, fields) => {
+    // Create possible queries 
+    const update_query = `UPDATE Toppick_Schema.Pedido SET estadoPedido = '${new_state}' WHERE idPedido = ${order_id}`; // When the order is not rejected
+    const reject_query = `UPDATE Toppick_Schema.Pedido SET estadoPedido = '${new_state}', razonRechazo = '${reject_reazon}' WHERE idPedido = ${order_id}`; // When the order is rejected
+    // Check if the the statement is a rejection or just an update of the state  
+    const final_query = (!reject_reazon) ? update_query : reject_query; 
+    // Update tuple in DB  
+    connection.query(final_query, (err) => {
         // Throw error if exists 
         if (err) throw err;
-        // Send response 
-        res.json(rows);
     });
+    console.log('Row updated'); 
+    // Send response 
+    res.send('Row updated'); 
 }); 
 
 /*****************/
 /* App endpoints */
 /*****************/
+let order_id; 
+/** 
+ * Function that assings the number of orders to 'order_id'
+ * in that way, the created id will be : orders + 1 
+ * TODO ----> Use store_id to get the number of orders given a store 
+ */
+function get_number_of_orders() {
+    const number_of_orders = 'SELECT COUNT(*) FROM Toppick_Schema.Pedido'; 
+    connection.query(number_of_orders, (err, result) => { 
+        // In case of error
+        if (err) throw err; 
+        // Return the number of orders 
+        const b = 'COUNT(*)'; 
+        // Assign the result to the variable 'order_id'
+        order_id = result[0][b];  
+    });
+}
+// Call function that searches the number of orders 
+get_number_of_orders(); 
 // Insert an order in the database
-let order_id = 10; // A random Id to start the counter  
 app.post('/toppick/app/insert/order', (req, res) => {
+    // Increment order_id by 1
+    order_id++; 
+
     // Parameters
     const _cart = req.body.carrito; // Cart
     const order = req.body.orden; // Order 
@@ -127,7 +152,7 @@ app.post('/toppick/app/insert/order', (req, res) => {
     const insert_accompaniments = 'INSERT INTO Toppick_Schema.AcompañamientoXSeleccion (Especialidad_Producto_idProducto, Acompañamiento_idAcompañamiento, Carrito_Pedido_idPedido) VALUES ?'; 
     const insert_cart = 'INSERT INTO Toppick_Schema.Carrito (Producto_idProducto, Pedido_idPedido, CantidadProducto, comentario) VALUES ?';
     const insert_order = 'INSERT INTO Toppick_Schema.Pedido (idPedido, PuntoDeVenta_idPuntodeVenta, Cliente_idCliente, fechaCreacion, costoTotal, fechaReclamo, estadoPedido, razonRechazo) '
-                    + `VALUES (${order_id++}, ${order[1]}, ${order[2]}, STR_TO_DATE('${order[3]}','%Y-%m-%d %T'), ${order[4]}, STR_TO_DATE('${order[5]}','%Y-%m-%d %T'), '${order[6]}', ${order[7]})`;
+                       + `VALUES (${order_id}, ${order[1]}, ${order[2]}, STR_TO_DATE('${order[3]}','%Y-%m-%d %T'), ${order[4]}, STR_TO_DATE('${order[5]}','%Y-%m-%d %T'), '${order[6]}', ${order[7]})`;
 
     // Insert 'order'
     connection.query(insert_order, (err) => {
