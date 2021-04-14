@@ -1,4 +1,4 @@
-'use strict'
+'use strict'; 
 
 /*
 estructura de JSON de los pedidos
@@ -14,77 +14,63 @@ estructura de JSON de los pedidos
     ]
 }
 */
-var last_id = 1;
-var p1 = {
-    id: 1,
-    horaEntrega: "5:30 pm",
-    productos: [
-        {
-            idProducto: 1,
-            nombreProducto: "pescadito",
-            comentario: "Sin comentario"
-        }
-    ]
-}
-var p2 = {
-    id: 2,
-    horaEntrega: "5:30 pm",
-    productos: [
-        {
-            idProducto: 1,
-            nombreProducto: "pescadito",
-            comentario: "Sin comentario"
-        },
-        {
-            idProducto: 5,
-            nombreProducto: "carne",
-            comentario: "sin salsa, papas en casquillos"
-        }
-    ]
-}
 
 var listaConfirmar = [];
 var listaEnCurso = [];
 var listaListos = [];
 
-
 /**
- * Variables para saber cuantos pedidos tiene la tienda actualmente 
- */
-let cantidadPedidosPorConfirmar = getOrders();
-
-/**
- *  Interval to make the request to the server 
+ * Intervalo para verificar si existen nuevos productos 
+ * constantemente en la base de datos 
  */
 setInterval( () => getOrders(), 2000); 
 
 /**
- * Function that gets all the orders of the current store
+ * Función que obtiene las nuevas ordenes
  */
-
+var last_id = 1;
 async function getOrders() {
-    let numeroPedido = getLast_id();
+    let numeroPedido = last_id;  
     try {
-        const response = await axios.get('http://localhost:8001/toppick/admin/'+numeroPedido.toString());
-        console.log(response.data);
-        console.log(typeof response.data.horaEntrga)
-        if (response.data == "none") 
-            throw "no hay pedidos nuevos"    
+        const response = await axios.get('http://localhost:3000/toppick/admin/' + numeroPedido.toString());
+        if (!response.data) 
+            throw "no hay pedidos nuevos";
+        // Crear un nuevo pedido 
         nuevoPedido(response.data);
-        setLast_id(numeroPedido+1);
+        last_id++; 
         return response.data; 
     } catch (error) {
         console.log(error); 
     }
 }
-function getLast_id(){
-    return last_id;
+
+/**
+ * Función que realiza una petición de tipo POST al servidor 
+ * y pretende cambiar el estado de un pedido en una tienda. 
+ * Recibe como parámetros la información para el cambio de un pedido 
+ * y si no recibe los parámetros, los asigna por defecto 
+ */
+async function cambiarEstadoPedido(idPedido = 1, idPuntoDeVenta = 1, nuevoEstado = undefined, razonRechazo = undefined) {
+    // Declarar los parametros del cuerpo de la solicitud POST 
+    const bodyParams = { 
+                            order_id: idPedido, 
+                            store_id: idPuntoDeVenta, 
+                            new_state: nuevoEstado, 
+                            reject_reazon: razonRechazo
+                        }; 
+    // Realizar la solicitud POST al servidor 
+    await axios.post('http://localhost:3000/toppick/admin/change-state-order', bodyParams)
+                .then( (response) => console.log(response) )
+                .catch( (error) => console.log(error) ); 
 }
-function setLast_id(numero){
-    last_id = numero;
-}
+// Se prueba la petición con los siguientes parámetros 
+// cambiarEstadoPedido(2, 1, 'Nuevooo');  ----> Funciona 
+// cambiarEstadoPedido(1, 1, 'Rech', 'No se cuentan con los alimentos suficientes');   ------> Funciona
 
 
+/**
+ * 
+ */
 function removeAllChildNodes(parent) {
     while (parent.firstChild) {
         parent.removeChild(parent.firstChild);
@@ -288,8 +274,6 @@ function plantilla_nuevo_producto(p) {
             botonAzul.style = "font-size:small;";
             setTimeout(()=>{
                 let l = pedido.lastChild;
-                console.log("aca");
-                console.log(l);
                 l.className = "detalles activo";
             },200)
         }
@@ -404,8 +388,6 @@ function plantila_General_curso(p) {
             botonAzul.style = "font-size:small;";
             setTimeout(()=>{
                 let l = pedido.lastChild;
-                console.log("aca");
-                console.log(l);
                 l.className = "detalles activo";
             },200)
         }
