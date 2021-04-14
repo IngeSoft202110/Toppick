@@ -16,9 +16,9 @@ class HomeCardList extends StatelessWidget {
     var f1 = () => Navigator.push(
         context, MaterialPageRoute(builder: (context) => ShopCategoryList(this.current)));
     var f2 = () => Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ProductList(this.current, new Tienda(-1, "", "", [], "", "", false, ""))));
+        context, MaterialPageRoute(builder: (context) => ProductList(this.current, new Tienda(-1, "", "", "", "", "Cerrado", ""))));
     var f3 = () => Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ProductList(this.current, new Tienda(-1, "", "", [], "", "", false, ""))));
+        context, MaterialPageRoute(builder: (context) => ProductList(this.current, new Tienda(-1, "", "", "", "", "Cerrado", ""))));
     return Container(
       margin: EdgeInsets.only(top: 5.0),
       height: MediaQuery.of(context).size.height,

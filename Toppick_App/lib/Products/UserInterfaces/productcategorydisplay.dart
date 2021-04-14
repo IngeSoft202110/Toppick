@@ -24,7 +24,7 @@ class ProductCategoryDisplay extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: 150,
+          height: 175,
           child: this.products,
         ),
       ],

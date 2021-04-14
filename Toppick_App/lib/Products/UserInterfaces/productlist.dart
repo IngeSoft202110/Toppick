@@ -34,7 +34,6 @@ class ProductListState extends State<ProductList> {
   ese parametro se listan todos los productos.*/
   List<dynamic> productList = [];
   //Esta es la lista de tiendas donde se puede conseguir el producto
-  List<Tienda> shopList = [];
   String currentTitle = "";
   String currentDescription = "";
   ListView products = ListView(
@@ -64,10 +63,9 @@ class ProductListState extends State<ProductList> {
                         builder: (context) {
                           if(selected[index] is Combo){
                             return HomeCombosCard(
-                                  selected[index], this.shopList, widget.store, widget.current);
+                                  selected[index], widget.store, widget.current);
                           }else{
-                            return HomeProductCard(selected[index],
-                                  this.shopList, widget.store, widget.current);
+                            return HomeProductCard(selected[index], widget.store, widget.current);
                           }
                         }
                       )
@@ -123,8 +121,28 @@ class ProductListState extends State<ProductList> {
                     itemBuilder: selectProductsFromCategory,
                   ),
                 ),
-                ProductCategoryDisplay(
-                    this.currentTitle, this.currentDescription, this.products),
+                FutureBuilder(
+                  future: (widget.store!.id==-1)? controller.getAllAvailableProducts():controller.getProductCatalogueById(widget.store!.id),
+                  builder: (context,  AsyncSnapshot<List<dynamic>> snapshot){
+                    switch(snapshot.connectionState){
+                      case ConnectionState.none:
+                        break;
+                      case ConnectionState.waiting:
+                        break;
+                      case ConnectionState.active:
+                        break;
+                      case ConnectionState.done:
+                      this.productList = snapshot.data!;
+                        return ProductCategoryDisplay(
+                          this.currentTitle, this.currentDescription, this.products);
+                    }
+                    return Container(
+                      padding: const EdgeInsets.only(top: 150.0, left: 150, right: 150),
+                      height: 250,
+                      child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFFFEEE)),)
+                    );
+                  }
+                ),
                 SizedBox(
                   height: 10,
                 ),
@@ -143,8 +161,6 @@ class ProductListState extends State<ProductList> {
       this.categories = this.controller.getProductCategories();
       this.descriptions = this.controller.getCategoryDescription();
       this.logoPahts = this.controller.getCategoryImagePath();
-      this.productList = this.controller.getAllAvailableProducts();
-      this.shopList = this.shopController.getAllAvailableShops(); //Esta es la lista de tiendas donde se puede conseguir el producto
       for (int i = 0; i < this.categories.length; i++) {
         widgets.add(
             ProductCategoryCard(this.categories[i], this.descriptions[i], this.logoPahts[i]));

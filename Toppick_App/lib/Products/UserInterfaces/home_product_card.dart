@@ -1,7 +1,9 @@
 import 'package:Toppick_App/Orders/Models/pedido.dart';
 import 'package:Toppick_App/Products/Bloc/product_controller.dart';
+import 'package:Toppick_App/Products/Models/acompanamiento.dart';
 import 'package:Toppick_App/Products/Models/especialidad.dart';
 import 'package:Toppick_App/Products/UserInterfaces/personalize.dart';
+import 'package:Toppick_App/Shops/Bloc/shop_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:Toppick_App/Products/UserInterfaces/add_substract.dart';
 import '../../GeneralUserInterfaces/generic_button.dart';
@@ -108,7 +110,7 @@ Widget comments(TextEditingController controller) {
   );
 }
 
-showCorrectAdd(BuildContext context, String productName){
+showCorrectAdd(BuildContext context, String productName, ShopController shopController, Tienda shopSelected) {
   Widget okButton = TextButton(
     child: Text("OK"),
     onPressed: () { Navigator.of(context).pop();},
@@ -126,9 +128,10 @@ showCorrectAdd(BuildContext context, String productName){
       return alert;
     },
   );
+  shopController.getShopSchedule(shopSelected.id, shopSelected);
 }
 
-showStoreWarning(BuildContext context){
+showStoreWarning(BuildContext context) {
   Widget okButton = TextButton(
     child: Text("OK"),
     onPressed: () { Navigator.of(context).pop();},
@@ -151,14 +154,15 @@ showStoreWarning(BuildContext context){
 // ignore: must_be_immutable
 class HomeProductCard extends StatelessWidget {
   HomeProductCard(
-      this.selected, this.available, this.shopSelected, this.current);
+      this.selected, this.shopSelected, this.current);
   final dynamic selected;
-  final List<Tienda> available;
+  List<Tienda> available = [];
   final Pedido current;
   int quantity = 1;
   Tienda? shopSelected;
   TextEditingController textController = TextEditingController();
   ProductController controller = ProductController();
+  ShopController shopController = ShopController();
 
   void updateStore(Tienda? selected) {
     this.shopSelected = selected;
@@ -177,22 +181,17 @@ class HomeProductCard extends StatelessWidget {
       this.selected.addComments(controller.text);
     }
     if (shopSelected!.id != -1) {
-      if (this.current.carrito.containsKey(shopSelected)) {
-        if (this.current.carrito[shopSelected]!.containsKey(selected)) {
-          int newValue =
-              this.current.carrito[shopSelected]![selected]! + quantity;
-          this.current.carrito[shopSelected]![selected] = newValue;
-          showCorrectAdd(context, this.selected.name);
+      if (this.current.storeIsInCurrentOrder(this.shopSelected!)) {
+        if (this.current.productInShopOrder(shopSelected!, selected)) {
+          this.current.addQuantityToExistingProduct(shopSelected!, selected, quantity);
+          showCorrectAdd(context, this.selected.name, this.shopController, this.shopSelected!);
         } else {
-          this
-              .current
-              .carrito[shopSelected]!
-              .addAll({this.selected: this.quantity});
-              showCorrectAdd(context, this.selected.name);
+          this.current.addProductToSelectedStore(shopSelected!, selected, quantity);
+          showCorrectAdd(context, this.selected.name, this.shopController, this.shopSelected!);
         }
       } else {
-        this.current.carrito[shopSelected] = {this.selected: this.quantity};
-        showCorrectAdd(context, this.selected.name);
+        this.current.addStoreWithProducts(shopSelected!, selected, quantity);
+        showCorrectAdd(context, this.selected.name, this.shopController, this.shopSelected!);
       }
     } else {
       showStoreWarning(context);
@@ -217,15 +216,55 @@ class HomeProductCard extends StatelessWidget {
                     image("assets/img/pescadito.jpg", double.infinity, 315),
                     productHead(
                         this.selected.name, this.selected, updateQuantity),
-                    if(controller.hasDescription(this.selected))
-                      productDescription(this.selected.description),
+                    productDescription(this.selected.description),
                     if (this.selected is Especialidad)
-                      Center(child: AddTodoButton(this.selected)),
+                      FutureBuilder(
+                        future: this.controller.getAditionsOfProduct(this.selected.id),
+                        builder: (context,  AsyncSnapshot<List<Acompanamiento>> snapshot){
+                          switch(snapshot.connectionState){
+                          case ConnectionState.none:
+                            break;
+                          case ConnectionState.waiting:
+                            break;
+                          case ConnectionState.active:
+                            break;
+                          case ConnectionState.done:
+                          this.selected.acompanamientos = snapshot.data!;
+                            return Center(child: AddTodoButton(this.selected));
+                        }
+                        return Container(
+                          padding: const EdgeInsets.only(top: 150.0, left: 150, right: 150),
+                          height: 250,
+                          child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.red),)
+                        );
+                        }
+                      ),
                     if (controller.hasComments(this.selected))
                       comments(this.textController),
                     place(),
-                    RadioButtonListStore(this.selected, this.available,
-                        this.shopSelected, updateStore),
+                    FutureBuilder(
+                      future: this.shopController.getAvailableShopsByProduct(this.selected.id),
+                      builder: (context,  AsyncSnapshot<List<Tienda>> snapshot){
+                        switch(snapshot.connectionState){
+                          case ConnectionState.none:
+                            break;
+                          case ConnectionState.waiting:
+                            break;
+                          case ConnectionState.active:
+                            break;
+                          case ConnectionState.done:
+                          this.available = snapshot.data!;
+                            return RadioButtonListStore(this.selected, this.available,
+                              this.shopSelected, updateStore);
+                        }
+                        return Container(
+                          padding: const EdgeInsets.only(top: 150.0, left: 150, right: 150),
+                          height: 250,
+                          child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.red),)
+                        );
+                      }
+                    ),
+                    
                     Center(
                       child: GenericButton("Ver Reseñas", Color(0xFF2196F3),
                           274, 45, 15.0, 0, 0, 0, 22, 30, () => {}),

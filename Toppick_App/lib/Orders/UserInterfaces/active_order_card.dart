@@ -2,6 +2,7 @@ import 'package:Toppick_App/Orders/Models/pedido.dart';
 import 'package:Toppick_App/Products/Models/producto.dart';
 import 'package:Toppick_App/Shops/Models/tienda.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ActiveOrderCard extends StatefulWidget {
   ActiveOrderCard(this.current, this.number);
@@ -26,30 +27,35 @@ class _ActiveOrderCardState extends State<ActiveOrderCard> {
       result.add(
         Padding(
           padding: const EdgeInsets.only(left: 10.0),
-          child: Text("${key.name} X$value"),
+          child: Row(
+            children: [
+              Container(width: 150, child: Text("${key.name} ", overflow: TextOverflow.ellipsis)),
+              Text("  X $value")
+            ],
+          ),
         )
       );
     });
+    var formatter = NumberFormat('#,###,000');
     result.add(
       Padding(
         padding: const EdgeInsets.only(left: 10.0, top: 5.0),
-        child: Text("Valor: \$${widget.current.costoTotal}", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+        child: Text("Valor: \$${formatter.format(widget.current.costoTotal)}", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
       )
     );
-    String year = widget.current.fechaCreacion.year.toString();
-    String month = widget.current.fechaCreacion.month.toString();
-    String day = widget.current.fechaCreacion.day.toString();
+    DateFormat dateFormat = DateFormat("dd/MM/yyyy").add_jm();
+    String time = dateFormat.format(widget.current.fechaReclamo);
     result.add(
       Padding(
         padding: const EdgeInsets.only(left: 10.0, top: 5.0, bottom: 5.0),
-        child: Text("Fecha: $day/$month/$year", style: TextStyle(color: Color(0xFF0CC665), fontWeight: FontWeight.bold),),
+        child: Text("Fecha reclamo: $time", style: TextStyle(color: Color(0xFF0CC665), fontWeight: FontWeight.bold),),
       )
     );
     return result;
   }
   @override
   Widget build(BuildContext context) {
-    this.store = store = widget.current.carrito.keys.first;
+    this.store = widget.current.carrito.keys.first;
     return Padding(
       padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
       child: Container(

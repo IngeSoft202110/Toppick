@@ -1,6 +1,7 @@
 import 'package:Toppick_App/Products/Models/producto.dart';
 import 'package:Toppick_App/Shops/Models/tienda.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 
 class AddSubstract extends StatefulWidget {
@@ -28,13 +29,14 @@ class _AddSubstractState extends State<AddSubstract> {
   final Function(int value, String operationType, Producto selected, Tienda currentStore) notifyParent;
   @override
   Widget build(BuildContext context) {
+    var formatter = NumberFormat('#,###,000');
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Padding(
           padding: const EdgeInsets.only(right: 8.0),
           child: Text(
-            "\$$_price",
+            "\$${formatter.format(_price)}",
             style: TextStyle(
                 fontWeight: FontWeight.w700,
                 fontSize: 20,

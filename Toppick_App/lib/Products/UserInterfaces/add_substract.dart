@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
 import '../Models/producto.dart';
+import 'package:intl/intl.dart';
 
 class AddSubstract extends StatefulWidget {
   AddSubstract(this.selected, this.notifyParent);
@@ -19,11 +19,12 @@ class _AddSubstractState extends State<AddSubstract> {
   final Function(String type) notifyParent;
   @override
   Widget build(BuildContext context) {
+    var formatter = NumberFormat('#,###,000');
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          "\$$_price",
+          "\$${formatter.format(_price)}",
           style: TextStyle(
               fontWeight: FontWeight.w700,
               fontSize: 30,

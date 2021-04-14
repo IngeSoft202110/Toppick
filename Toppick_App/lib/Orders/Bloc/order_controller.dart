@@ -1,5 +1,4 @@
 import 'package:Toppick_App/Products/Models/producto.dart';
-import 'package:Toppick_App/Shops/Models/horario.dart';
 import 'package:Toppick_App/Shops/Models/tienda.dart';
 
 import '../Models/pedido.dart';
@@ -25,34 +24,44 @@ class OrderController {
     return this.orderqueries.getOrderStatusResponse();
   }
 
-  bool postOrder(Pedido order) {
-    return this.orderqueries.postOrder(order);
+  //bool postOrder(Pedido order) {
+    //return this.orderqueries.postOrder(order);
+  //}
+  
+  void sendOrder(Pedido pedido){
+    this.orderqueries.funcionDatos(pedido);
   }
 
-  TimeOfDay getMaxShopsHour(Pedido current, int day){
-    Iterable<Tienda?> shops = current.carrito.keys;
+  DateTime getMaxShopsHour(Pedido currentP, int day){
+    DateTime current = DateTime.now();
+    Iterable<Tienda?> shops = currentP.carrito.keys;
     String dayString = getDayName(day);
     TimeOfDay? result =  shops.first!.getScheduleEndHour(dayString);
+    DateTime resultD = DateTime(current.year, current.month, current.day, result!.hour, result.minute);
     for(int i = 0; i < shops.length; i++){
       TimeOfDay? actual = shops.elementAt(i)!.getScheduleEndHour(dayString);
-      if(actual!.hour <= result!.hour && actual.minute >= result.minute){
-        result = actual;
+      DateTime actualD = DateTime(current.year, current.month, current.day, actual!.hour, actual.minute);
+      if(actualD.isBefore(resultD)){
+        resultD = DateTime(current.year, current.month, current.day, actual.hour, actual.minute);
       }
     }
-    return result!;
+    return resultD;
   }
 
-  TimeOfDay getMinShopsHour(Pedido current, int day){
-    Iterable<Tienda?> shops = current.carrito.keys;
+  DateTime getMinShopsHour(Pedido currentP, int day){
+    DateTime current = DateTime.now();
+    Iterable<Tienda?> shops = currentP.carrito.keys;
     String dayString = getDayName(day);
     TimeOfDay? result =  shops.first!.getScheduleStartHour(dayString);
+    DateTime resultD = DateTime(current.year, current.month, current.day, result!.hour, result.minute);
     for(int i = 0; i < shops.length; i++){
       TimeOfDay? actual = shops.elementAt(i)!.getScheduleStartHour(dayString);
-      if(actual!.hour >= result!.hour && actual.minute <= result.minute){
-        result = actual;
+      DateTime actualD = DateTime(current.year, current.month, current.day, actual!.hour, actual.minute);
+      if(actualD.isAfter(resultD)){
+        resultD = DateTime(current.year, current.month, current.day, actual.hour, actual.minute);
       }
     }
-    return result!;
+    return resultD;
   }
 
   String getDayName(int day){
@@ -81,44 +90,16 @@ class OrderController {
     return result;
   }
 
-  bool timeGreaterOrEqualThanX(TimeOfDay first, TimeOfDay second){
-    bool result = false;
-    if(first.hour > second.hour){
-      result = true;
-    }
-    else if(first.hour == second.hour){
-      if(first.minute > second.minute){
-        result = true;
-      }
-      else if (first.minute == second.minute){
-        result = true;
-      }else{
-        result = false;
-      }
-    }
-    return result;
+  bool isAfterThan(DateTime first, DateTime second){
+    return first.isAfter(second);
   }
 
-  bool timeLowerOrEqualThanX(TimeOfDay first, TimeOfDay second){
-    bool result = false;
-    if(first.hour < second.hour){
-      result = true;
-    }
-    else if(first.hour == second.hour){
-      if(first.minute < second.minute){
-        result = true;
-      }
-      else if (first.minute == second.minute){
-        result = true;
-      }else{
-        result = false;
-      }
-    }
-    return result;
+  bool isBeforeThan(DateTime first, DateTime second){
+    return first.isBefore(second);
   }
 
-  TimeOfDay maxProductTime(Pedido current){
-    TimeOfDay result = TimeOfDay.now();
+  DateTime maxProductTime(Pedido current){
+    DateTime result = DateTime.now();
     double minTime = 0;
     current.carrito.forEach((key, value) {
       value.forEach((key, value) {
@@ -133,25 +114,12 @@ class OrderController {
     if(minTime > 60){
       newTime = minTime - (hours.toInt()*60);
     }
-    result = generateHour(hours.toInt(), newTime.toInt(), result);
+    result = generateHour(hours.toInt(), newTime.toInt());
     return result;
   }
 
-  TimeOfDay generateHour(int plusHours, int plusMinutes, TimeOfDay current){
-    double currentHour = current.hour.toDouble();
-    double currentMinutes = current.minute.toDouble();
-    double newMinutes = currentMinutes + plusMinutes;
-    double extraHours = 0;
-    if(newMinutes > 60){
-      extraHours = newMinutes/60;
-      newMinutes = newMinutes-(extraHours.toInt()*60);
-    }
-    double newHours = currentHour + plusHours + extraHours;
-    if(newHours > 24){
-      double times = newHours/24;
-      newHours = newHours-(times.toInt()*24);
-    }
-    return TimeOfDay(hour: newHours.toInt(), minute: newMinutes.toInt());
+  DateTime generateHour(int plusHours, int plusMinutes){
+    return DateTime.now().add(Duration(hours: plusHours, minutes: plusMinutes));
   }
 
   cancelOrderWarning(BuildContext context, Pedido current){
@@ -276,6 +244,16 @@ class OrderController {
       total-=value;
     }
     return total;
+  }
+
+  bool isOutOfRange(DateTime selectedHour, DateTime maxShopTime, DateTime minShopTime) {
+    print("${selectedHour.isAfter(maxShopTime)}");
+    print("${selectedHour.isBefore(minShopTime)}");
+    return selectedHour.isAfter(maxShopTime) && selectedHour.isBefore(minShopTime);
+  }
+
+  Future<List<Pedido>> getActiveOrders(int userId) {
+    return this.orderqueries.getActiveOrders(userId);
   }
 
 }

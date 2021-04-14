@@ -5,12 +5,12 @@ class Tienda {
   int id;
   String name;
   String category;
-  List<Horario> schedule;
+  List<Horario> schedule = [];
   String description;
   String url;
-  bool status;
+  String status;
   String ubication;
-  Tienda(this.id, this.name, this.category, this.schedule, this.description, this.url,
+  Tienda(this.id, this.name, this.category, this.description, this.url,
       this.status, this.ubication);
   @override
   // ignore: hash_and_equals
@@ -42,5 +42,17 @@ class Tienda {
       }
     }
     return null;
+  }
+
+  factory Tienda.fromJson(Map<String, dynamic> json){
+    return Tienda(
+      json['idPuntodeVenta'],
+      json['nombrePuntoDeVenta'],
+      json['tipoPuntoVenta'],
+      json['descripcion'],
+      'assets/img/central.PNG',
+      json['Estado'],
+      json['urlUbicacion']
+    );
   }
 }

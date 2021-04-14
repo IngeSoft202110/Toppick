@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 class Horario{
   TimeOfDay horaApertura;
   TimeOfDay horaCierre;
-  List<String> dias;
-  Horario(this.horaApertura, this.horaCierre, this.dias);
+  List<String> dias = [];
+  Horario(this.horaApertura, this.horaCierre);
 
   String toString(){
     String value1 = horaApertura.hour<12 ? "AM":"PM";
@@ -30,7 +30,19 @@ class Horario{
         hour_2 = horaCierre.hour.toString();
       } 
     }
-    return dias.first.substring(0,2)+"-"+dias.last.substring(0,2)+": "+hour_1+":"+minute_1+" "+value1
+    if(dias.length == 1){
+      return dias.first+": "+hour_1+":"+minute_1+" "+value1
       +" a "+hour_2+":"+minute_2+" "+value2;
+    }else{
+      return dias.first.substring(0,2)+"-"+dias.last.substring(0,2)+": "+hour_1+":"+minute_1+" "+value1
+      +" a "+hour_2+":"+minute_2+" "+value2;
+    }
+  }
+
+  factory Horario.fromJson(Map<String, dynamic> json){
+    return Horario(
+      TimeOfDay(hour: int.parse(json['horaApertura'].toString().substring(0,2)),minute: int.parse(json['horaApertura'].toString().substring(3,5))),
+      TimeOfDay(hour: int.parse(json['horaCierre'].toString().substring(0,2)),minute: int.parse(json['horaCierre'].toString().substring(3,5))), 
+    );
   }
 }

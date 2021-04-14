@@ -1,4 +1,6 @@
 import 'package:Toppick_App/Orders/Models/pedido.dart';
+import 'package:Toppick_App/Products/Bloc/product_controller.dart';
+import 'package:Toppick_App/Shops/Bloc/shop_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:Toppick_App/Products/UserInterfaces/add_substract.dart';
 import 'package:Toppick_App/Products/UserInterfaces/combo_product_card.dart';
@@ -96,14 +98,57 @@ Widget comboProductList(Combo a) {
   );
 }
 
+showCorrectAdd(BuildContext context, String productName, ShopController shopController, Tienda shopSelected) {
+  Widget okButton = TextButton(
+    child: Text("OK"),
+    onPressed: () { Navigator.of(context).pop();},
+  );
+  AlertDialog alert = AlertDialog(
+    title: Text("Producto seleccionado", style: TextStyle(color: Color(0xFF0CC665)),),
+    content: Text("Se ha agregado $productName al pedido."),
+    actions: [
+      okButton,
+    ],
+  );
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+  shopController.getShopSchedule(shopSelected.id, shopSelected);
+}
+
+showStoreWarning(BuildContext context) {
+  Widget okButton = TextButton(
+    child: Text("OK"),
+    onPressed: () { Navigator.of(context).pop();},
+  );
+  AlertDialog alert = AlertDialog(
+    title: Text("No se ha seleccionado un punto de venta", style: TextStyle(color: Color(0xFFD76060)),),
+    content: Text("Por favor seleccione alguno de los puntos de venta para poder agregar el producto al pedido."),
+    actions: [
+      okButton,
+    ],
+  );
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
 // ignore: must_be_immutable
 class HomeCombosCard extends StatelessWidget {
-  HomeCombosCard(this.selected, this.available, this.shopSelected, this.current);
+  HomeCombosCard(this.selected, this.shopSelected, this.current);
   final Combo selected;
-  final List<Tienda> available;
+  List<Tienda> available = [];
   final Pedido current;
   int quantity = 1;
   Tienda? shopSelected;
+  ProductController controller = ProductController();
+  ShopController shopController = ShopController();
 
   void updateStore(Tienda? selected){
     this.shopSelected = selected;
@@ -117,20 +162,22 @@ class HomeCombosCard extends StatelessWidget {
     }
   }
 
-  void addProduct (){
+  void addProduct (BuildContext context){
     if(shopSelected!.id !=-1){
-      if(this.current.carrito.containsKey(shopSelected)){
-        if(this.current.carrito[shopSelected]!.containsKey(selected)){
-          int newValue = this.current.carrito[shopSelected]![selected]! + quantity;
-          this.current.carrito[shopSelected]![selected] = newValue;
-        }else{
-          this.current.carrito[shopSelected]!.addAll({this.selected: this.quantity});
+      if (this.current.storeIsInCurrentOrder(this.shopSelected!)) {
+        if (this.current.productInShopOrder(shopSelected!, selected)) {
+          this.current.addQuantityToExistingProduct(shopSelected!, selected, quantity);
+          showCorrectAdd(context, this.selected.name, this.shopController, this.shopSelected!);
+        } else {
+          this.current.addProductToSelectedStore(shopSelected!, selected, quantity);
+          showCorrectAdd(context, this.selected.name, this.shopController, this.shopSelected!);
         }
-      }else{
-        this.current.carrito[shopSelected] = {this.selected: this.quantity};
+      } else {
+        this.current.addStoreWithProducts(shopSelected!, selected, quantity);
+        showCorrectAdd(context, this.selected.name, this.shopController, this.shopSelected!);
       }
     }else{
-      print("No se ha seleccionado una tienda");
+      showStoreWarning(context);
     }
   }
 
@@ -163,17 +210,57 @@ class HomeCombosCard extends StatelessWidget {
                             color: Color(0xFFD76060)),
                       ),
                     ),
-                    comboProductList(this.selected),
+                    FutureBuilder(
+                      future: controller.getComboProducts(this.selected.id),
+                      builder: (context,  AsyncSnapshot<List<dynamic>> snapshot){
+                        switch(snapshot.connectionState){
+                          case ConnectionState.none:
+                            break;
+                          case ConnectionState.waiting:
+                            break;
+                          case ConnectionState.active:
+                            break;
+                          case ConnectionState.done:
+                          this.selected.products = snapshot.data!;
+                            return comboProductList(this.selected);
+                        }
+                        return Container(
+                          padding: const EdgeInsets.only(top: 150.0, left: 150, right: 150),
+                          height: 250,
+                          child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFFFEEE)),)
+                        );
+                      }
+                    ),
                     place(),
-                    RadioButtonListStore(
-                        this.selected, this.available, this.shopSelected, updateStore),
+                    FutureBuilder(
+                      future: this.shopController.getAvailableShopsByProduct(this.selected.id),
+                      builder: (context,  AsyncSnapshot<List<Tienda>> snapshot){
+                        switch(snapshot.connectionState){
+                          case ConnectionState.none:
+                            break;
+                          case ConnectionState.waiting:
+                            break;
+                          case ConnectionState.active:
+                            break;
+                          case ConnectionState.done:
+                          this.available = snapshot.data!;
+                            return RadioButtonListStore(this.selected, this.available,
+                              this.shopSelected, updateStore);
+                        }
+                        return Container(
+                          padding: const EdgeInsets.only(top: 150.0, left: 150, right: 150),
+                          height: 250,
+                          child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.red),)
+                        );
+                      }
+                    ),
                     Center(
                       child: GenericButton("Ver Reseñas", Color(0xFF2196F3),
                           274, 45, 15.0, 0, 0, 0, 22, 30, () => {}),
                     ),
                     Center(
                       child: GenericButton("Agregar", Color(0xFF0CC665), 274,
-                          45, 15.0, 0, 0, 0, 22, 30, () => addProduct()),
+                          45, 15.0, 0, 0, 0, 22, 30, () => addProduct(context)),
                     ),
                     SizedBox(
                       height: 40,

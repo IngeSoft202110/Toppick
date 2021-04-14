@@ -1,12 +1,5 @@
+import 'package:Toppick_App/Products/Models/acompanamiento.dart';
 import 'package:Toppick_App/Products/Models/combo.dart';
-import 'package:Toppick_App/Products/Models/comida_rapida.dart';
-import 'package:Toppick_App/Products/Models/desayuno.dart';
-import 'package:Toppick_App/Products/Models/especialidad.dart';
-import 'package:Toppick_App/Products/Models/fruteria.dart';
-import 'package:Toppick_App/Products/Models/menu_dia.dart';
-import 'package:Toppick_App/Products/Models/menu_tipico.dart';
-import 'package:Toppick_App/Products/Models/parrilla.dart';
-import 'package:Toppick_App/Products/Models/saludable.dart';
 
 import '../Models/producto.dart';
 import '../Repositories/product_queries.dart';
@@ -66,7 +59,7 @@ class ProductController {
     this.productqueries = new ProductQueries();
   }
 
-  List<dynamic> getAllAvailableProducts() {
+  Future<List<dynamic>> getAllAvailableProducts() {
     return this.productqueries.getAllAvailableProducts();
   }
 
@@ -74,12 +67,16 @@ class ProductController {
     return this.productqueries.getAllAvailableComboProducts();
   }
 
-  List<dynamic> getProductCatalogueById(int storeId) {
+  Future<List<dynamic>> getProductCatalogueById(int storeId) {
     return this.productqueries.getProductCatalogueById(storeId);
   }
 
-  dynamic getProductById(int id) {
-    return this.productqueries.getProductById(id);
+  Future<List<dynamic>> getComboProducts(int comboId){
+    return this.productqueries.getComboProducts(comboId);
+  }
+
+  Future<List<Acompanamiento>> getAditionsOfProduct(int idProduct){
+    return this.productqueries.getAditionsOfProduct(idProduct);
   }
 
   List<String> getProductCategories(){
@@ -98,16 +95,11 @@ class ProductController {
     List<dynamic> filtered = [];
     for (Producto product in products) {
       if (product.category == category) filtered.add(product);
-      //if (product.runtimeType.toString() == category) filtered.add(product); 
     }
     return filtered;
   }
 
-  bool hasDescription(Producto toCheck){
-    return (toCheck is Especialidad || toCheck is ComidaRapida || toCheck is Fruteria || toCheck is MenuTipico || toCheck is MenuDia || toCheck is Saludable || toCheck is Combo);
-  }
-
   bool hasComments(Producto toCheck){
-    return (toCheck is ComidaRapida || toCheck is Desayuno || toCheck is Parrilla || toCheck is MenuDia);
+    return (toCheck.category == "Comida Rápida" || toCheck.category == "Desayunos" || toCheck.category == "Parrilla" ||  toCheck.category == "Menús del día");
   }
 }

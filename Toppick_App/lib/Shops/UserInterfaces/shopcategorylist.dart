@@ -22,16 +22,18 @@ class ShopCategoryList extends StatelessWidget {
   List<Widget> buildCategoriesCard(BuildContext context, Pedido current){
     List<Widget> results = [];
     for(int i = 0; i < categories.length; i++){
-      results.add(GestureDetector(
-        onTap: (){
-          List<Tienda> filtered = this.controller.filterShops(this.shopList, categories[i]);
-          Navigator.push(context, MaterialPageRoute(builder: (context)=> ShopList(categories[i], logoPahts[i], filtered, current)));
-        },
-        child: Padding(
-          padding: const EdgeInsets.only(left:5.0, right: 5.0, bottom: 5.0),
-          child: ShopCategoryCard(categories[i], descriptions[i], logoPahts[i]),
-        ),
-      ));
+      results.add(
+        GestureDetector(
+          onTap: (){
+            List<Tienda> filtered = this.controller.filterShops(this.shopList, categories[i]);
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> ShopList(categories[i], logoPahts[i], filtered, current)));
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(left:5.0, right: 5.0, bottom: 5.0),
+            child: ShopCategoryCard(categories[i], descriptions[i], logoPahts[i]),
+          ),
+        )
+      );
     }
     return results;
   }
@@ -41,7 +43,7 @@ class ShopCategoryList extends StatelessWidget {
     this.categories = this.controller.getShopCategories();
     this.descriptions = this.controller.getCategoryDescription();
     this.logoPahts = this.controller.getCategoryImagePath();
-    this.shopList = this.controller.getAllAvailableShops();
+    this.shopList = [];
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -58,9 +60,30 @@ class ShopCategoryList extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 20.0),
                   child: ListMainText("Escoge", "Tu forma de comer"),
                 ),
-                Column(
-                  children: buildCategoriesCard(context, this.current),
+                FutureBuilder(
+                  future: controller.getAllAvailableShops(),
+                  builder: (context,  AsyncSnapshot<List<Tienda>> snapshot) {
+                    switch(snapshot.connectionState){
+                      case ConnectionState.none:
+                        break;
+                      case ConnectionState.waiting:
+                        break;
+                      case ConnectionState.active:
+                        break;
+                      case ConnectionState.done:
+                      this.shopList = snapshot.data!;
+                        return Column(
+                          children: buildCategoriesCard(context, this.current),
+                        );
+                    }
+                    return Container(
+                      padding: const EdgeInsets.only(top: 150.0, left: 150, right: 150),
+                      height: 250,
+                      child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFFFEEE)),)
+                    );
+                  }
                 ),
+                
                 SizedBox(
                   height: 10,
                 ),

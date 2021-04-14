@@ -36,8 +36,6 @@ class ShopCard extends StatelessWidget {
                   Center(
                     child: image(this.categoryImagePath, 100, 80),
                   ),
-                  Text("Horario"),
-                  Text(this.shop.toStringSchedule(), style: TextStyle(fontSize: 10),),
                 ]
               ),
             ),

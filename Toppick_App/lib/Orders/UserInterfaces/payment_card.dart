@@ -1,7 +1,9 @@
 import 'package:Toppick_App/GeneralUserInterfaces/generic_button.dart';
+import 'package:Toppick_App/Orders/Bloc/order_controller.dart';
 import 'package:Toppick_App/Orders/Models/metodopago.dart';
 import 'package:Toppick_App/Orders/Models/pedido.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 showCorrectPayment(BuildContext context){
   Widget okButton = TextButton(
@@ -54,8 +56,10 @@ class PaymentCard extends StatelessWidget {
   final MetodoPago? paymentMethod;
   final Pedido actual;
   final DateTime timeSend;
+  final OrderController controller = OrderController();
 
   Widget textForPrice(String title, int value){
+    var formatter = NumberFormat('#,###,000');
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -65,7 +69,7 @@ class PaymentCard extends StatelessWidget {
         ),
         Container(
           margin: EdgeInsets.only(top: 5.0, left: 15.0,bottom: 10.0), 
-          child: Text("\$ $value", style: TextStyle(fontSize: 25),)
+          child: Text("\$ ${formatter.format(value)}", style: TextStyle(fontSize: 25),)
         )
       ],
     );
@@ -87,7 +91,14 @@ class PaymentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    this.actual.fechaReclamo = this.timeSend;
     void finish(BuildContext context){
+      if(this.paymentMethod!.availableAmount > this.totalValue){
+        this.actual.fechaCreacion = DateTime.now();
+        this.actual.costoTotal = this.totalValue;
+        print(this.actual.costoTotal);
+        this.controller.sendOrder(this.actual);
+      }
       //Enviar el pedido al servidor, también mandarlo con el DateTime.now() en caso de que incluya horas
       this.actual.carrito.clear();
       this.actual.costoTotal = 0;

@@ -1,9 +1,11 @@
+import 'package:Toppick_App/Shops/Models/horario.dart';
+
 import '../Models/tienda.dart';
 import '../Repositories/shop_queries.dart';
 
 class ShopController {
   ShopQueries shopQueries = new ShopQueries();
-  List<String> categories = ['Cafeterías', 'Cafés y Kioskos', 'Saludable', 'Restaurantes',];
+  List<String> categories = ['Cafeterías', 'Cafés y Kioscos', 'Saludable', 'Restaurantes',];
   List<String> descriptions = [
     'Cafeterías de la universidad.',
     'Cafés y Kioscos ubicados en la universidad, los puedes encontrar en muchos lugares.',
@@ -20,7 +22,7 @@ class ShopController {
     this.shopQueries = new ShopQueries();
   }
 
-  List<Tienda> getAllAvailableShops() {
+  Future<List<Tienda>> getAllAvailableShops() {
     return this.shopQueries.getAllAvailableShops();
   }
 
@@ -48,7 +50,15 @@ class ShopController {
     return filtered;
   }
 
-  List<Tienda> getAvailableShopsByProduct(int productId) {
+  Future<List<Tienda>> getAvailableShopsByProduct(int productId) {
     return this.shopQueries.getAvailableShopsByProduct(productId);
+  }
+
+  Future<void> getShopSchedule(int id, Tienda selected) async {
+    selected.schedule = await this.shopQueries.getShopSchedule(id);
+  }
+
+  Future<List<Horario>> getShopScheduleView(int id){
+    return this.shopQueries.getShopSchedule(id);
   }
 }

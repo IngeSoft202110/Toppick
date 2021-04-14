@@ -13,6 +13,7 @@ class HomeShop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fusionBody = Container(
+      height: MediaQuery.of(context).size.height,
         child: ListView(children: <Widget>[Header(this.current), SearchButton("Buscar tienda", 2), HomeShopCard(this.selectedShop, this.current), SizedBox(height: 10,)],
       )
     );

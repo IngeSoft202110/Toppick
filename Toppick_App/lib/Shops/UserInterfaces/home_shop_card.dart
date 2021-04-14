@@ -1,5 +1,7 @@
 import 'package:Toppick_App/Orders/Models/pedido.dart';
 import 'package:Toppick_App/Products/UserInterfaces/productlist.dart';
+import 'package:Toppick_App/Shops/Bloc/shop_controller.dart';
+import 'package:Toppick_App/Shops/Models/horario.dart';
 import 'package:Toppick_App/Shops/Models/tienda.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +20,7 @@ Widget image(String pathImage, double w, double h) {
   );
 }
 
-Widget cardHeader(String title, bool status, String ubication) {
+Widget cardHeader(String title, String status, String ubication) {
   return Container(
     margin: EdgeInsets.only(bottom: 15.0),
     child: Row(
@@ -32,11 +34,11 @@ Widget cardHeader(String title, bool status, String ubication) {
               color: Color(0xFFB7B7B7)),
         ),
         Text(
-          (status) ? "Disponible" : "No disponible",
+          status,
           style: TextStyle(
               fontWeight: FontWeight.w700,
               fontSize: 15,
-              color: (status) ? Color(0xFF0CC665) : Color(0xFFD76060)),
+              color: (status=="Abierto") ? Color(0xFF0CC665) : Color(0xFFD76060)),
         ),
         Icon(
           Icons.place,
@@ -97,7 +99,7 @@ Widget cardSchedule(String schedule) {
           ),
         ),
         Container(
-          width: 180,
+          width: 200,
           height: 28,
           alignment: Alignment.centerLeft,
           child: Text(
@@ -117,13 +119,13 @@ class HomeShopCard extends StatelessWidget {
   HomeShopCard(this.selected, this.current);
   final Tienda selected;
   final Pedido current;
+  final ShopController controller = ShopController();
   @override
   Widget build(BuildContext context) {
     var transition = () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProductList(this.current, this.selected)));
     return Container(
       margin: EdgeInsets.only(top: 18.0, left: 10.0, right: 10.0),
       width: 392,
-      height: 550,
       decoration: BoxDecoration(
         color: Color(0xFFFFFEEE),
         borderRadius: BorderRadius.circular(10.0),
@@ -134,7 +136,27 @@ class HomeShopCard extends StatelessWidget {
           cardHeader(this.selected.name, this.selected.status,
               this.selected.ubication),
           cardDescription(this.selected.description),
-          cardSchedule(this.selected.toStringSchedule()),
+          FutureBuilder(
+            future: controller.getShopScheduleView(selected.id),
+            builder: (context,  AsyncSnapshot<List<Horario>> snapshot){
+              switch(snapshot.connectionState){
+                case ConnectionState.none:
+                  break;
+                case ConnectionState.waiting:
+                  break;
+                case ConnectionState.active:
+                  break;
+                case ConnectionState.done:
+                this.selected.schedule = snapshot.data!;
+                  return cardSchedule(this.selected.toStringSchedule());
+              }
+              return Container(
+                padding: const EdgeInsets.only(top: 150.0, left: 150, right: 150),
+                height: 250,
+                child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.red),)
+              );
+            }
+          ),
           GenericButton("Ver Catálogo", Color(0xFF0CC665), 233.0, 55.0, 10.0,
               10.0, 10.0, 10.0, 30.0, 20.0, transition)
         ],
