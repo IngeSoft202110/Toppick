@@ -24,7 +24,7 @@ var connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     // password: 'julian9812',
-    password: '1234567890',
+    password: 'MYSQLpassword117#',
     database: 'Toppick_Schema'
 });
 // Connect to database
