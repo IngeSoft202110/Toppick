@@ -1,4 +1,4 @@
-idPuntoDeVenta = 1;
+idPuntoDeVenta = 2;
 
 /*
 estructura de JSON de los pedidos
