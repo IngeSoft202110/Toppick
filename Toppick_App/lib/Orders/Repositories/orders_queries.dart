@@ -8,6 +8,7 @@ import '../Models/pedido.dart';
 import 'package:http/http.dart' as http;
 
 class OrdersQueries {
+  int port = 3000;
   List<Pedido> getFavoriteOrders() /*async*/
   {
     /*
@@ -73,7 +74,7 @@ class OrdersQueries {
   }*/
 
   Future<List<Pedido>> getActiveOrders(int userID) async {
-    final response = await http.get(Uri.http('10.0.2.2:8001','toppick/app/active-orders-of/$userID'), headers: {"Accept": "application/json"});
+    final response = await http.get(Uri.http('10.0.2.2:$port','toppick/app/active-orders-of/$userID'), headers: {"Accept": "application/json"});
     if (response.statusCode == 200) {
         return parseOrders(response.body);
     } else { 
@@ -137,7 +138,7 @@ class OrdersQueries {
   Future<void> sendOrder(var orden, var car, var acompanamientos)
   async {
     print(orden);
-    final http.Response response = await http.post(Uri.http('10.0.2.2:8001','toppick/app/insert/order'),
+    final http.Response response = await http.post(Uri.http('10.0.2.2:$port','toppick/app/insert/order'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
     },

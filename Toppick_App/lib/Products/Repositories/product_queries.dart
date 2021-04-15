@@ -7,9 +7,9 @@ import 'package:http/http.dart' as http;
 
 
 class ProductQueries {
-
+  int port = 3000;
   Future<List<dynamic>> getAllAvailableProducts() async {
-    final response = await http.get(Uri.http('10.0.2.2:8001','toppick/app/products'), headers: {"Accept": "application/json"});
+    final response = await http.get(Uri.http('10.0.2.2:$port','toppick/app/products'), headers: {"Accept": "application/json"});
     if (response.statusCode == 200) {
         return parseProducts(response.body);
     } else { 
@@ -77,7 +77,7 @@ class ProductQueries {
   }
 
   Future<List<dynamic>> getProductCatalogueById(int storeId) async {
-    final response = await http.get(Uri.http('10.0.2.2:8001','toppick/app/catalog/$storeId'), headers: {"Accept": "application/json"});
+    final response = await http.get(Uri.http('10.0.2.2:$port','toppick/app/catalog/$storeId'), headers: {"Accept": "application/json"});
     if (response.statusCode == 200) {
         return parseProducts(response.body);
     } else { 
@@ -86,7 +86,7 @@ class ProductQueries {
   }
 
   Future<List<dynamic>> getComboProducts(int comboId) async{
-    final response = await http.get(Uri.http('10.0.2.2:8001','toppick/app/products-of-combo/$comboId'), headers: {"Accept": "application/json"});
+    final response = await http.get(Uri.http('10.0.2.2:$port','toppick/app/products-of-combo/$comboId'), headers: {"Accept": "application/json"});
     if (response.statusCode == 200) {
         return parseProducts(response.body);
     } else { 
@@ -95,7 +95,7 @@ class ProductQueries {
   }
 
   Future<List<Acompanamiento>> getAditionsOfProduct(int idProduct) async{
-    final response = await http.get(Uri.http('10.0.2.2:8001','toppick/app/accompaniment-of-specialty/$idProduct'), headers: {"Accept": "application/json"});
+    final response = await http.get(Uri.http('10.0.2.2:$port','toppick/app/accompaniment-of-specialty/$idProduct'), headers: {"Accept": "application/json"});
     if (response.statusCode == 200) {
         return parseAditions(response.body);
     } else { 

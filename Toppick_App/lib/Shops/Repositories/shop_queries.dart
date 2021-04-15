@@ -4,9 +4,10 @@ import 'package:http/http.dart' as http;
 import '../Models/tienda.dart';
 
 class ShopQueries {
+  int port = 3000;
   Future<List<Tienda>> getAllAvailableShops() async{
     List<Tienda> queryResult = [];
-    final response = await http.get(Uri.http('10.0.2.2:8001','toppick/app/all-stores'), headers: {"Accept": "application/json"});
+    final response = await http.get(Uri.http('10.0.2.2:$port','toppick/app/all-stores'), headers: {"Accept": "application/json"});
     if (response.statusCode == 200) {
       queryResult = parseShops(response.body);
       return queryResult;
@@ -54,7 +55,7 @@ class ShopQueries {
 
   Future<List<Tienda>> getAvailableShopsByProduct(int productId) async {
     List<Tienda> queryResult = [];
-    final response = await http.get(Uri.http('10.0.2.2:8001','/toppick/app/stores-that-contains/$productId'), headers: {"Accept": "application/json"});
+    final response = await http.get(Uri.http('10.0.2.2:$port','/toppick/app/stores-that-contains/$productId'), headers: {"Accept": "application/json"});
     if (response.statusCode == 200) {
       queryResult = parseShops(response.body);
       return queryResult;
@@ -65,7 +66,7 @@ class ShopQueries {
 
   Future<List<Horario>> getShopSchedule(int id) async {
     List<Horario> queryResult = [];
-    final response = await http.get(Uri.http('10.0.2.2:8001','/toppick/app/schedule/for/store/$id'), headers: {"Accept": "application/json"});
+    final response = await http.get(Uri.http('10.0.2.2:$port','/toppick/app/schedule/for/store/$id'), headers: {"Accept": "application/json"});
     if (response.statusCode == 200) {
       queryResult = parseSchedules(response.body);
       return queryResult;
