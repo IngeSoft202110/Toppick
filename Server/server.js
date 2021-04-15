@@ -106,10 +106,33 @@ app.post('/toppick/admin/change-state-order', (req, res) => {
     connection.query(final_query, (err) => {
         // Throw error if exists 
         if (err) throw err;
+        console.log('Row updated'); 
     });
-    console.log('Row updated'); 
+
+    // Update inventory for the products in the store if the change is 'Aproved'
+    if (new_state === 'Aceptado') {
+        // Get the cart info 
+        const cart_info = `SELECT Producto_idProducto, CantidadProducto FROM Toppick_Schema.Carrito WHERE Pedido_idPedido = ${order_id}`;
+        connection.query(cart_info, (err, result) => {
+            // Throw error if exists
+            if (err) throw err; 
+            // Save result 
+            const cart = result.map( (product) => { return [product.Producto_idProducto, product.CantidadProducto] } ); 
+            // Update inventory 
+            cart.forEach( (product) => {
+                const update_inventory = `UPDATE Toppick_Schema.Catalogo SET inventario = inventario - ${product[1]} `
+                                       + `WHERE PuntoDeVenta_idPuntoDeVenta = ${store_id} AND Producto_idProducto = ${product[0]}`;
+                connection.query(update_inventory, (err) => {
+                    // Throw error if exists
+                    if (err) throw err; 
+                    console.log('Inventory updated'); 
+                }); 
+            }); 
+        });
+    }
+
     // Send response 
-    res.send('Row updated'); 
+    res.send('Order state changed'); 
 }); 
 
 /*****************/

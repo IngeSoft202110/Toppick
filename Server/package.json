@@ -4,7 +4,7 @@
   "description": "Toppick server",
   "main": "index.js",
   "scripts": {
-    "install": "npm install express mysql body-parser cors nodemon socket.io",
+    "install": "npm install express mysql body-parser cors nodemon",
     "start": "nodemon server.js"
   },
   "keywords": [],
