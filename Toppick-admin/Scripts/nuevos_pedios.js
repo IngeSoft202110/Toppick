@@ -18,6 +18,7 @@ estructura de JSON de los pedidos
 var listaConfirmar = [];
 var listaEnCurso = [];
 var listaListos = [];
+let unidadesDisponibles = true; 
 
 /**
  * Intervalo para verificar si existen nuevos productos 
@@ -263,6 +264,17 @@ function plantilla_nuevo_producto(p) {
     colum2.appendChild(botonVerde);
     //evento del boton de aceptar
     botonVerde.addEventListener("click", () => {
+        // Validar unidades ----> TO DO: Realizar funci'on que valide las cantidades reales 
+        p.productos.forEach( (producto) => {
+            if (producto.cantidad > 10) {
+                unidadesDisponibles = false;
+            }
+        } ); 
+        if (!unidadesDisponibles) {
+            alert('No hay unidades suficientes en el inventario para aceptar el pedido'); 
+            return;  
+        }
+
         nuevoPedidoCurso(p);
         removeAllChildNodes(divPedido);
         divPedido.remove(divPedido);
