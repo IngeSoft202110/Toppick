@@ -1,7 +1,9 @@
 import 'package:Toppick_App/GeneralUserInterfaces/generic_button.dart';
 import 'package:Toppick_App/Orders/Models/pedido.dart';
 import 'package:Toppick_App/Orders/UserInterfaces/active_orders_home.dart';
+import 'package:Toppick_App/Orders/UserInterfaces/order_history_home.dart';
 import 'package:Toppick_App/Products/UserInterfaces/custom_rect_tween.dart';
+import 'package:Toppick_App/Users/UserInterfaces/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class Menu extends StatelessWidget {
@@ -9,7 +11,11 @@ class Menu extends StatelessWidget {
   final Pedido actual;
   @override
   Widget build(BuildContext context) {
-    var pedidosActivos = () => Navigator.push(context, MaterialPageRoute(builder: (context) => ActiveOrdersHome(this.actual)));
+    var pedidosActivos = () {Navigator.pop(context); Navigator.push(context, MaterialPageRoute(builder: (context) => ActiveOrdersHome(this.actual)));};
+    var mainPage = () {Navigator.pop(context); Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen(this.actual)));};
+    var historialPedidos = () {Navigator.pop(context); Navigator.push(context, MaterialPageRoute(builder: (context) => OrderHistoryHome(this.actual)));};
+    var perfil = () {Navigator.pop(context); /* PUSH PARA LA PANTALLA DE PERFIL */};
+    var cerrarSesion = () {/* PUSH A PANTALLA INICIAL, VERIFICANDO CONDICIONES DE LA HISTORIA (pushAndRemoveUntil) */};
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -67,7 +73,7 @@ class Menu extends StatelessWidget {
                         color: Colors.white,
                         shape: BoxShape.circle,
                       ),
-                      child: IconButton(icon: Icon(Icons.home), onPressed: ()=>{},iconSize: 100,),
+                      child: IconButton(icon: Icon(Icons.home), onPressed: mainPage, iconSize: 100,),
                     ),
                     Text("Home", style: TextStyle( fontSize: 30, fontWeight: FontWeight.bold)),
                   ],
@@ -80,7 +86,7 @@ class Menu extends StatelessWidget {
                         color: Colors.white,
                         shape: BoxShape.circle,
                       ),
-                      child: IconButton(icon: Icon(Icons.person), onPressed: ()=>{},iconSize: 100,),
+                      child: IconButton(icon: Icon(Icons.person), onPressed: perfil, iconSize: 100,),
                     ),
                     Text("Perfil", style: TextStyle( fontSize: 30, fontWeight: FontWeight.bold)),
                   ],
@@ -99,7 +105,7 @@ class Menu extends StatelessWidget {
                         color: Colors.white,
                         shape: BoxShape.circle,
                       ),
-                      child: IconButton(icon: Icon(Icons.history), onPressed: ()=>{},iconSize: 100,),
+                      child: IconButton(icon: Icon(Icons.history), onPressed: historialPedidos, iconSize: 100,),
                     ),
                     Text("Historial", style: TextStyle( fontSize: 30, fontWeight: FontWeight.bold)),
                     Text("pedidos", style: TextStyle( fontSize: 30, fontWeight: FontWeight.bold)),
