@@ -23,8 +23,8 @@ app.use(bodyParser.urlencoded({ extended: true })); // Post requests
 var connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    // password: 'julian9812',
-    password: '1234567890',
+    password: 'julian9812',
+    //password: '1234567890',
     database: 'Toppick_Schema'
 });
 // Connect to database
@@ -52,6 +52,18 @@ estructura de JSON de los pedidos
 }
 */
 // Get an specific order 
+
+app.get('/toppick/admin/login/puntos-venta',(req,res)=>{
+    const query  = "select Usuario_nombreUsuario from toppick_schema.puntodeventa;"
+    //conect DB
+    connection.query(query,(err, rows, fields) =>{
+        if (err) throw err;
+        if(rows.length > 0){
+            console.log("pedticion puyntos de venta");
+            res.send(rows);
+        }
+    })
+});
 app.get('/toppick/admin/:order_id', (req, res) => {
     // Url params
     const order_id = req.params.order_id;
