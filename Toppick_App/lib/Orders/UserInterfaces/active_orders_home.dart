@@ -27,7 +27,7 @@ class ActiveOrdersHome extends StatelessWidget {
       result.add(ActiveOrderCard(element, count));
       count+=1;
     });
-    result.add(SizedBox(height: MediaQuery.of(context).size.height*0.4,));
+    result.add(SizedBox(height: 10,));
     return result;
   }
   @override
@@ -58,15 +58,33 @@ class ActiveOrdersHome extends StatelessWidget {
                       case ConnectionState.active:
                         break;
                       case ConnectionState.done:
-                      this.activeOrders = snapshot.data!;
-                      return Container(
-                        decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40)), color: Color(0xFFFFFEEE),),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: fill(context),
-                        ),
-                      );
+                      if(snapshot.hasData){
+                        this.activeOrders = snapshot.data!;
+                        return Container(
+                          decoration: BoxDecoration(borderRadius: BorderRadius.all( Radius.circular(40)), color: Color(0xFFFFFEEE),),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: fill(context),
+                          ),
+                        );
+                      }else{
+                        return Container(
+                          decoration: BoxDecoration(borderRadius: BorderRadius.all( Radius.circular(40)), color: Color(0xFFFFFEEE),),
+                          height: MediaQuery.of(context).size.height*0.80,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.only(top: 10.0, bottom: 20.0),
+                                child: Text("Pedidos activos", style: TextStyle(color: Color(0xFFD76060), fontSize: 35, fontWeight: FontWeight.bold),),
+                              ),
+                              Text("No hay pedidos activos en este momento.", style: TextStyle(color: Color(0xFF0791E6), fontWeight: FontWeight.bold),),
+                            ]
+                          ),
+                        );
+                      }
                     }
                     return Container(
                       padding: const EdgeInsets.only(top: 150.0, left: 150, right: 150),

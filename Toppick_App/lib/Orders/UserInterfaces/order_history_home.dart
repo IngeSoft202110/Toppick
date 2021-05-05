@@ -15,18 +15,16 @@ class OrderHistoryHome extends StatelessWidget {
   List<Widget> fill( BuildContext context ){
     List<Widget> result = [];
     result.add(
-      Center(
-        child: Padding(
+      Padding(
           padding: const EdgeInsets.only(top: 10.0, bottom: 20.0),
           child: Text("Historial de pedidos", style: TextStyle(color: Color(0xFFD76060), fontSize: 35, fontWeight: FontWeight.bold),),
         ),
-      )
     );
     int count = 1;
-    this.history.forEach((element) {
-      result.add(OrderHistoryCard(element, count));
+    this.history.forEach((element) {result.add(OrderHistoryCard(element, count));
       count+=1;
     });
+    result.add(SizedBox(height: 10,));
     return result;
   }
 
@@ -60,18 +58,17 @@ class OrderHistoryHome extends StatelessWidget {
                       if(snapshot.hasData){
                         this.history = snapshot.data!;
                         return Container(
-                          decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40)), color: Color(0xFFFFFEEE),),
-                          height: MediaQuery.of(context).size.height,
+                          decoration: BoxDecoration(borderRadius: BorderRadius.all( Radius.circular(40)), color: Color(0xFFFFFEEE),),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: fill(context),
                           ),
                         );
                       }else{
                         return Container(
-                          decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40)), color: Color(0xFFFFFEEE),),
-                          height: MediaQuery.of(context).size.height,
+                          decoration: BoxDecoration(borderRadius: BorderRadius.all( Radius.circular(40)), color: Color(0xFFFFFEEE),),
+                          height: MediaQuery.of(context).size.height*0.80,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -80,7 +77,7 @@ class OrderHistoryHome extends StatelessWidget {
                                 padding: const EdgeInsets.only(top: 10.0, bottom: 20.0),
                                 child: Text("Historial de pedidos", style: TextStyle(color: Color(0xFFD76060), fontSize: 35, fontWeight: FontWeight.bold),),
                               ),
-                              Text("No hay pedidos activos", style: TextStyle(color: Color(0xFF0791E6), fontWeight: FontWeight.bold),),
+                              Text("No hay pedidos en su historial.", style: TextStyle(color: Color(0xFF0791E6), fontWeight: FontWeight.bold),),
                             ]
                           ),
                         );

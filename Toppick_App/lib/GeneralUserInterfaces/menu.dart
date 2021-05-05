@@ -127,7 +127,7 @@ class Menu extends StatelessWidget {
                 )
               ],
             ),
-            GenericButton("Cerrar sesión", Color(0xFFFF441F), 250, 50, 15, 5, 5, 5, 30, 10, ()=>{}),
+            GenericButton("Cerrar sesión", Color(0xFFFF441F), 250, 50, 15, 5, 5, 5, 30, 10, cerrarSesion),
           ],
         ),
       ),
