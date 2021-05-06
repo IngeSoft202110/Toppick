@@ -1,0 +1,89 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  
+  html {
+    font-size: 62.5%; /*con esto un rem es igual a 10px y sirve para usar medidas relativas */
+  }
+  
+  .navbar {
+    background-color: #d77d4f;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    width: 100%;
+  }
+  
+  .titulo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  h1 {
+    color: #fffde7;
+    font-size: 50px;
+    font-family: Roboto, sans-serif;
+  }
+  .navbar div p {
+    color: #fffde7;
+    font-size: 40px;
+    font-family: Roboto, sans-serif;
+    margin-left: 15px;
+  }
+  
+  ul {
+    list-style-type: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  ul li {
+    margin: 0 30px;
+  }
+  
+  ul li a {
+    font-size: 1.8rem;
+    padding: 10px;
+    border: 2px solid #fffeee;
+    border-radius: 5px;
+    color: #fffeee;
+    display: inline-block;
+    width: 192px;
+    text-align: center;
+    font-family: "Lato", sans-serif;
+  }
+  
+  ul li button {
+    font-size: 1.8rem;
+    padding: 10px;
+    background-color: #472025;
+    border-radius: 5px;
+    color: #fffeee;
+    width: 192px;
+    font-family: "Lato", sans-serif;
+    border: none;
+  }
+  
+  body {
+    font-family: Roboto, sans-serif;
+    background-color: rgba(255, 253, 231, 0.7);
+  }
+  
+  body .imgBackgraound img {
+    position: absolute;
+    z-index: -1;
+    opacity: 0.3;
+    width: 100rem;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    text-align: center;
+  }
+  
