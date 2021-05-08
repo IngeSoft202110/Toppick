@@ -2,6 +2,7 @@ import 'package:Toppick_App/GeneralUserInterfaces/generic_button.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/gradiant.dart';
 import 'package:Toppick_App/Orders/Models/pedido.dart';
 import 'package:Toppick_App/Users/UserInterfaces/login_screen.dart';
+import 'package:Toppick_App/Users/UserInterfaces/register_screen.dart';
 import 'package:flutter/material.dart';
 class MainPage extends StatelessWidget {
   MainPage();
@@ -9,6 +10,7 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var login = ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
+    var register = ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>RegisterScreen()));
     return Scaffold(
       body: Stack(
         children: <Widget> [
@@ -29,7 +31,7 @@ class MainPage extends StatelessWidget {
                   ),
                 ),
                 GenericButton("Iniciar sesión", Color(0xFFBB4900), 300, 40, 40, 5, 5, 5, 18, 20, login),
-                GenericButton("Registrarse", Color(0xFFBB4900), 300, 40, 20, 5, 5, 5, 18, 20, ()=>{}),
+                GenericButton("Registrarse", Color(0xFFBB4900), 300, 40, 20, 5, 5, 5, 18, 20, register),
               ],
             ),
           ),    
