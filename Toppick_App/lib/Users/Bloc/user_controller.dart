@@ -38,4 +38,29 @@ String validatePassword(String password){
   */
 }
 
+String isEmpty(String value){
+  if(value.isEmpty)
+    return "El campo no puede quedar vacío";
+  else
+    return "válido";
+}
+
+String validateDocument(String document){
+  if(document.isEmpty)
+    return "Debe ingresar un # de documento";
+  else if(document.length < 6 || document.length > 10)
+    return "Número de documento inválido";
+  else
+    return "correcto";
+}
+
+String validatePhone (String phone){
+  if(phone.isEmpty)
+    return "Debe ingresar un # de celular";
+  else if (phone.length != 10)
+    return "El # de celular es incorrecto";
+  else
+    return "válido";
+}
+
 }

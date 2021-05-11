@@ -12,7 +12,8 @@ class RegisterScreen extends StatelessWidget {
   late String nameValue;
   late String lastNameValue;
   late NumberFormat documentValue;
-  late String userName;
+  late String userNameValue;
+  late String passwordValue;
   late String emailValue;
   late NumberFormat phoneValue;
   late String dropdownValue;
@@ -30,31 +31,34 @@ class RegisterScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: Stack(children: <Widget>[
         Gradiant(),
         Container(
           height: MediaQuery.of(context).size.height,
           width: double.infinity,
           margin: EdgeInsets.only(top: 5.0),
-          child: Column(//ListView
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: ListView(
               children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      "Regístrate",
-                      style: TextStyle(
-                          height: 6, fontSize: 30, color: Colors.white),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 70),
-                      child: Image.asset("assets/img/logo.png", height: 130),
-                    ),
-                  ],
+                
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 30),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    
+                    children: <Widget>[
+                      Text(
+                        "Regístrate",
+                        style: TextStyle(
+                            height: 6, fontSize: 30, color: Colors.white),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 70),
+                        child: Image.asset("assets/img/logo.png", height: 130),
+                      ),
+                    ],
+                  ),
                 ),
                 Container(
                   decoration: BoxDecoration(
@@ -63,14 +67,14 @@ class RegisterScreen extends StatelessWidget {
                         topRight: Radius.circular(40)),
                     color: Color(0xFFFFFEEE),
                   ),
-                  height: 600,
                   child: Form(
                     key: formKey,
-                    //Column
-                    child: ListView(children: <Widget>[
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.only(
-                          top: 10,
+                          top: 30,
                           right: 45,
                           left: 45,
                         ),
@@ -85,11 +89,8 @@ class RegisterScreen extends StatelessWidget {
                             nameValue = value!;
                           },
                           validator: (value) {
-                            if (!this
-                                .controller
-                                .validateEmail(value!)
-                                .contains("válido")) {
-                              return this.controller.validateEmail(value);
+                            if (!this.controller.isEmpty(value!).contains("válido")) {
+                              return this.controller.isEmpty(value);
                             }
                           },
                         ),
@@ -111,14 +112,10 @@ class RegisterScreen extends StatelessWidget {
                             lastNameValue = value!;
                           },
                           validator: (value) {
-                            if (!this
-                                .controller
-                                .validatePassword(value!)
-                                .contains("válido")) {
-                              return this.controller.validatePassword(value);
+                            if (!this.controller.isEmpty(value!).contains("válido")) {
+                              return this.controller.isEmpty(value);
                             }
                           },
-                          obscureText: true,
                         ),
                       ),
                       Row(
@@ -153,13 +150,8 @@ class RegisterScreen extends StatelessWidget {
                                     documentValue = value! as NumberFormat;
                                   },
                                   validator: (value) {
-                                    if (!this
-                                        .controller
-                                        .validateEmail(value!)
-                                        .contains("válido")) {
-                                      return this
-                                          .controller
-                                          .validateEmail(value);
+                                    if (!this.controller.validateDocument(value!).contains("correcto")) {
+                                      return this.controller.validateDocument(value);
                                     }
                                   },
                                 ),
@@ -167,28 +159,6 @@ class RegisterScreen extends StatelessWidget {
                             ),
                             
                           ]),
-                          Padding(
-                          padding: const EdgeInsets.only(
-                            top: 10,
-                            right: 45,
-                            left: 45,
-                          ),
-                          child: TextFormField(
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              labelText: "Nombre Usuario",                         
-                            ), 
-                            onSaved: (value){
-                              userName = value!;
-                            },
-                            validator: (value){
-                              
-                            },
-                            obscureText: true,
-                          ),
-                        ),
                         Padding(
                           padding: const EdgeInsets.only(
                             top: 10,
@@ -205,6 +175,31 @@ class RegisterScreen extends StatelessWidget {
                             ), 
                             onSaved: (value){
                               emailValue = value!;
+                            },
+                            validator: (value){
+                              if(!this.controller.validateEmail(value!).contains("válido")){
+                                return this.controller.validateEmail(value);
+                              }
+                            },
+                            obscureText: true,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            top: 10,
+                            right: 45,
+                            left: 45,
+                          ),
+                          child: TextFormField(
+                            keyboardType: TextInputType.visiblePassword,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              labelText: "Contraseña",                         
+                            ), 
+                            onSaved: (value){
+                              passwordValue = value!;
                             },
                             validator: (value){
                               if(!this.controller.validatePassword(value!).contains("válido")){
@@ -229,18 +224,17 @@ class RegisterScreen extends StatelessWidget {
                               labelText: "Celular",                         
                             ), 
                             onSaved: (value){
-                              emailValue = value!;
+                              phoneValue = value! as NumberFormat;
                             },
                             validator: (value){
-                              if(!this.controller.validatePassword(value!).contains("válido")){
-                                return this.controller.validatePassword(value);
+                              if(!this.controller.validatePhone(value!).contains("válido")){
+                                return this.controller.validatePhone(value);
                               }
                             },
-                            obscureText: true,
                           ),
                         ),
                       GenericButton("Registrate", Color(0xFFFD8901), 300, 40,
-                          60, 5, 5, 5, 18, 20, main),
+                          50, 5, 85, 5, 18, 20, main),
                     ]),
                   ),
                 ),
@@ -258,7 +252,7 @@ class TipoDocumento extends StatefulWidget {
 }
 
 class _TipoDocumentoState extends State<TipoDocumento> {
-  String dropdownValue = 'C.C.';
+  String dropdownValue = 'CC';
   @override
   Widget build(BuildContext context) {
     return DropdownButton<String>(
@@ -272,7 +266,7 @@ class _TipoDocumentoState extends State<TipoDocumento> {
           print(dropdownValue);
         });
       },
-      items: <String>['C.C.', 'T.I.', 'C.E.']
+      items: <String>['CC', 'TI', 'CE']
           .map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
           value: value,
