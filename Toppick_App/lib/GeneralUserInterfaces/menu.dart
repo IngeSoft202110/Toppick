@@ -4,6 +4,7 @@ import 'package:Toppick_App/Orders/UserInterfaces/active_orders_home.dart';
 import 'package:Toppick_App/Orders/UserInterfaces/order_history_home.dart';
 import 'package:Toppick_App/Products/UserInterfaces/custom_rect_tween.dart';
 import 'package:Toppick_App/Users/UserInterfaces/home_screen.dart';
+import 'package:Toppick_App/Users/UserInterfaces/profile.dart';
 import 'package:flutter/material.dart';
 
 class Menu extends StatelessWidget {
@@ -14,7 +15,7 @@ class Menu extends StatelessWidget {
     var pedidosActivos = () {Navigator.pop(context); Navigator.push(context, MaterialPageRoute(builder: (context) => ActiveOrdersHome(this.actual)));};
     var mainPage = () {Navigator.pop(context); Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen(this.actual)));};
     var historialPedidos = () {Navigator.pop(context); Navigator.push(context, MaterialPageRoute(builder: (context) => OrderHistoryHome(this.actual)));};
-    var perfil = () {Navigator.pop(context); /* PUSH PARA LA PANTALLA DE PERFIL */};
+    var perfil = () {Navigator.pop(context); Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(this.actual)));};
     var cerrarSesion = () {/* PUSH A PANTALLA INICIAL, VERIFICANDO CONDICIONES DE LA HISTORIA (pushAndRemoveUntil) */};
     return Scaffold(
       body: Container(
