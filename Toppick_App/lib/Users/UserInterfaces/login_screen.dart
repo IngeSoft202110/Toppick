@@ -1,19 +1,14 @@
-import 'dart:developer';
-
+import 'package:Toppick_App/Orders/Models/pedido.dart';
 import 'package:Toppick_App/Users/Bloc/user_controller.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/generic_button.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/gradiant.dart';
-import 'package:Toppick_App/Orders/UserInterfaces/add_subtract_total.dart';
-import 'package:Toppick_App/Products/Models/producto.dart';
 import 'package:Toppick_App/Users/UserInterfaces/home_screen.dart';
-import 'package:Toppick_App/Users/UserInterfaces/main_page.dart';
 import 'package:Toppick_App/Users/UserInterfaces/register_screen.dart';
-import 'package:Toppick_App/main.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 
+// ignore: must_be_immutable
 class LoginScreen extends StatelessWidget {
   final UserController controller = UserController(); 
   
@@ -30,7 +25,7 @@ class LoginScreen extends StatelessWidget {
       if(formKey.currentState!.validate()){
         formKey.currentState!.save();
         //Mensaje al servidor
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen(Pedido(0, DateTime.now(), 0, DateTime.now(), "Solicitado"))));
       }
     }
     return Scaffold(
@@ -42,28 +37,29 @@ class LoginScreen extends StatelessWidget {
             height: MediaQuery.of(context).size.height,
             width: double.infinity,
             margin: EdgeInsets.only(top:5.0),
-            child: Column(
-              crossAxisAlignment:  CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: ListView(
               children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget> [
-                    Text("Iniciar Sesión",
-                    style: TextStyle(
-                      height: 6,
-                      fontSize: 30,
-                      color: Colors.white
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 30.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget> [
+                      Text("Iniciar Sesión",
+                      style: TextStyle(
+                        height: 6,
+                        fontSize: 30,
+                        color: Colors.white
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 70),
-                      child: Image.asset("assets/img/logo.png",
-                        height: 130
+                      Padding(
+                        padding: const EdgeInsets.only(top: 30),
+                        child: Image.asset("assets/img/logo.png",
+                          height: 130
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 Container(
                   decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40)), color: Color(0xFFFFFEEE),),
@@ -74,7 +70,7 @@ class LoginScreen extends StatelessWidget {
                       children: <Widget> [
                         Padding(
                           padding: const EdgeInsets.only(
-                            top: 150,
+                            top: 120,
                             right: 45,
                             left: 45,
                           ),
@@ -146,7 +142,6 @@ class LoginScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-
                         GenericButton("Iniciar Sesión", Color(0xFFFD8901), 300, 40, 60, 5, 5, 5, 18, 20, main),
                     ]
                     ),  

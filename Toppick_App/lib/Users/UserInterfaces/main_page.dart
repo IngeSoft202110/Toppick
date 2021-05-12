@@ -1,6 +1,5 @@
 import 'package:Toppick_App/GeneralUserInterfaces/generic_button.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/gradiant.dart';
-import 'package:Toppick_App/Orders/Models/pedido.dart';
 import 'package:Toppick_App/Users/UserInterfaces/login_screen.dart';
 import 'package:Toppick_App/Users/UserInterfaces/register_screen.dart';
 import 'package:flutter/material.dart';

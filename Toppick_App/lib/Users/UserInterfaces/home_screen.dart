@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import '../../GeneralUserInterfaces/gradiant.dart';
 
 class HomeScreen extends StatelessWidget {
-  HomeScreen();
-  final Pedido current = Pedido(0, DateTime.now(), 0, DateTime.now(), "Solicitado");
+  HomeScreen(this.current);
+  final Pedido current;
   @override
   Widget build(BuildContext context) {
     return Scaffold(

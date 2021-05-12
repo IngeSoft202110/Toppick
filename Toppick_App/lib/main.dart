@@ -1,5 +1,3 @@
-import 'package:Toppick_App/Orders/Models/pedido.dart';
-import 'package:Toppick_App/Users/UserInterfaces/home_screen.dart';
 import 'package:Toppick_App/Users/UserInterfaces/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

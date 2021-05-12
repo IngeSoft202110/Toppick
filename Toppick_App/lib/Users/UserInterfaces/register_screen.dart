@@ -1,11 +1,11 @@
 import 'package:Toppick_App/GeneralUserInterfaces/generic_button.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/gradiant.dart';
-import 'package:flutter/gestures.dart';
+import 'package:Toppick_App/Users/UserInterfaces/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:Toppick_App/Users/Bloc/user_controller.dart';
-import 'package:Toppick_App/Users/UserInterfaces/home_screen.dart';
 import 'package:intl/intl.dart';
 
+// ignore: must_be_immutable
 class RegisterScreen extends StatelessWidget {
   final UserController controller = UserController();
 
@@ -26,7 +26,7 @@ class RegisterScreen extends StatelessWidget {
       if (formKey.currentState!.validate()) {
         formKey.currentState!.save();
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => HomeScreen()));
+            context, MaterialPageRoute(builder: (context) => LoginScreen()));
       }
     }
 
@@ -40,13 +40,11 @@ class RegisterScreen extends StatelessWidget {
           margin: EdgeInsets.only(top: 5.0),
           child: ListView(
               children: <Widget>[
-                
                 Padding(
                   padding: const EdgeInsets.only(bottom: 30),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    
                     children: <Widget>[
                       Text(
                         "Regístrate",
