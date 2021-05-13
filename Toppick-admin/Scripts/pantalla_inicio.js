@@ -4,16 +4,9 @@
 
 async function getPuntos(){
     try {
-        var response ;
-        await fetch('http://localhost:3000/toppick/admin/login/puntos-venta')
-        .then(response => response.json())
-        .then(data => {
-          
-            response = data;
-        });
-        
-       
-        return response;
+        var response = await axios.get('http://localhost:3000/toppick/admin/login/puntos-venta');
+        console.log(response);
+        return response.data;
         
     }
     catch(err){
