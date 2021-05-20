@@ -1,8 +1,14 @@
-# Toppick
-## Obligatory dependencies
-- <code> cd Server </code>
-- <code> npm install express nodemon cors body-parser mysql </code> 
-- or simply type <code> npm install </cod> and the install script will take care of this
- 
-## Run the server
-- <code> npm start </code>
+# Toppick Server
+## _https://toppickapp.herokuapp.com_
+## documentación
+## _https://documenter.getpostman.com/view/15871047/TzRa6PcM_
+##
+##
+[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
+
+## Instalación
+```sh
+cd Server
+npm i
+npm run devStart
+```
