@@ -22,16 +22,20 @@ Widget image(String pathImage, double w, double h) {
 
 Widget cardHeader(String title, String status, String ubication) {
   return Container(
-    margin: EdgeInsets.only(bottom: 15.0),
+    margin: EdgeInsets.only(bottom: 15.0, left: 15.0, right: 15.0),
     child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          title,
-          style: TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: 38,
-              color: Color(0xFFB7B7B7)),
+        Container(
+          width: 150,
+          child: Text(
+            title,
+            style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 30,
+                color: Color(0xFFB7B7B7)),
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
         Text(
           status,
@@ -51,7 +55,7 @@ Widget cardHeader(String title, String status, String ubication) {
 
 Widget cardDescription(String description) {
   return Container(
-    margin: EdgeInsets.only(bottom: 15.0),
+    margin: EdgeInsets.only(bottom: 15.0, left: 15.0, right: 15.0),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -67,7 +71,6 @@ Widget cardDescription(String description) {
         ),
         Container(
           width: 356,
-          height: 55,
           child: Text(
             description,
             style: TextStyle(
@@ -84,7 +87,7 @@ Widget cardDescription(String description) {
 Widget cardSchedule(String schedule) {
   return Container(
     alignment: Alignment.centerLeft,
-    margin: EdgeInsets.only(left: 20.0, bottom: 20.0),
+    margin: EdgeInsets.only(left: 15.0, bottom: 5.0, right: 15.0),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -100,7 +103,6 @@ Widget cardSchedule(String schedule) {
         ),
         Container(
           width: 200,
-          height: 28,
           alignment: Alignment.centerLeft,
           child: Text(
             schedule,
@@ -147,8 +149,20 @@ class HomeShopCard extends StatelessWidget {
                 case ConnectionState.active:
                   break;
                 case ConnectionState.done:
-                this.selected.schedule = snapshot.data!;
-                  return cardSchedule(this.selected.toStringSchedule());
+                  if(snapshot.hasData){
+                    this.selected.schedule = snapshot.data!;
+                    return cardSchedule(this.selected.toStringSchedule());
+                  }else{
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: 10.0),
+                      child: Center(
+                        child: Text(
+                          "No se encontraron los horarios", 
+                          style: TextStyle(color: Color(0xFFFF441F), fontWeight: FontWeight.bold),
+                        )
+                      ),
+                    );
+                  }
               }
               return Container(
                 padding: const EdgeInsets.only(top: 150.0, left: 150, right: 150),
@@ -157,8 +171,10 @@ class HomeShopCard extends StatelessWidget {
               );
             }
           ),
-          GenericButton("Ver Catálogo", Color(0xFF0CC665), 233.0, 55.0, 10.0,
-              10.0, 10.0, 10.0, 30.0, 20.0, transition)
+          GenericButton("Ver Catálogo", Color(0xFF0CC665), 233.0, 45.0, 5.0,
+              10.0, 10.0, 10.0, 20.0, 20.0, transition),
+          GenericButton("Ver Reseñas", Color(0xFF2196F3), 233.0, 45.0, 5.0,
+              10.0, 10.0, 10.0, 20.0, 20.0, transition),
         ],
       ),
     );

@@ -17,18 +17,15 @@ Widget image(String pathImage, double w, double h) {
     width: w,
     decoration: BoxDecoration(
         shape: BoxShape.rectangle,
-        borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(30.0),
-            bottomRight: Radius.circular(30.0)),
+        borderRadius: BorderRadius.all(Radius.circular(30.0)),
         image:
             DecorationImage(fit: BoxFit.cover, image: AssetImage(pathImage))),
   );
 }
 
-Widget productHead(
-    String name, Producto a, Function(String type) notifyParent) {
+Widget productHead(String name, Producto a, Function(String type) notifyParent) {
   return Container(
-    margin: EdgeInsets.only(top: 15.0, left: 30.0),
+    margin: EdgeInsets.only(top: 15.0, left: 15.0),
     width: double.infinity,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,7 +34,7 @@ Widget productHead(
           name,
           style: TextStyle(
               fontWeight: FontWeight.w700,
-              fontSize: 40,
+              fontSize: 30,
               color: Color(0xFFD76060)),
         ),
         AddSubstract(a, notifyParent),
@@ -48,7 +45,7 @@ Widget productHead(
 
 Widget productDescription(String description) {
   return Container(
-    margin: EdgeInsets.only(top: 15.0, left: 30.0, right: 10.0),
+    margin: EdgeInsets.only(top: 15.0, left: 15.0, right: 15.0),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -74,7 +71,7 @@ Widget productDescription(String description) {
 
 Widget place() {
   return Container(
-    margin: EdgeInsets.only(top: 15.0, left: 30.0),
+    margin: EdgeInsets.only(top: 15.0, left: 15.0),
     child: Text(
       "Ordenar en:",
       style: TextStyle(
@@ -85,7 +82,7 @@ Widget place() {
 
 Widget comments(TextEditingController controller) {
   return Container(
-    margin: EdgeInsets.only(top: 15.0, left: 30.0, right: 15.0),
+    margin: EdgeInsets.only(top: 15.0, left: 15.0, right: 15.0),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -201,8 +198,7 @@ class HomeProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        scrollDirection: Axis.vertical,
+      body: Stack(
         children: [
           Container(
             width: double.infinity,
@@ -222,21 +218,33 @@ class HomeProductCard extends StatelessWidget {
                         future: this.controller.getAditionsOfProduct(this.selected.id),
                         builder: (context,  AsyncSnapshot<List<Acompanamiento>> snapshot){
                           switch(snapshot.connectionState){
-                          case ConnectionState.none:
-                            break;
-                          case ConnectionState.waiting:
-                            break;
-                          case ConnectionState.active:
-                            break;
-                          case ConnectionState.done:
-                          this.selected.acompanamientos = snapshot.data!;
-                            return Center(child: AddTodoButton(this.selected));
-                        }
-                        return Container(
-                          padding: const EdgeInsets.only(top: 150.0, left: 150, right: 150),
-                          height: 250,
-                          child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.red),)
-                        );
+                            case ConnectionState.none:
+                              break;
+                            case ConnectionState.waiting:
+                              break;
+                            case ConnectionState.active:
+                              break;
+                            case ConnectionState.done:
+                              if(snapshot.hasData){
+                                this.selected.acompanamientos = snapshot.data!;
+                                return Center(child: AddTodoButton(this.selected));
+                              }else{
+                                return Padding(
+                                  padding: const EdgeInsets.only(top: 10.0),
+                                  child: Center(
+                                    child: Text(
+                                      "No se encontraron los acompañamientos", 
+                                      style: TextStyle(color: Color(0xFFFF441F), fontWeight: FontWeight.bold),
+                                    )
+                                  ),
+                                );
+                              }
+                          }
+                          return Container(
+                            padding: const EdgeInsets.only(top: 150.0, left: 150, right: 150),
+                            height: 250,
+                            child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.red),)
+                          );
                         }
                       ),
                     if (controller.hasComments(this.selected))
@@ -253,9 +261,20 @@ class HomeProductCard extends StatelessWidget {
                           case ConnectionState.active:
                             break;
                           case ConnectionState.done:
-                          this.available = snapshot.data!;
-                            return RadioButtonListStore(this.selected, this.available,
-                              this.shopSelected, updateStore);
+                            if(snapshot.hasData){
+                              this.available = snapshot.data!;
+                              return RadioButtonListStore(this.selected, this.available, this.shopSelected, updateStore);
+                            }else{
+                              return Padding(
+                                padding: EdgeInsets.only(top: 10.0),
+                                child: Center(
+                                  child: Text(
+                                    "No se encontraron puntos de venta", 
+                                    style: TextStyle(color: Color(0xFFFF441F), fontWeight: FontWeight.bold),
+                                  )
+                                ),
+                              );
+                            }
                         }
                         return Container(
                           padding: const EdgeInsets.only(top: 150.0, left: 150, right: 150),

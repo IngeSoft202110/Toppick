@@ -29,7 +29,7 @@ class LoginScreen extends StatelessWidget {
       }
     }
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: Stack(
         children: <Widget>[          
           Gradiant(),

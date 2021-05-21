@@ -71,10 +71,23 @@ class ShopCategoryList extends StatelessWidget {
                       case ConnectionState.active:
                         break;
                       case ConnectionState.done:
-                      this.shopList = snapshot.data!;
-                        return Column(
-                          children: buildCategoriesCard(context, this.current),
-                        );
+                        if(snapshot.hasData){
+                          this.shopList = snapshot.data!;
+                          return Column(
+                            children: buildCategoriesCard(context, this.current),
+                          );
+                        }else{
+                          return Container(
+                            height: 100,
+                            margin: const EdgeInsets.only(left: 40.0, right: 40.0, top: 10.0),
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15)),
+                              color: Color(0xFFFFFEEE),
+                            ),
+                            child: Center(child: Text("No se han encontrado puntos de venta", style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFFFF441F)),)),
+                          );
+                        }
                     }
                     return Container(
                       padding: const EdgeInsets.only(top: 150.0, left: 150, right: 150),

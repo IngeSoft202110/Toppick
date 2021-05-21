@@ -132,9 +132,22 @@ class ProductListState extends State<ProductList> {
                       case ConnectionState.active:
                         break;
                       case ConnectionState.done:
-                      this.productList = snapshot.data!;
+                      if(snapshot.hasData){
+                        this.productList = snapshot.data!;
                         return ProductCategoryDisplay(
                           this.currentTitle, this.currentDescription, this.products);
+                      }else{
+                        return Container(
+                          height: 100,
+                          margin: const EdgeInsets.only(left: 40.0, right: 40.0),
+                          decoration: BoxDecoration(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(15)),
+                            color: Color(0xFFFFFEEE),
+                          ),
+                          child: Center(child: Text("No se han encontrado productos", style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFFFF441F)),)),
+                        );
+                      }
                     }
                     return Container(
                       padding: const EdgeInsets.only(top: 150.0, left: 150, right: 150),

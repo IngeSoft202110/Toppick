@@ -17,8 +17,6 @@ class HomeCardList extends StatelessWidget {
         context, MaterialPageRoute(builder: (context) => ShopCategoryList(this.current)));
     var f2 = () => Navigator.push(
         context, MaterialPageRoute(builder: (context) => ProductList(this.current, new Tienda(-1, "", "", "", "", "Cerrado", ""))));
-    var f3 = () => Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ProductList(this.current, new Tienda(-1, "", "", "", "", "Cerrado", ""))));
     return Container(
       margin: EdgeInsets.only(top: 5.0),
       height: MediaQuery.of(context).size.height,
@@ -42,13 +40,6 @@ class HomeCardList extends StatelessWidget {
               100,
               136,
               f2),
-          HomeCard(
-              "Combos",
-              "assets/img/foodBox.png",
-              "Aquí podrás encontrar todo el catálogo de combos que ofrece la universidad.",
-              100,
-              136,
-              f3),
           SizedBox(
             height: 20,
           )

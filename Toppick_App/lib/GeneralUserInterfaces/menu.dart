@@ -22,7 +22,7 @@ class Menu extends StatelessWidget {
         width: double.infinity,
         height: MediaQuery.of(context).size.height,
         color: Color(0xFFFFFEEE),
-        child: Column(
+        child: ListView(
           children: <Widget>[
             SafeArea(child: Container(),),
             Row(

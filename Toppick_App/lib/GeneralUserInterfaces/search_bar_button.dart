@@ -36,7 +36,7 @@ class SearchButton extends StatelessWidget {
                 ),
                 Text(
                   buttonText,
-                  style: TextStyle(fontSize: 18.0, color: Color(0xFFC4C4C4)),
+                  style: TextStyle(fontSize: 15.0, color: Color(0xFFC4C4C4)),
                 ),
               ],
             ),

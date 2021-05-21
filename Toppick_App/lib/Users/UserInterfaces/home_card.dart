@@ -4,15 +4,17 @@ Widget infoHomeCard(String path, String description, double w, double h) {
   return Row(
     children: [
       image(path, w, h),
-      Container(
-        margin: EdgeInsets.only(top: 7.0),
-        width: 200,
-        child: Text(
-          description,
-          style: TextStyle(
-              color: Color(0xFF9C9C9C),
-              fontWeight: FontWeight.w400,
-              fontSize: 20),
+      Flexible(
+        child: Container(
+          margin: EdgeInsets.only(top: 7.0, bottom: 10.0),
+          width: 200,
+          child: Text(
+            description,
+            style: TextStyle(
+                color: Color(0xFF9C9C9C),
+                fontWeight: FontWeight.w400,
+                fontSize: 20),
+          ),
         ),
       )
     ],
@@ -51,8 +53,7 @@ class HomeCard extends StatelessWidget {
         child: InkWell(
           onTap: f,
           child: Container(
-            height: 200.0,
-            width: 405.0,
+            width: double.infinity,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15.0),
                 color: Color(0xFFFFFEEE)),

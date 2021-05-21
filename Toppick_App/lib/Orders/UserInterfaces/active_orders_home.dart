@@ -53,7 +53,6 @@ class ActiveOrdersHome extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 15.0),
                   child: Header(this.actual),
                 ),
-                Text("Pantalla activos"),
                 FutureBuilder(
                     future: controller.getActiveOrders(1),
                     builder: (context, AsyncSnapshot<List<Pedido>> snapshot) {

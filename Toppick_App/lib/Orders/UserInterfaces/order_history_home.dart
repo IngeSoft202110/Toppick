@@ -53,10 +53,8 @@ class OrderHistoryHome extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 15.0),
                   child: Header(this.actual),
                 ),
-                Text("Pantalla historial"),
                 FutureBuilder(
-                    future: controller.getActiveOrders(
-                        1), // Cambiar por la funcion del controlador para traer el historial de pedidos
+                    future: controller.getActiveOrders(1), // Cambiar por la funcion del controlador para traer el historial de pedidos
                     builder: (context, AsyncSnapshot<List<Pedido>> snapshot) {
                       switch (snapshot.connectionState) {
                         case ConnectionState.none:

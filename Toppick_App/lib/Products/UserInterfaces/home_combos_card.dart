@@ -15,9 +15,7 @@ Widget image(String pathImage, double w, double h) {
     width: w,
     decoration: BoxDecoration(
         shape: BoxShape.rectangle,
-        borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(30.0),
-            bottomRight: Radius.circular(30.0)),
+        borderRadius: BorderRadius.all(Radius.circular(30.0)),
         image:
             DecorationImage(fit: BoxFit.cover, image: AssetImage(pathImage))),
   );
@@ -25,17 +23,20 @@ Widget image(String pathImage, double w, double h) {
 
 Widget productHead(String name, Combo a, Function(String type) notifyParent) {
   return Container(
-    margin: EdgeInsets.only(top: 15.0, left: 30.0),
+    margin: EdgeInsets.only(top: 15.0, left: 15.0),
     width: double.infinity,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          name,
-          style: TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: 40,
-              color: Color(0xFFD76060)),
+        Padding(
+          padding: const EdgeInsets.only(right: 15.0),
+          child: Text(
+            name,
+            style: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 30,
+                color: Color(0xFFD76060)),
+          ),
         ),
         AddSubstract(a, notifyParent),
       ],
@@ -45,7 +46,7 @@ Widget productHead(String name, Combo a, Function(String type) notifyParent) {
 
 Widget place() {
   return Container(
-    margin: EdgeInsets.only(top: 20.0, left: 30.0),
+    margin: EdgeInsets.only(top: 20.0, left: 15.0),
     child: Text(
       "Ordenar en:",
       style: TextStyle(
@@ -56,7 +57,7 @@ Widget place() {
 
 Widget productDescription(String description) {
   return Container(
-    margin: EdgeInsets.only(top: 15.0, left: 30.0, right: 10.0),
+    margin: EdgeInsets.only(top: 15.0, left: 15.0, right: 15.0),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -184,8 +185,7 @@ class HomeCombosCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        scrollDirection: Axis.vertical,
+      body: Stack(
         children: [
           Container(
             width: double.infinity,
@@ -201,7 +201,7 @@ class HomeCombosCard extends StatelessWidget {
                     productDescription(this.selected.description),
                     Container(
                       margin:
-                          EdgeInsets.only(top: 10, left: 30.0, bottom: 10.0),
+                          EdgeInsets.only(top: 10, left: 15.0, bottom: 10.0),
                       child: Text(
                         "Contenido del combo",
                         style: TextStyle(
@@ -221,8 +221,20 @@ class HomeCombosCard extends StatelessWidget {
                           case ConnectionState.active:
                             break;
                           case ConnectionState.done:
-                          this.selected.products = snapshot.data!;
-                            return comboProductList(this.selected);
+                            if(snapshot.hasData){
+                              this.selected.products = snapshot.data!;
+                              return comboProductList(this.selected);
+                            }else{
+                              return Padding(
+                                padding: EdgeInsets.only(top: 10.0),
+                                child: Center(
+                                  child: Text(
+                                    "No se encontró el contenido del combo", 
+                                    style: TextStyle(color: Color(0xFFFF441F), fontWeight: FontWeight.bold),
+                                  )
+                                ),
+                              );
+                            }
                         }
                         return Container(
                           padding: const EdgeInsets.only(top: 150.0, left: 150, right: 150),
@@ -243,9 +255,20 @@ class HomeCombosCard extends StatelessWidget {
                           case ConnectionState.active:
                             break;
                           case ConnectionState.done:
-                          this.available = snapshot.data!;
-                            return RadioButtonListStore(this.selected, this.available,
-                              this.shopSelected, updateStore);
+                            if(snapshot.hasData){
+                              this.available = snapshot.data!;
+                              return RadioButtonListStore(this.selected, this.available, this.shopSelected, updateStore);
+                            }else{
+                              return Padding(
+                                padding: EdgeInsets.only(top: 10.0),
+                                child: Center(
+                                  child: Text(
+                                    "No se encontraron puntos de venta", 
+                                    style: TextStyle(color: Color(0xFFFF441F), fontWeight: FontWeight.bold),
+                                  )
+                                ),
+                              );
+                            }
                         }
                         return Container(
                           padding: const EdgeInsets.only(top: 150.0, left: 150, right: 150),

@@ -18,10 +18,12 @@ Widget image(String pathImage, double w, double h) {
 
 Widget productTitle(String title) {
   return Container(
+    margin: const EdgeInsets.only(left: 5.0, right: 5.0),
     child: Text(
       title,
       style: TextStyle(
           fontWeight: FontWeight.w700, fontSize: 25, color: Color(0xFFD76060)),
+      overflow: TextOverflow.ellipsis,
     ),
   );
 }
@@ -34,14 +36,13 @@ class ComboProductCard extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(top: 10, left: 30.0, bottom: 15.0),
       width: 180,
-      height: 100,
       decoration: BoxDecoration(
           color: Color(0xFFFFFEEE),
           borderRadius: BorderRadius.circular(30.0),
           boxShadow: [
             BoxShadow(
                 color: Colors.black38,
-                blurRadius: 15.0,
+                blurRadius: 5.0,
                 offset: Offset(0.0, 7.0))
           ]),
       child: Column(
@@ -50,7 +51,7 @@ class ComboProductCard extends StatelessWidget {
           productTitle(this.selected.name),
           (this.selected.category == "A la carta")
               ? AddTodoButton(this.selected)
-              : GenericButton("personalizar", Color(0xFF9C9C9C), 115, 20, 10, 0,
+              : GenericButton("Personalizar", Color(0xFF9C9C9C), 115, 25, 10, 0,
                   5, 0, 18, 20, () {/*nada deshabilitado*/}),
         ],
       ),

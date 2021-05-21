@@ -30,12 +30,11 @@ class ShopCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top:5.0, bottom: 5.0, right: 5.0, left: 10.0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Text(this.shop.name, style: TextStyle(fontWeight: FontWeight.bold),),
-                  Center(
-                    child: image(this.categoryImagePath, 100, 80),
-                  ),
+                  SizedBox(height: 25.0),
+                  image(this.categoryImagePath, 100, 80),
                 ]
               ),
             ),
@@ -47,9 +46,9 @@ class ShopCard extends StatelessWidget {
                   children: <Widget>[
                     Text("Descripción", style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),),
                     Spacer(),
-                    Padding(
+                    Container(
                       padding: const EdgeInsets.only(top:10.0, bottom: 5.0),
-                      child: Text(this.shop.description),
+                      child: Text(this.shop.description, style: TextStyle(fontSize: 12),),
                     ),
                     Spacer(),
                     Row(
