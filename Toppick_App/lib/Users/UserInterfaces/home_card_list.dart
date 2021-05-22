@@ -9,14 +9,15 @@ import 'package:flutter/material.dart';
 import '../../UserInterfaces/../Users/UserInterfaces/home_card.dart';
 
 class HomeCardList extends StatelessWidget {
-  HomeCardList(this.current);
+  HomeCardList(this.current, this.prefs);
   final Pedido current;
+  final prefs;
   @override
   Widget build(BuildContext context) {
     var f1 = () => Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ShopCategoryList(this.current)));
+        context, MaterialPageRoute(builder: (context) => ShopCategoryList(this.current, this.prefs)));
     var f2 = () => Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ProductList(this.current, new Tienda(-1, "", "", "", "", "Cerrado", ""))));
+        context, MaterialPageRoute(builder: (context) => ProductList(this.current, new Tienda(-1, "", "", "", "", "Cerrado", ""), this.prefs)));
     return Container(
       margin: EdgeInsets.only(top: 5.0),
       height: MediaQuery.of(context).size.height,
@@ -24,7 +25,7 @@ class HomeCardList extends StatelessWidget {
       child: ListView(
         scrollDirection: Axis.vertical,
         children: [
-          Header(this.current),
+          Header(this.current, this.prefs),
           SearchButton("Buscar Puntos de venta/Productos", 1),
           HomeCard(
               "Puntos de venta",

@@ -1,5 +1,4 @@
 import 'package:Toppick_App/GeneralUserInterfaces/gradiant.dart';
-import 'package:Toppick_App/GeneralUserInterfaces/header.dart';
 import 'package:Toppick_App/Orders/Bloc/order_controller.dart';
 import 'package:Toppick_App/Orders/Models/pedido.dart';
 import 'package:Toppick_App/Orders/UserInterfaces/active_order_card.dart';
@@ -51,7 +50,10 @@ class ActiveOrdersHome extends StatelessWidget {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.only(bottom: 15.0),
-                  child: Header(this.actual),
+                  child: Container(
+                    height: 150,
+                    child: Image.asset("assets/img/logo.png")
+                  ),
                 ),
                 FutureBuilder(
                     future: controller.getActiveOrders(1),
@@ -117,7 +119,7 @@ class ActiveOrdersHome extends StatelessWidget {
                           height: 250,
                           child: CircularProgressIndicator(
                             valueColor:
-                                AlwaysStoppedAnimation<Color>(Colors.red),
+                                AlwaysStoppedAnimation<Color>(Colors.white),
                           ));
                     }),
               ],

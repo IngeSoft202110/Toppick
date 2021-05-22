@@ -118,13 +118,14 @@ Widget cardSchedule(String schedule) {
 }
 
 class HomeShopCard extends StatelessWidget {
-  HomeShopCard(this.selected, this.current);
+  HomeShopCard(this.selected, this.current, this.prefs);
   final Tienda selected;
   final Pedido current;
   final ShopController controller = ShopController();
+  final prefs;
   @override
   Widget build(BuildContext context) {
-    var transition = () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProductList(this.current, this.selected)));
+    var transition = () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProductList(this.current, this.selected, this.prefs)));
     return Container(
       margin: EdgeInsets.only(top: 18.0, left: 10.0, right: 10.0),
       width: 392,

@@ -1,6 +1,5 @@
 import 'package:Toppick_App/GeneralUserInterfaces/generic_button.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/gradiant.dart';
-import 'package:Toppick_App/GeneralUserInterfaces/header.dart';
 import 'package:Toppick_App/Orders/Bloc/order_controller.dart';
 import 'package:Toppick_App/Orders/Models/daviplata.dart';
 import 'package:Toppick_App/Orders/Models/metodopago.dart';
@@ -203,7 +202,10 @@ class _OrderCardState extends State<OrderCard> {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.only(bottom: 15.0),
-                  child: Header(this.actual),
+                  child: Container(
+                    height: 150,
+                    child: Image.asset("assets/img/logo.png")
+                  ),
                 ),
                 Container(
                   decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40)), color: Color(0xFFFFFEEE),),

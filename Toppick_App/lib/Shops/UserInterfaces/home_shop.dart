@@ -7,14 +7,20 @@ import '../../GeneralUserInterfaces/gradiant.dart';
 import '../../UserInterfaces/../Shops/UserInterfaces/home_shop_card.dart';
 
 class HomeShop extends StatelessWidget {
-  HomeShop(this.selectedShop, this.current);
+  HomeShop(this.selectedShop, this.current, this.prefs);
   final Pedido current;
   final Tienda selectedShop;
+  final prefs;
   @override
   Widget build(BuildContext context) {
     final fusionBody = Container(
       height: MediaQuery.of(context).size.height,
-        child: ListView(children: <Widget>[Header(this.current), SearchButton("Buscar tienda", 2), HomeShopCard(this.selectedShop, this.current), SizedBox(height: 10,)],
+        child: ListView(
+          children: <Widget>[
+            Header(this.current, this.prefs),
+            SearchButton("Buscar tienda", 2), HomeShopCard(this.selectedShop, this.current, this.prefs),
+            SizedBox(height: 10,)
+          ],
       )
     );
 

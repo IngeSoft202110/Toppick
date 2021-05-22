@@ -4,12 +4,18 @@ import 'package:Toppick_App/Users/UserInterfaces/login_screen.dart';
 import 'package:Toppick_App/Users/UserInterfaces/register_screen.dart';
 import 'package:flutter/material.dart';
 class MainPage extends StatelessWidget {
-  MainPage();
-
+  MainPage(this.prefs);
+  final prefs;
   @override
   Widget build(BuildContext context) {
-    var login = ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
-    var register = ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>RegisterScreen()));
+    final conected = this.prefs.getBool('conectado');
+    if(conected != null){
+      print("Esta conectado");
+    }else{
+      print("No esta conectado");
+    }
+    var login = ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen(this.prefs)));
+    var register = ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>RegisterScreen(this.prefs)));
     return Scaffold(
       body: Stack(
         children: <Widget> [

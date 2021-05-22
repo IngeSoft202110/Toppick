@@ -28,8 +28,9 @@ Pedido current3 = Pedido(0, DateTime.now(), 9000, DateTime.now(), "Listo");
 
 
 class Profile extends StatelessWidget {
-  Profile(this.actual);
+  Profile(this.actual, this.prefs);
   final Pedido actual;
+  final prefs;
   final List<Pedido> favoritos = [current2, current3];
   final Cliente clienteActual = Cliente(1, "Juan Francisco", "Hamon Garzon", "3043045566", "hamon_juan@javeriana.edu.co");
 
@@ -50,7 +51,7 @@ class Profile extends StatelessWidget {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.only(bottom: 15.0),
-                  child: Header(this.actual),
+                  child: Header(this.actual, this.prefs),
                 ),
                 Container(
                   decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(40)), color: Color(0xFFFFFEEE),),

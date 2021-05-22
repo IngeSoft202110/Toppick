@@ -10,13 +10,11 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class LoginScreen extends StatelessWidget {
-  final UserController controller = UserController(); 
-  
+  LoginScreen(this.prefs);
+  final prefs;
+  final UserController controller = UserController();
   late String emailValue;
   late String passwordValue;
-
-
-
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -24,8 +22,11 @@ class LoginScreen extends StatelessWidget {
     void main (){
       if(formKey.currentState!.validate()){
         formKey.currentState!.save();
+        this.prefs.setBool('conectado', true);
         //Mensaje al servidor
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen(Pedido(0, DateTime.now(), 0, DateTime.now(), "Solicitado"))));
+        //this.controller.login(this.emailValue, this.passwordValue, this.prefs);
+        Pedido nuevo = Pedido(0, DateTime.now(), 0, DateTime.now(), "Solicitado");
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen(nuevo, this.prefs)));
       }
     }
     return Scaffold(
@@ -135,7 +136,7 @@ class LoginScreen extends StatelessWidget {
                                 ),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = 
-                                    ()=>Navigator.push(context,MaterialPageRoute(builder: (context)=>RegisterScreen())),
+                                    ()=>Navigator.push(context,MaterialPageRoute(builder: (context)=>RegisterScreen(this.prefs))),
                                   
                               ),
                             ]

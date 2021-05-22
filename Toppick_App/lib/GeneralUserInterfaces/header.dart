@@ -44,14 +44,15 @@ showAlert(BuildContext context){
 }
 
 class Header extends StatelessWidget {
-  Header(this.actual);
+  Header(this.actual,this.prefs);
   final Pedido actual;
+  final prefs;
   @override
   Widget build(BuildContext context) {
     current2.carrito = solicitados1;
     current3.carrito = solicitados2;
     var f1 = () => Navigator.push(context, MaterialPageRoute(builder: (context) => OrderCard(actual)));
-    var f2 = () => Navigator.push(context, MaterialPageRoute(builder: (context) => Menu(actual)));
+    var f2 = () => Navigator.push(context, MaterialPageRoute(builder: (context) => Menu(actual, this.prefs)));
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.only(left: 3.0, right: 3.0),

@@ -1,5 +1,4 @@
 import 'package:Toppick_App/GeneralUserInterfaces/gradiant.dart';
-import 'package:Toppick_App/GeneralUserInterfaces/header.dart';
 import 'package:Toppick_App/Orders/Bloc/order_controller.dart';
 import 'package:Toppick_App/Orders/Models/pedido.dart';
 import 'package:Toppick_App/Orders/UserInterfaces/order_history_card.dart';
@@ -51,7 +50,10 @@ class OrderHistoryHome extends StatelessWidget {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.only(bottom: 15.0),
-                  child: Header(this.actual),
+                  child: Container(
+                    height: 150,
+                    child: Image.asset("assets/img/logo.png")
+                  ),
                 ),
                 FutureBuilder(
                     future: controller.getActiveOrders(1), // Cambiar por la funcion del controlador para traer el historial de pedidos

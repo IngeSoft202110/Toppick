@@ -15,9 +15,10 @@ import '../../Shops/Models/tienda.dart';
 import 'package:Toppick_App/Products/UserInterfaces/home_product_card.dart';
 
 class ProductList extends StatefulWidget {
-  ProductList(this.current,this.store);
+  ProductList(this.current,this.store, this.prefs);
   final Tienda? store;
   final Pedido current;
+  final prefs;
   @override
   ProductListState createState() => ProductListState();
 }
@@ -97,7 +98,7 @@ class ProductListState extends State<ProductList> {
             width: double.infinity,
             child: ListView(
               children: <Widget>[
-                Header(widget.current),
+                Header(widget.current, widget.prefs),
                 SearchButton("Buscar productos", 3),
                 ListMainText("Escoge la", "comida que amas"),
                 Padding(

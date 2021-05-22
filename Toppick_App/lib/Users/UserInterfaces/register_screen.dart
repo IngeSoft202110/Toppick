@@ -7,6 +7,8 @@ import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
 class RegisterScreen extends StatelessWidget {
+  RegisterScreen(this.prefs);
+  final prefs;
   final UserController controller = UserController();
 
   late String nameValue;
@@ -26,7 +28,7 @@ class RegisterScreen extends StatelessWidget {
       if (formKey.currentState!.validate()) {
         formKey.currentState!.save();
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => LoginScreen()));
+            context, MaterialPageRoute(builder: (context) => LoginScreen(this.prefs)));
       }
     }
 

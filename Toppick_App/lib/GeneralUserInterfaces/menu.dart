@@ -4,19 +4,26 @@ import 'package:Toppick_App/Orders/UserInterfaces/active_orders_home.dart';
 import 'package:Toppick_App/Orders/UserInterfaces/order_history_home.dart';
 import 'package:Toppick_App/Products/UserInterfaces/custom_rect_tween.dart';
 import 'package:Toppick_App/Users/UserInterfaces/home_screen.dart';
+import 'package:Toppick_App/Users/UserInterfaces/main_page.dart';
 import 'package:Toppick_App/Users/UserInterfaces/profile.dart';
 import 'package:flutter/material.dart';
 
 class Menu extends StatelessWidget {
-  Menu(this.actual);
+  Menu(this.actual, this.prefs);
   final Pedido actual;
+  final prefs;
   @override
   Widget build(BuildContext context) {
     var pedidosActivos = () {Navigator.pop(context); Navigator.push(context, MaterialPageRoute(builder: (context) => ActiveOrdersHome(this.actual)));};
-    var mainPage = () {Navigator.pop(context); Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen(this.actual)));};
+    var mainPage = () {Navigator.pop(context); Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen(this.actual, this.prefs)));};
     var historialPedidos = () {Navigator.pop(context); Navigator.push(context, MaterialPageRoute(builder: (context) => OrderHistoryHome(this.actual)));};
-    var perfil = () {Navigator.pop(context); Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(this.actual)));};
-    var cerrarSesion = () {/* PUSH A PANTALLA INICIAL, VERIFICANDO CONDICIONES DE LA HISTORIA (pushAndRemoveUntil) */};
+    var perfil = () {Navigator.pop(context); Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(this.actual, this.prefs)));};
+    var cerrarSesion = () {
+      /* FALTAN VERIFICAR LAS CONDICIONES PARA CERRAR SESIÓN */
+      prefs.remove('conectado');
+      //prefs.remove('cookie'); --> Una vez se haga la prueba del login esto estará creado y se podrá borrar.
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainPage(this.prefs)), (route) => false);
+    };
     return Scaffold(
       body: Container(
         width: double.infinity,

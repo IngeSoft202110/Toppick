@@ -11,9 +11,10 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class ShopCategoryList extends StatelessWidget {
-  ShopCategoryList(this.current);
+  ShopCategoryList(this.current, this.prefs);
   final Pedido current;
   final ShopController controller = ShopController();
+  final prefs;
   List<String> categories = [];
   List<String> descriptions = [];
   List<String> logoPahts = [];
@@ -26,7 +27,7 @@ class ShopCategoryList extends StatelessWidget {
         GestureDetector(
           onTap: (){
             List<Tienda> filtered = this.controller.filterShops(this.shopList, categories[i]);
-            Navigator.push(context, MaterialPageRoute(builder: (context)=> ShopList(categories[i], logoPahts[i], filtered, current)));
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> ShopList(categories[i], logoPahts[i], filtered, current, this.prefs)));
           },
           child: Padding(
             padding: const EdgeInsets.only(left:5.0, right: 5.0, bottom: 5.0),
@@ -54,7 +55,7 @@ class ShopCategoryList extends StatelessWidget {
             width: double.infinity,
             child: ListView(
               children: <Widget>[
-                Header(this.current),
+                Header(this.current, this.prefs),
                 SearchButton("Buscar puntos de venta", 2),
                 Padding(
                   padding: const EdgeInsets.only(top: 20.0),
