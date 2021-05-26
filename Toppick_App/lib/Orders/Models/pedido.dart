@@ -13,47 +13,20 @@ class Pedido{
 
 
   bool storeIsInCurrentOrder(Tienda toCheck){
-    bool result = false;
-    this.carrito.forEach((key, value) {
-      if(key!.id == toCheck.id){
-        result = true;
-      }
-    });
-    return result;
+    return this.carrito.containsKey(toCheck);
   }
 
   bool productInShopOrder(Tienda toCheck, Producto toVerify){
-    bool result = false;
-    this.carrito.forEach((key, value) {
-      if(key!.id == toCheck.id){
-        value.forEach((key, value) {
-          if(key.id == toVerify.id){
-            result = true;
-          }
-        });
-      }
-    });
-    return result;
+    return this.carrito[toCheck]!.containsKey(toVerify);
   }
 
   void addQuantityToExistingProduct(Tienda store, Producto toAdd, int quantity){
-    this.carrito.forEach((key, value) {
-      if(key!.id == store.id){
-        value.forEach((key, value) {
-          if(key.id == toAdd.id){
-            value+=quantity;
-          }
-        });
-      }
-    });
+    int newValue = this.carrito[store]![toAdd]! + quantity;
+    this.carrito[store]![toAdd] = newValue;
   }
 
   void addProductToSelectedStore(Tienda store, Producto toAdd, int quantity){
-    this.carrito.forEach((key, value) {
-      if(key!.id == store.id){
-        value.addAll({toAdd: quantity});
-      }
-    });
+    this.carrito[store]!.addAll({toAdd:quantity});
   }
 
   void addStoreWithProducts(Tienda store, Producto toAdd, int quantity){

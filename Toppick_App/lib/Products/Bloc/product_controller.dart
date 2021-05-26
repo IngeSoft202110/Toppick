@@ -1,5 +1,5 @@
 import 'package:Toppick_App/Products/Models/acompanamiento.dart';
-import 'package:Toppick_App/Products/Models/combo.dart';
+import 'package:flutter/material.dart';
 
 import '../Models/producto.dart';
 import '../Repositories/product_queries.dart';
@@ -59,24 +59,26 @@ class ProductController {
     this.productqueries = new ProductQueries();
   }
 
-  Future<List<dynamic>> getAllAvailableProducts() {
-    return this.productqueries.getAllAvailableProducts();
+  Future<List<dynamic>> getAllAvailableProducts(String cookie, BuildContext context) async{
+    this.showLoader(context);
+    List<dynamic> result = await this.productqueries.getAllAvailableProducts(cookie);
+    Navigator.of(context).pop();
+    return result;
   }
 
-  List<Combo> getAllAvailableComboProducts() {
-    return this.productqueries.getAllAvailableComboProducts();
+  Future<List<dynamic>> getProductCatalogueById(int storeId, String cookie, BuildContext context) async {
+    this.showLoader(context);
+    List<dynamic> result = await this.productqueries.getProductCatalogueById(storeId, cookie);
+    Navigator.of(context).pop();
+    return result;
   }
 
-  Future<List<dynamic>> getProductCatalogueById(int storeId) {
-    return this.productqueries.getProductCatalogueById(storeId);
+  Future<List<dynamic>> getComboProducts(int comboId, String cookie){
+    return this.productqueries.getComboProducts(comboId, cookie);
   }
 
-  Future<List<dynamic>> getComboProducts(int comboId){
-    return this.productqueries.getComboProducts(comboId);
-  }
-
-  Future<List<Acompanamiento>> getAditionsOfProduct(int idProduct){
-    return this.productqueries.getAditionsOfProduct(idProduct);
+  Future<List<Acompanamiento>> getAditionsOfProduct(int idProduct, String cookie){
+    return this.productqueries.getAditionsOfProduct(idProduct, cookie);
   }
 
   List<String> getProductCategories(){
@@ -101,5 +103,18 @@ class ProductController {
 
   bool hasComments(Producto toCheck){
     return (toCheck.category == "Comida Rápida" || toCheck.category == "Desayunos" || toCheck.category == "Parrilla" ||  toCheck.category == "Menús del día");
+  }
+
+  showLoader(BuildContext context){
+    AlertDialog alert = AlertDialog(
+      content: Container(height: 125, child: CircularProgressIndicator())
+    );
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context){
+        return alert;
+      }
+    );
   }
 }

@@ -62,7 +62,7 @@ class ShopCategoryList extends StatelessWidget {
                   child: ListMainText("Escoge", "Tu forma de comer"),
                 ),
                 FutureBuilder(
-                  future: controller.getAllAvailableShops(),
+                  future: controller.getAllAvailableShops(this.prefs.getString('cookie')),
                   builder: (context,  AsyncSnapshot<List<Tienda>> snapshot) {
                     switch(snapshot.connectionState){
                       case ConnectionState.none:
@@ -90,10 +90,12 @@ class ShopCategoryList extends StatelessWidget {
                           );
                         }
                     }
-                    return Container(
-                      padding: const EdgeInsets.only(top: 150.0, left: 150, right: 150),
-                      height: 250,
-                      child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFFFEEE)),)
+                    return Center(
+                      child: Container(
+                        padding: const EdgeInsets.only(top: 50.0,),
+                        height: 100,
+                        child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFFFEEE)),)
+                      ),
                     );
                   }
                 ),

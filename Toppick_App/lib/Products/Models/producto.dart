@@ -12,10 +12,12 @@ class Producto {
   Producto(this.id, this.name, this.description,this.price, this.preparationTime, this.score, this.ulrImage, this.category, this.type);
 
   @override
-  // ignore: hash_and_equals
   bool operator ==(object){
     return (object is Producto) && object.id == this.id;
   }
+
+  @override
+  int get hashCode => this.id;
 
   void addComments(String comment){
     this.comments = comment;

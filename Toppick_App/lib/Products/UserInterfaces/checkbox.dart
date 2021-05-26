@@ -19,7 +19,7 @@ class _CheckboxRowState extends State<CheckboxRow> {
   Widget build(BuildContext context) {
     rememberMe = seleccionados[name]!;
     return Container(
-      margin: EdgeInsets.only(top: 10.0, left: 40.0),
+      margin: EdgeInsets.only(top: 10.0, left: 18.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

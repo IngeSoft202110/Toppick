@@ -12,21 +12,13 @@ class OrderController {
     this.orderqueries = new OrdersQueries();
   }
 
-  List<Pedido> getFavoriteOrders() {
-    return this.orderqueries.getFavoriteOrders();
+  Future<List<Pedido>> getOrderHistory(String cookie) {
+    return this.orderqueries.getOrderHistory(cookie);
   }
 
-  List<Pedido> getOrderHistory() {
-    return this.orderqueries.getOrderHistory();
+  Future<List<Pedido>> getActiveOrders(String cookie) {
+    return this.orderqueries.getActiveOrders(cookie);
   }
-
-  Pedido getOrderStatusResponse() {
-    return this.orderqueries.getOrderStatusResponse();
-  }
-
-  //bool postOrder(Pedido order) {
-    //return this.orderqueries.postOrder(order);
-  //}
   
   void sendOrder(Pedido pedido){
     this.orderqueries.funcionDatos(pedido);
@@ -250,10 +242,6 @@ class OrderController {
     print("${selectedHour.isAfter(maxShopTime)}");
     print("${selectedHour.isBefore(minShopTime)}");
     return selectedHour.isAfter(maxShopTime) && selectedHour.isBefore(minShopTime);
-  }
-
-  Future<List<Pedido>> getActiveOrders(int userId) {
-    return this.orderqueries.getActiveOrders(userId);
   }
 
 }

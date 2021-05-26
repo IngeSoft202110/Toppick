@@ -3,6 +3,7 @@ import 'package:Toppick_App/Orders/Models/pedido.dart';
 import 'package:Toppick_App/Orders/UserInterfaces/active_orders_home.dart';
 import 'package:Toppick_App/Orders/UserInterfaces/order_history_home.dart';
 import 'package:Toppick_App/Products/UserInterfaces/custom_rect_tween.dart';
+import 'package:Toppick_App/Users/Bloc/user_controller.dart';
 import 'package:Toppick_App/Users/UserInterfaces/home_screen.dart';
 import 'package:Toppick_App/Users/UserInterfaces/main_page.dart';
 import 'package:Toppick_App/Users/UserInterfaces/profile.dart';
@@ -12,17 +13,33 @@ class Menu extends StatelessWidget {
   Menu(this.actual, this.prefs);
   final Pedido actual;
   final prefs;
+  final UserController controller = UserController();
   @override
   Widget build(BuildContext context) {
-    var pedidosActivos = () {Navigator.pop(context); Navigator.push(context, MaterialPageRoute(builder: (context) => ActiveOrdersHome(this.actual)));};
+    var pedidosActivos = () {Navigator.pop(context); Navigator.push(context, MaterialPageRoute(builder: (context) => ActiveOrdersHome(this.actual, this.prefs)));};
     var mainPage = () {Navigator.pop(context); Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen(this.actual, this.prefs)));};
-    var historialPedidos = () {Navigator.pop(context); Navigator.push(context, MaterialPageRoute(builder: (context) => OrderHistoryHome(this.actual)));};
+    var historialPedidos = () {Navigator.pop(context); Navigator.push(context, MaterialPageRoute(builder: (context) => OrderHistoryHome(this.actual, this.prefs)));};
     var perfil = () {Navigator.pop(context); Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(this.actual, this.prefs)));};
     var cerrarSesion = () {
-      /* FALTAN VERIFICAR LAS CONDICIONES PARA CERRAR SESIÓN */
-      prefs.remove('conectado');
-      //prefs.remove('cookie'); --> Una vez se haga la prueba del login esto estará creado y se podrá borrar.
-      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainPage(this.prefs)), (route) => false);
+      int pedidosActuales = this.prefs.getInt('pedidos actuales');
+      print(pedidosActuales);
+      if(pedidosActuales == 0){
+        this.controller.showLoader(context);
+        this.controller.logout(this.prefs).
+        then((value) {
+          if(value){
+            prefs.remove('conectado');
+            prefs.remove('cookie');
+            this.actual.carrito.clear();
+            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainPage(this.prefs)), (route) => false);
+          }else{
+            this.controller.showError(context);
+          }
+        } 
+        );
+      }else{
+        this.controller.showError(context);
+      }
     };
     return Scaffold(
       body: Container(

@@ -1,10 +1,20 @@
+import 'package:Toppick_App/Orders/Models/pedido.dart';
+import 'package:Toppick_App/Products/Models/combo.dart';
+import 'package:Toppick_App/Products/UserInterfaces/productcard.dart';
+import 'package:Toppick_App/Shops/Models/tienda.dart';
 import 'package:flutter/material.dart';
 
+import 'home_combos_card.dart';
+import 'home_product_card.dart';
+
 class ProductCategoryDisplay extends StatelessWidget {
-  ProductCategoryDisplay(this.categoryName, this.categoryDescription, this.products);
+  ProductCategoryDisplay(this.categoryName, this.categoryDescription, this.products, this.store, this.current, this.prefs);
   final String categoryName;
   final String categoryDescription;
-  final ListView products;
+  final List<dynamic> products;
+  final Tienda store;
+  final Pedido current;
+  final prefs;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -25,7 +35,32 @@ class ProductCategoryDisplay extends StatelessWidget {
         ),
         SizedBox(
           height: 175,
-          child: this.products,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: products.length,
+            itemBuilder: (BuildContext context, int index){
+              return GestureDetector(
+                  onTap: () => {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          if(products[index] is Combo){
+                            return HomeCombosCard(products[index], this.store, this.current, this.prefs);
+                          }else{
+                            return HomeProductCard(products[index], this.store, this.current, this.prefs);
+                          }
+                        }
+                      )
+                    )
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 15.0),
+                    child: ProductCard(products[index]),
+                  ),
+                );
+            },
+          ),
         ),
       ],
     );

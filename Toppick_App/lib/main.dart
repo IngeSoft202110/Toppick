@@ -32,9 +32,9 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    //context
 
-    //aqui fran pone lo de popear todo lo de la cola alv :V until la pantalla principal xd
+    //Se deja en la pagina de inicio y se borra todo lo anterior, con esto ya luego se redirige a la que sigue dependiendo del estado
+    navigatorKey.currentState?.pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainPage(widget.prefs)), (route) => false);
     PushNotificationService.messagesStream.listen((message) {
       bool? a = (navigatorKey.currentState?.canPop() != null)
           ? navigatorKey.currentState?.canPop()
@@ -71,9 +71,9 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       routes: {
         'activos': (BuildContext context) => ActiveOrdersHome(
-          Pedido(0, DateTime.now(), 0, DateTime.now(), "Solicitado")),
+          Pedido(0, DateTime.now(), 0, DateTime.now(), "Solicitado"), widget.prefs),
         'historial': (BuildContext context) => OrderHistoryHome(
-          Pedido(0, DateTime.now(), 0, DateTime.now(), "Solicitado")),
+          Pedido(0, DateTime.now(), 0, DateTime.now(), "Solicitado"), widget.prefs),
       },
       navigatorKey: navigatorKey,
       home: Scaffold(body: resultPage));

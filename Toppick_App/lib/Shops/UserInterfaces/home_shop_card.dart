@@ -1,4 +1,5 @@
 import 'package:Toppick_App/Orders/Models/pedido.dart';
+import 'package:Toppick_App/Products/Bloc/product_controller.dart';
 import 'package:Toppick_App/Products/UserInterfaces/productlist.dart';
 import 'package:Toppick_App/Shops/Bloc/shop_controller.dart';
 import 'package:Toppick_App/Shops/Models/horario.dart';
@@ -27,7 +28,7 @@ Widget cardHeader(String title, String status, String ubication) {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Container(
-          width: 150,
+          width: 175,
           child: Text(
             title,
             style: TextStyle(
@@ -41,7 +42,7 @@ Widget cardHeader(String title, String status, String ubication) {
           status,
           style: TextStyle(
               fontWeight: FontWeight.w700,
-              fontSize: 15,
+              fontSize: 20,
               color: (status=="Abierto") ? Color(0xFF0CC665) : Color(0xFFD76060)),
         ),
         Icon(
@@ -122,10 +123,17 @@ class HomeShopCard extends StatelessWidget {
   final Tienda selected;
   final Pedido current;
   final ShopController controller = ShopController();
+  final ProductController pController = ProductController();
   final prefs;
   @override
   Widget build(BuildContext context) {
-    var transition = () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProductList(this.current, this.selected, this.prefs)));
+    var transition = (){
+      List<dynamic> products = [];
+      pController.getProductCatalogueById(this.selected.id, prefs.getString('cookie'), context).then((value) {
+        products = value;
+        Navigator.push(context, MaterialPageRoute(builder: (context) => ProductList(this.current, this.selected, products, this.prefs)));
+      });
+    };
     return Container(
       margin: EdgeInsets.only(top: 18.0, left: 10.0, right: 10.0),
       width: 392,
@@ -140,7 +148,7 @@ class HomeShopCard extends StatelessWidget {
               this.selected.ubication),
           cardDescription(this.selected.description),
           FutureBuilder(
-            future: controller.getShopScheduleView(selected.id),
+            future: controller.getShopScheduleView(selected.id, this.prefs.getString('cookie')),
             builder: (context,  AsyncSnapshot<List<Horario>> snapshot){
               switch(snapshot.connectionState){
                 case ConnectionState.none:
@@ -166,8 +174,8 @@ class HomeShopCard extends StatelessWidget {
                   }
               }
               return Container(
-                padding: const EdgeInsets.only(top: 150.0, left: 150, right: 150),
-                height: 250,
+                padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                height: 50,
                 child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.red),)
               );
             }

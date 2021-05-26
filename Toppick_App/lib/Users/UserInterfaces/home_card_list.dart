@@ -1,6 +1,7 @@
 import 'package:Toppick_App/GeneralUserInterfaces/header.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/search_bar_button.dart';
 import 'package:Toppick_App/Orders/Models/pedido.dart';
+import 'package:Toppick_App/Products/Bloc/product_controller.dart';
 import 'package:Toppick_App/Products/UserInterfaces/productlist.dart';
 import 'package:Toppick_App/Shops/Models/tienda.dart';
 import 'package:Toppick_App/Shops/UserInterfaces/shopcategorylist.dart';
@@ -8,16 +9,24 @@ import 'package:flutter/material.dart';
 
 import '../../UserInterfaces/../Users/UserInterfaces/home_card.dart';
 
+// ignore: must_be_immutable
 class HomeCardList extends StatelessWidget {
   HomeCardList(this.current, this.prefs);
   final Pedido current;
   final prefs;
+  final ProductController controller = ProductController();
+  List<dynamic> result = [];
   @override
   Widget build(BuildContext context) {
     var f1 = () => Navigator.push(
         context, MaterialPageRoute(builder: (context) => ShopCategoryList(this.current, this.prefs)));
-    var f2 = () => Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ProductList(this.current, new Tienda(-1, "", "", "", "", "Cerrado", ""), this.prefs)));
+    var f2 = () { 
+      controller.getAllAvailableProducts(prefs.getString('cookie'), context).then((value) { 
+        result = value;
+        Navigator.push(
+        context, MaterialPageRoute(builder: (context) => ProductList(this.current, new Tienda(-1, "", "", "", "", "Cerrado", ""), this.result, this.prefs)));
+      });
+    };
     return Container(
       margin: EdgeInsets.only(top: 5.0),
       height: MediaQuery.of(context).size.height,

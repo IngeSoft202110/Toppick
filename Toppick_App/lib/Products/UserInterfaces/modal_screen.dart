@@ -25,12 +25,15 @@ Widget title(String name) {
               fontSize: 35,
               color: Color(0xFFD76060)),
         ),
-        Text(
-          name,
-          style: TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: 28,
-              color: Color(0xFFD76060)),
+        Padding(
+          padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+          child: Text(
+            name,
+            style: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 28,
+                color: Color(0xFFD76060)),
+          ),
         )
       ],
     ),

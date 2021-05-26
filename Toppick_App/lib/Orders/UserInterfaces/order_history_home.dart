@@ -6,10 +6,11 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class OrderHistoryHome extends StatelessWidget {
-  OrderHistoryHome(this.actual);
+  OrderHistoryHome(this.actual, this.prefs);
   final Pedido actual;
   List<Pedido> history = [];
   final OrderController controller = OrderController();
+  final prefs;
 
   List<Widget> fill(BuildContext context) {
     List<Widget> result = [];
@@ -56,7 +57,7 @@ class OrderHistoryHome extends StatelessWidget {
                   ),
                 ),
                 FutureBuilder(
-                    future: controller.getActiveOrders(1), // Cambiar por la funcion del controlador para traer el historial de pedidos
+                    future: controller.getOrderHistory(this.prefs.getString('cookie')),
                     builder: (context, AsyncSnapshot<List<Pedido>> snapshot) {
                       switch (snapshot.connectionState) {
                         case ConnectionState.none:

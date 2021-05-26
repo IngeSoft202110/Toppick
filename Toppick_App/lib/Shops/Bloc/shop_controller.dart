@@ -22,12 +22,8 @@ class ShopController {
     this.shopQueries = new ShopQueries();
   }
 
-  Future<List<Tienda>> getAllAvailableShops() {
-    return this.shopQueries.getAllAvailableShops();
-  }
-
-  Tienda getShopById(int id) {
-    return this.shopQueries.getShopById(id);
+  Future<List<Tienda>> getAllAvailableShops(String cookie) {
+    return this.shopQueries.getAllAvailableShops(cookie);
   }
 
   List<String> getShopCategories(){
@@ -50,15 +46,15 @@ class ShopController {
     return filtered;
   }
 
-  Future<List<Tienda>> getAvailableShopsByProduct(int productId) {
-    return this.shopQueries.getAvailableShopsByProduct(productId);
+  Future<List<Tienda>> getAvailableShopsByProduct(int productId, String cookie) {
+    return this.shopQueries.getAvailableShopsByProduct(productId, cookie);
   }
 
-  Future<void> getShopSchedule(int id, Tienda selected) async {
-    selected.schedule = await this.shopQueries.getShopSchedule(id);
+  Future<void> getShopSchedule(int id, Tienda selected, String cookie) async {
+    selected.schedule = await this.shopQueries.getShopSchedule(id, cookie);
   }
 
-  Future<List<Horario>> getShopScheduleView(int id){
-    return this.shopQueries.getShopSchedule(id);
+  Future<List<Horario>> getShopScheduleView(int id, String cookie){
+    return this.shopQueries.getShopSchedule(id, cookie);
   }
 }

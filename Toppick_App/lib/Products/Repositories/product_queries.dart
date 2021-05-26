@@ -7,9 +7,13 @@ import 'package:http/http.dart' as http;
 
 
 class ProductQueries {
-  int port = 3000;
-  Future<List<dynamic>> getAllAvailableProducts() async {
-    final response = await http.get(Uri.http('10.0.2.2:$port','toppick/app/products'), headers: {"Accept": "application/json"});
+  String domain = 'toppickapp.herokuapp.com';
+
+  Future<List<dynamic>> getAllAvailableProducts(String cookie) async {
+    final response = await http.get(
+      Uri.https(this.domain, '/productos'),
+      headers: {"Accept": "application/json", "Cookie":cookie}
+    );
     if (response.statusCode == 200) {
         return parseProducts(response.body);
     } else { 
@@ -17,67 +21,11 @@ class ProductQueries {
     }
   } 
 
-  List<Combo> getAllAvailableComboProducts() /*async*/ {
-    List<Combo> queryResult = [];
-    /*List<Producto> productList = [];
-    /*
-    final response =await http.get('https://');
-    if (response.statusCode == 200) {
-        //the call to the server was successful, 
-        Iterable l = json.decode(response.body);
-        List<Producto> queryResult = List<Post>.from(l.map((model)=> Post.fromJson(model)));  aqi antes de toca mirar que tipo de producto es
-    } else {
-    
-        throw Exception('Failed to load post');
-        }
-    */
-    productList = [
-      Otros("Horneado", 1, "Pescadito", 3000, 20, 4.5, "URL", "Otros"),
-      ALaCarta(
-          "Carnes",
-          2,
-          "Baby Beaf",
-          10000,
-          20,
-          4.5,
-          "URL",
-          "A la carta"),
-      Bebida(50, "Tés", 3, "Té", 2000, 20, 4.5, "URL", "Bebidas"),
-    ];
-    queryResult = [
-      Combo(
-          "Hojaldre relleno de arequipe, preparado por los mejores cocineros de toda la universidad.",
-          1,
-          "Pescadito",
-          3000,
-          20,
-          4.5,
-          "URL",
-          "Combos"),
-      Combo(
-          "Hojaldre relleno de arequipe, preparado por los mejores cocineros de toda la universidad.",
-          2,
-          "Pescadito",
-          3000,
-          20,
-          4.5,
-          "URL",
-          "Combos"),
-      Combo(
-          "Hojaldre relleno de arequipe, preparado por los mejores cocineros de toda la universidad.",
-          3,
-          "Pescadito",
-          3000,
-          20,
-          4.5,
-          "URL",
-          "Combos"),
-    ];*/
-    return queryResult;
-  }
-
-  Future<List<dynamic>> getProductCatalogueById(int storeId) async {
-    final response = await http.get(Uri.http('10.0.2.2:$port','toppick/app/catalog/$storeId'), headers: {"Accept": "application/json"});
+  Future<List<dynamic>> getProductCatalogueById(int storeId, String cookie) async {
+    final response = await http.get(
+      Uri.https(this.domain, '/tienda/catalogo/$storeId'),
+      headers: {"Accept": "application/json", "Cookie":cookie}
+    );
     if (response.statusCode == 200) {
         return parseProducts(response.body);
     } else { 
@@ -85,8 +33,11 @@ class ProductQueries {
     }
   }
 
-  Future<List<dynamic>> getComboProducts(int comboId) async{
-    final response = await http.get(Uri.http('10.0.2.2:$port','toppick/app/products-of-combo/$comboId'), headers: {"Accept": "application/json"});
+  Future<List<dynamic>> getComboProducts(int comboId, String cookie) async{
+    final response = await http.get(
+      Uri.https(this.domain, '/productos/combo/$comboId'),
+      headers: {"Accept": "application/json", "Cookie":cookie}
+    );
     if (response.statusCode == 200) {
         return parseProducts(response.body);
     } else { 
@@ -94,8 +45,11 @@ class ProductQueries {
     }
   }
 
-  Future<List<Acompanamiento>> getAditionsOfProduct(int idProduct) async{
-    final response = await http.get(Uri.http('10.0.2.2:$port','toppick/app/accompaniment-of-specialty/$idProduct'), headers: {"Accept": "application/json"});
+  Future<List<Acompanamiento>> getAditionsOfProduct(int idProduct, String cookie) async{
+    final response = await http.get(
+      Uri.https(this.domain, '/productos/acompanamientos/$idProduct'),
+      headers: {"Accept": "application/json", "Cookie":cookie}
+    );
     if (response.statusCode == 200) {
         return parseAditions(response.body);
     } else { 
@@ -104,26 +58,28 @@ class ProductQueries {
   }
 
   List<dynamic> parseProducts(String responseBody) { 
-    final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
-    List<dynamic> x = [];
+    final first = json.decode(responseBody);
+    final parsed = first['body'];
+    List<dynamic> result = [];
     for (var y in parsed) {
       String val = y['categoria'];
       if(val == 'Especialidades'){
         dynamic a = Especialidad.fromJson(y);
-        x.add(a);
+        result.add(a);
       }else if (val == 'Combos'){
-          dynamic a = Combo.fromJson(y);
-          x.add(a);
+        dynamic a = Combo.fromJson(y);
+        result.add(a);
       }else{
         dynamic a = Producto.fromJson(y);
-        x.add(a);
+        result.add(a);
       }
     }
-    return x; 
+    return result; 
   }
 
   List<Acompanamiento> parseAditions(String responseBody){
-    final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
+    final first = json.decode(responseBody);
+    final parsed = first['body'];
     List<Acompanamiento> aditions = [];
     for(var val in parsed){
       aditions.add(Acompanamiento.fromJson(val));

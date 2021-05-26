@@ -107,7 +107,7 @@ Widget comments(TextEditingController controller) {
   );
 }
 
-showCorrectAdd(BuildContext context, String productName, ShopController shopController, Tienda shopSelected) {
+showCorrectAdd(BuildContext context, String productName, ShopController shopController, Tienda shopSelected, String cookie) {
   Widget okButton = TextButton(
     child: Text("OK"),
     onPressed: () { Navigator.of(context).pop();},
@@ -125,7 +125,7 @@ showCorrectAdd(BuildContext context, String productName, ShopController shopCont
       return alert;
     },
   );
-  shopController.getShopSchedule(shopSelected.id, shopSelected);
+  shopController.getShopSchedule(shopSelected.id, shopSelected, cookie);
 }
 
 showStoreWarning(BuildContext context) {
@@ -150,8 +150,7 @@ showStoreWarning(BuildContext context) {
 
 // ignore: must_be_immutable
 class HomeProductCard extends StatelessWidget {
-  HomeProductCard(
-      this.selected, this.shopSelected, this.current);
+  HomeProductCard(this.selected, this.shopSelected, this.current, this.prefs);
   final dynamic selected;
   List<Tienda> available = [];
   final Pedido current;
@@ -160,6 +159,7 @@ class HomeProductCard extends StatelessWidget {
   TextEditingController textController = TextEditingController();
   ProductController controller = ProductController();
   ShopController shopController = ShopController();
+  final prefs;
 
   void updateStore(Tienda? selected) {
     this.shopSelected = selected;
@@ -181,14 +181,14 @@ class HomeProductCard extends StatelessWidget {
       if (this.current.storeIsInCurrentOrder(this.shopSelected!)) {
         if (this.current.productInShopOrder(shopSelected!, selected)) {
           this.current.addQuantityToExistingProduct(shopSelected!, selected, quantity);
-          showCorrectAdd(context, this.selected.name, this.shopController, this.shopSelected!);
+          showCorrectAdd(context, this.selected.name, this.shopController, this.shopSelected!, this.prefs.getString('cookie'));
         } else {
           this.current.addProductToSelectedStore(shopSelected!, selected, quantity);
-          showCorrectAdd(context, this.selected.name, this.shopController, this.shopSelected!);
+          showCorrectAdd(context, this.selected.name, this.shopController, this.shopSelected!, this.prefs.getString('cookie'));
         }
       } else {
         this.current.addStoreWithProducts(shopSelected!, selected, quantity);
-        showCorrectAdd(context, this.selected.name, this.shopController, this.shopSelected!);
+        showCorrectAdd(context, this.selected.name, this.shopController, this.shopSelected!, this.prefs.getString('cookie'));
       }
     } else {
       showStoreWarning(context);
@@ -215,7 +215,7 @@ class HomeProductCard extends StatelessWidget {
                     productDescription(this.selected.description),
                     if (this.selected is Especialidad)
                       FutureBuilder(
-                        future: this.controller.getAditionsOfProduct(this.selected.id),
+                        future: this.controller.getAditionsOfProduct(this.selected.id, this.prefs.getString('cookie')),
                         builder: (context,  AsyncSnapshot<List<Acompanamiento>> snapshot){
                           switch(snapshot.connectionState){
                             case ConnectionState.none:
@@ -240,10 +240,12 @@ class HomeProductCard extends StatelessWidget {
                                 );
                               }
                           }
-                          return Container(
-                            padding: const EdgeInsets.only(top: 150.0, left: 150, right: 150),
-                            height: 250,
-                            child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.red),)
+                          return Center(
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              height: 50,
+                              child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.red),)
+                            ),
                           );
                         }
                       ),
@@ -251,7 +253,7 @@ class HomeProductCard extends StatelessWidget {
                       comments(this.textController),
                     place(),
                     FutureBuilder(
-                      future: this.shopController.getAvailableShopsByProduct(this.selected.id),
+                      future: this.shopController.getAvailableShopsByProduct(this.selected.id, this.prefs.getString('cookie')),
                       builder: (context,  AsyncSnapshot<List<Tienda>> snapshot){
                         switch(snapshot.connectionState){
                           case ConnectionState.none:
@@ -276,10 +278,12 @@ class HomeProductCard extends StatelessWidget {
                               );
                             }
                         }
-                        return Container(
-                          padding: const EdgeInsets.only(top: 150.0, left: 150, right: 150),
-                          height: 250,
-                          child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.red),)
+                        return Center(
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            height: 50,
+                            child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.red),)
+                          ),
                         );
                       }
                     ),

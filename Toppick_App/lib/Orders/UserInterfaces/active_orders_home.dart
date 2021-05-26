@@ -6,10 +6,11 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class ActiveOrdersHome extends StatelessWidget {
-  ActiveOrdersHome(this.actual);
+  ActiveOrdersHome(this.actual, this.prefs);
   List<Pedido> activeOrders = [];
   final Pedido actual;
   final OrderController controller = OrderController();
+  final prefs;
 
   List<Widget> fill(BuildContext context) {
     List<Widget> result = [];
@@ -56,7 +57,7 @@ class ActiveOrdersHome extends StatelessWidget {
                   ),
                 ),
                 FutureBuilder(
-                    future: controller.getActiveOrders(1),
+                    future: controller.getActiveOrders(this.prefs.getString('cookie')),
                     builder: (context, AsyncSnapshot<List<Pedido>> snapshot) {
                       switch (snapshot.connectionState) {
                         case ConnectionState.none:

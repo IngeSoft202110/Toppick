@@ -9,74 +9,27 @@ import 'package:http/http.dart' as http;
 
 class OrdersQueries {
   int port = 3000;
-  List<Pedido> getFavoriteOrders() /*async*/
-  {
-    /*
-    final response =await http.get('https://');
+  String domain = 'toppickapp.herokuapp.com';
+
+  Future<List<Pedido>> getOrderHistory(String cookie) async {
+    final response = await http.get(
+      Uri.https(this.domain, '/pedidos/usuario'),
+      headers: {"Accept": "application/json", "Cookie":cookie}
+    );
     if (response.statusCode == 200) {
-        //the call to the server was successful, 
-        Iterable l = json.decode(response.body);
-        List<Pedido> queryResult = List<Post>.from(l.map((model)=> Post.fromJson(model))); 
-    } else {
-    
-        throw Exception('Failed to load post');
-        }
-    */
-    List<Pedido> queryResult = [];
-    return queryResult;
+        return parseOrderHistory(response.body);
+    } else { 
+        throw Exception('Error');
+    }
   }
 
-  List<Pedido> getOrderHistory() /*async*/ {
-    /*
-    final response =await http.get('https://');
+  Future<List<Pedido>> getActiveOrders(String cookie) async {
+    final response = await http.get(
+      Uri.https(this.domain, '/pedidos/usuario'),
+      headers: {"Accept": "application/json", "Cookie":cookie}
+    );
     if (response.statusCode == 200) {
-        //the call to the server was successful, 
-        Iterable l = json.decode(response.body);
-        List<Pedido> queryResult = List<Post>.from(l.map((model)=> Post.fromJson(model))); 
-    } else {
-    
-        throw Exception('Failed to load post');
-        }
-    */
-    List<Pedido> queryResult = [];
-    return queryResult;
-  }
-
-  Pedido getOrderStatusResponse() /*async*/ {
-    /*
-    final response =await http.get('https://');
-    if (response.statusCode == 200) {
-        //the call to the server was successful, 
-        Iterable l = json.decode(response.body);
-        Pedido queryResult =Post.fromJson(model); 
-    } else {
-    
-        throw Exception('Failed to load post');
-        }
-    */
-    Pedido queryResult = Pedido(0, DateTime.now(), 0, DateTime.now(), "En proceso");
-    return queryResult;
-  }
-
-  /*Future<http.Response> postOrder(Pedido order) {
-    /*
-    return http.post(
-    Uri.https('jsonplaceholder.typicode.com', 'Pedido'),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: jsonEncode(<String, String>{
-      'title': title,
-    }),
-  );
-    */
-    //return false;
-  }*/
-
-  Future<List<Pedido>> getActiveOrders(int userID) async {
-    final response = await http.get(Uri.http('10.0.2.2:$port','toppick/app/active-orders-of/$userID'), headers: {"Accept": "application/json"});
-    if (response.statusCode == 200) {
-        return parseOrders(response.body);
+        return parseActiveOrders(response.body);
     } else { 
         throw Exception('Error');
     }
@@ -154,44 +107,91 @@ class OrdersQueries {
         throw Exception('Error');
     }
   }
-  List<Pedido> parseOrders(String responseBody){
+  List<Pedido> parseActiveOrders(String responseBody){
     List<Pedido> result = [];
     int cont = 0;
     Pedido current = Pedido(0, DateTime.now(), 0, DateTime.now(), "estadoPedido");
     Tienda actual = Tienda(-1, "nombrePuntoDeVenta", "category", "description", "url", "status", "ubication");
-    final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
+    final first = json.decode(responseBody);
+    final parsed = first['body'].cast<Map<String, dynamic>>();
+    print(parsed);
     int currentid = parsed[0]['idPedido'];
     for(var val in parsed){
-      if(currentid != val['idPedido']){
-        result.add(current);
-        currentid = val['idPedido'];
-        current = Pedido.fromJsonList(val);
-        actual = Tienda(-1, val['nombrePuntoDeVenta'], "category", "description", "url", "status", "ubication");
-        Producto product = Producto(-1, val['nombreProducto'], "description", 0, 0, 0, "ulrImage", "category", "type");
-        int quantity = val['cantidadProducto'];
-        if(current.storeIsInCurrentOrder(actual)){
-          current.addProductToSelectedStore(actual, product, quantity);
-        }else{
-          current.addStoreWithProducts(actual, product, quantity);
-        }
-        cont = 0;
-        cont++;
-      }else{
-        if(cont==0){
+      if(val['estadoPedido'] == "Solicitado" || val['estadoPedido'] == "Aceptado" || val['estadoPedido'] == "Listo"){
+        if(currentid != val['idPedido']){
+          result.add(current);
+          currentid = val['idPedido'];
           current = Pedido.fromJsonList(val);
           actual = Tienda(-1, val['nombrePuntoDeVenta'], "category", "description", "url", "status", "ubication");
-        }
-        Producto product = Producto(-1, val['nombreProducto'], "description", 0, 0, 0, "ulrImage", "category", "type");
-        int quantity = val['cantidadProducto'];
-        if(current.storeIsInCurrentOrder(actual)){
-          current.addProductToSelectedStore(actual, product, quantity);
+          Producto product = Producto(-1, val['nombreProducto'], "description", 0, 0, 0, "ulrImage", "category", "type");
+          int quantity = val['cantidadProducto'];
+          if(current.storeIsInCurrentOrder(actual)){
+            current.addProductToSelectedStore(actual, product, quantity);
+          }else{
+            current.addStoreWithProducts(actual, product, quantity);
+          }
+          cont = 0;
+          cont++;
         }else{
-          current.addStoreWithProducts(actual, product, quantity);
+          if(cont==0){
+            current = Pedido.fromJsonList(val);
+            actual = Tienda(-1, val['nombrePuntoDeVenta'], "category", "description", "url", "status", "ubication");
+          }
+          Producto product = Producto(-1, val['nombreProducto'], "description", 0, 0, 0, "ulrImage", "category", "type");
+          int quantity = val['cantidadProducto'];
+          if(current.storeIsInCurrentOrder(actual)){
+            current.addProductToSelectedStore(actual, product, quantity);
+          }else{
+            current.addStoreWithProducts(actual, product, quantity);
+          }
+          cont++;
         }
-        cont++;
       }
     }
     result.add(current);
+    return result;
+  }
+
+  List<Pedido> parseOrderHistory(String responseBody){
+    List<Pedido> result = [];
+    int cont = 0;
+    Pedido current = Pedido(0, DateTime.now(), 0, DateTime.now(), "estadoPedido");
+    Tienda actual = Tienda(-1, "nombrePuntoDeVenta", "category", "description", "url", "status", "ubication");
+    final first = json.decode(responseBody);
+    final parsed = first['body'];
+    int currentid = parsed[0]['idPedido'];
+    for(var val in parsed){
+      if(val['estadoPedido'] == "Rechazado" || val['estadoPedido'] == "Terminado"){
+        if(currentid != val['idPedido']){
+          result.add(current);
+          currentid = val['idPedido'];
+          current = Pedido.fromJsonList(val);
+          actual = Tienda(-1, val['nombrePuntoDeVenta'], "category", "description", "url", "status", "ubication");
+          Producto product = Producto(-1, val['nombreProducto'], "description", 0, 0, 0, "ulrImage", "category", "type");
+          int quantity = val['cantidadProducto'];
+          if(current.storeIsInCurrentOrder(actual)){
+            current.addProductToSelectedStore(actual, product, quantity);
+          }else{
+            current.addStoreWithProducts(actual, product, quantity);
+          }
+          cont = 0;
+          cont++;
+        }else{
+          if(cont==0){
+            current = Pedido.fromJsonList(val);
+            actual = Tienda(-1, val['nombrePuntoDeVenta'], "category", "description", "url", "status", "ubication");
+          }
+          Producto product = Producto(-1, val['nombreProducto'], "description", 0, 0, 0, "ulrImage", "category", "type");
+          int quantity = val['cantidadProducto'];
+          if(current.storeIsInCurrentOrder(actual)){
+            current.addProductToSelectedStore(actual, product, quantity);
+          }else{
+            current.addStoreWithProducts(actual, product, quantity);
+          }
+          cont++;
+        }
+      }
+    }
     return result;
   }
 }

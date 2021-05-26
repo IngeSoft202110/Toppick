@@ -22,11 +22,19 @@ class LoginScreen extends StatelessWidget {
     void main (){
       if(formKey.currentState!.validate()){
         formKey.currentState!.save();
-        this.prefs.setBool('conectado', true);
         //Mensaje al servidor
-        //this.controller.login(this.emailValue, this.passwordValue, this.prefs);
-        Pedido nuevo = Pedido(0, DateTime.now(), 0, DateTime.now(), "Solicitado");
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen(nuevo, this.prefs)));
+        this.controller.showLoader(context);
+        this.controller.login(this.emailValue, this.passwordValue, this.prefs).
+        then((value) {
+          if(value){
+            this.prefs.setBool('conectado', true);
+            this.prefs.setInt('pedidos actuales', 0);
+            Pedido nuevo = Pedido(0, DateTime.now(), 0, DateTime.now(), "Solicitado");
+            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>HomeScreen(nuevo, this.prefs)), (route) => false);
+          }else{
+            this.controller.showLoginError(context);
+          }
+        });
       }
     }
     return Scaffold(

@@ -1,30 +1,27 @@
 import 'package:Toppick_App/Orders/Models/pedido.dart';
 import 'package:Toppick_App/Products/Bloc/product_controller.dart';
-import 'package:Toppick_App/Products/Models/combo.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/listmaintext.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/gradiant.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/header.dart';
-import 'package:Toppick_App/Products/UserInterfaces/productcard.dart';
-import 'package:Toppick_App/Products/UserInterfaces/home_combos_card.dart';
 import 'package:Toppick_App/Products/UserInterfaces/productcategorycard.dart';
 import 'package:Toppick_App/Products/UserInterfaces/productcategorydisplay.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/search_bar_button.dart';
 import 'package:Toppick_App/Shops/Bloc/shop_controller.dart';
 import 'package:flutter/material.dart';
 import '../../Shops/Models/tienda.dart';
-import 'package:Toppick_App/Products/UserInterfaces/home_product_card.dart';
 
 class ProductList extends StatefulWidget {
-  ProductList(this.current,this.store, this.prefs);
+  ProductList(this.current,this.store, this.productList, this.prefs);
   final Tienda? store;
   final Pedido current;
+  final List<dynamic> productList;
   final prefs;
   @override
-  ProductListState createState() => ProductListState();
+  ProductListState createState() => ProductListState(this.productList);
 }
 
 class ProductListState extends State<ProductList> {
-  ProductListState();
+  ProductListState(this.productList);
   ProductController controller = ProductController();
   ShopController shopController = ShopController();
   List<String> categories = [];
@@ -33,13 +30,11 @@ class ProductListState extends State<ProductList> {
   List<ProductCategoryCard> widgets = [];
   /*Esta lista de productos se cargara con el ID de la tienda pasado al ProductList, si no le dan
   ese parametro se listan todos los productos.*/
-  List<dynamic> productList = [];
+  List<dynamic> productList;
+  List<dynamic> filtered = [];
   //Esta es la lista de tiendas donde se puede conseguir el producto
   String currentTitle = "";
   String currentDescription = "";
-  ListView products = ListView(
-    children: <Widget>[],
-  );
 
   Widget selectProductsFromCategory(BuildContext context, int index) {
     return Padding(
@@ -50,35 +45,7 @@ class ProductListState extends State<ProductList> {
             ProductCategoryCard selectedCard = widgets[index];
             this.currentTitle = selectedCard.categoryName;
             this.currentDescription = selectedCard.categoryDescription;
-            List<dynamic> selected =[];
-            selected = controller.filterProducts(this.productList, this.currentTitle);
-            this.products = ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: selected.length,
-              itemBuilder: (BuildContext context, int index) {
-                return GestureDetector(
-                  onTap: () => {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          if(selected[index] is Combo){
-                            return HomeCombosCard(
-                                  selected[index], widget.store, widget.current);
-                          }else{
-                            return HomeProductCard(selected[index], widget.store, widget.current);
-                          }
-                        }
-                      )
-                    )
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 15.0),
-                    child: ProductCard(selected[index]),
-                  ),
-                );
-              }
-            );
+            this.filtered = controller.filterProducts(this.productList, this.currentTitle);
           });
         },
         child: widgets[index],
@@ -122,41 +89,7 @@ class ProductListState extends State<ProductList> {
                     itemBuilder: selectProductsFromCategory,
                   ),
                 ),
-                FutureBuilder(
-                  future: (widget.store!.id==-1)? controller.getAllAvailableProducts():controller.getProductCatalogueById(widget.store!.id),
-                  builder: (context,  AsyncSnapshot<List<dynamic>> snapshot){
-                    switch(snapshot.connectionState){
-                      case ConnectionState.none:
-                        break;
-                      case ConnectionState.waiting:
-                        break;
-                      case ConnectionState.active:
-                        break;
-                      case ConnectionState.done:
-                      if(snapshot.hasData){
-                        this.productList = snapshot.data!;
-                        return ProductCategoryDisplay(
-                          this.currentTitle, this.currentDescription, this.products);
-                      }else{
-                        return Container(
-                          height: 100,
-                          margin: const EdgeInsets.only(left: 40.0, right: 40.0),
-                          decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(15)),
-                            color: Color(0xFFFFFEEE),
-                          ),
-                          child: Center(child: Text("No se han encontrado productos", style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFFFF441F)),)),
-                        );
-                      }
-                    }
-                    return Container(
-                      padding: const EdgeInsets.only(top: 150.0, left: 150, right: 150),
-                      height: 250,
-                      child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFFFEEE)),)
-                    );
-                  }
-                ),
+                ProductCategoryDisplay(this.currentTitle, this.currentDescription, this.filtered, widget.store!, widget.current, widget.prefs),
                 SizedBox(
                   height: 10,
                 ),
@@ -169,15 +102,15 @@ class ProductListState extends State<ProductList> {
   }
 
   @override
-  void initState() {
+  void initState(){
     super.initState();
-    setState(() {
+    setState((){
       this.categories = this.controller.getProductCategories();
       this.descriptions = this.controller.getCategoryDescription();
       this.logoPahts = this.controller.getCategoryImagePath();
+      
       for (int i = 0; i < this.categories.length; i++) {
-        widgets.add(
-            ProductCategoryCard(this.categories[i], this.descriptions[i], this.logoPahts[i]));
+        widgets.add(ProductCategoryCard(this.categories[i], this.descriptions[i], this.logoPahts[i]));
       }
     });
   }

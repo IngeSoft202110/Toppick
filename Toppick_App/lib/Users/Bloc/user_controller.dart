@@ -1,4 +1,6 @@
 import 'package:Toppick_App/Users/Repositories/user_queries.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class UserController{
   UserQueries userQueries = new UserQueries();
@@ -61,8 +63,67 @@ class UserController{
       return "válido";
   }
 
-  Future<int> login(String email, String password, dynamic prefs){
+  Future<bool> login(String email, String password, dynamic prefs){
     return this.userQueries.login(email, password, prefs);
+  }
+
+  Future<bool> logout(dynamic prefs){
+    return this.userQueries.logout(prefs);
+  }
+
+  showLoader(BuildContext context){
+    AlertDialog alert = AlertDialog(
+      content: Container(height: 150, child: CircularProgressIndicator())
+    );
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context){
+        return alert;
+      }
+    );
+  }
+
+  showError(BuildContext context) {
+    Navigator.of(context).pop();
+    Widget okButton = TextButton(
+      child: Text("OK"),
+      onPressed: () { Navigator.of(context).pop();},
+    );
+    AlertDialog alert = AlertDialog(
+      title: Text("Error al intentar cerrar sesión", style: TextStyle(color: Color(0xFFD76060)),),
+      content: Text("Ha ocurrido un error al cerrar la sesión"),
+      actions: [
+        okButton,
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showLoginError(BuildContext context) {
+    Navigator.of(context).pop();
+    Widget okButton = TextButton(
+      child: Text("OK"),
+      onPressed: () { Navigator.of(context).pop();},
+    );
+    AlertDialog alert = AlertDialog(
+      title: Text("Error al intentar iniciar sesión", style: TextStyle(color: Color(0xFFD76060)),),
+      content: Text("Ha ocurrido un error al iniciar la sesión"),
+      actions: [
+        okButton,
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
 }
