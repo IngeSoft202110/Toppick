@@ -49,16 +49,6 @@ body .imgBackgraound .img{
     font-family: 'Montserrat', sans-serif;
 
 }
-#select-tienda{
-    background-color:#FFFDE7 ;
-    width:70%;
-    height: 30%;
-    margin-left: 15%;
-    margin-right: 15%;
-    border-radius: 5px;
-    font-family: Arial;
-    font-size:large;
-}
 .ingrese{
  
     margin-left:15%;
@@ -67,7 +57,7 @@ body .imgBackgraound .img{
     margin-top: 15%;
     margin-left:15%;
 }
-#input-password{
+#entrada{
     margin-left: 15%;
     margin-right: 10%;
     width:70%;

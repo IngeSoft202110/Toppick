@@ -1,0 +1,29 @@
+.BotonHeader{
+    font-size: 1.8rem;
+    padding: 10px;
+    border: 2px solid #fffeee;
+    border-radius: 5px;
+    color: #fffeee;
+    display: inline-block;
+    width: 192px;
+    text-align: center;
+    font-family: "Lato", sans-serif;
+    width: 192px;
+    background-color:#d77d4f;
+  }
+  .BotonHeader:hover{
+    background-color:#b4501e;
+  }
+  #Cerrar{
+    font-size: 1.8rem;
+    padding: 10px;
+    background-color: #472025;
+    border-radius: 5px;
+    color: #fffeee;
+    width: 192px;
+    font-family: "Lato", sans-serif;
+    border: none;
+  }
+  #Cerrar:hover{
+    background-color: #3a0006;
+  }

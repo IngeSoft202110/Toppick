@@ -1,39 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../Css/pantallapedidos.css">
-    <link rel="shortcut icon" type="image/x-icon" href="../../assets/logo.ico" />
-    <!-- Axios library -->
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <title>Toppick Admin - pantalla pedidos </title>
-</head>
-
+<%- include("template/header.ejs") %>
 <body class="cupero">
-    <div class = "imgBackgraound">
-        <img src="../../assets/logo.png" alt="imagenFondo">
-    </div>
-    <header>
-        <nav class='navbar'>
-            <div class="titulo">
-                <h1> Toppick </h1>
-                <p>Admin</p>
-            </div>
-            <ul>
-                <li> <a> Pedidos </a></li>
-                <li><a href="" >Actualizar inventario</a></li>
-                <li> <a href=""> Historial de pedidos </a></li>
-                <li><a href=""> Cierre de caja </a></li>
-                <li><button> Cerrar sesión </button> </li>
-            </ul>
-
-        </nav>
-    </header>
+    <link rel="stylesheet" href="../../Css/pantallapedidos.css">
+    <%- include("template/navbar.ejs") %>
+    
     <main>
         <section class='ppc'>
             <!-- clase para pedidos por confirmar -->

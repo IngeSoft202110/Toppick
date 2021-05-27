@@ -26,28 +26,31 @@ app.use(passport.session());
 
 //concet to main server to send information user
 async function validateteUser(user, password) {
-
+    //create the specific json to the sserver post 
     var data = {
-        user: user,
-        password: password
+        "nombreUsuario": user,
+        "contraseña": password,
+        "token": "fMIE3P36RGCXLtCwVsHUTy"
     }
-    var ret;
-    axios.post("http://localhost:3000/toppick/admin/login/" + user + "/" + password, data).then((response) => {
-        ret  = response.data;
-    }, (error) => {
-        console.log(error);
-    });
-    return ret;
+    //retun the response of the main server 
+    return await axios({
+        method: "POST",
+        url: "https://toppickapp.herokuapp.com/usuarios/login",
+        data: data
+    }
+    ).then(res => res.data).then(err => err)
 }
 
 passport.use(new PassportLocal(function (username, password, done) {
-    var user = validateteUser(username, password);
-    
-    if (user != undefined) {
-        console.log(user);
-        return done(null, user);
-    }
-    return done(null, false, { message: "incorrect password" });
+    var user;
+    //call the function to autorize the validation of the server
+    return validateteUser(username, password).then((res) => {
+        if (res.error == '') //if the server returns no error continue with the process 
+            return done(null, { username: username, id: res.body });
+        return done(null, false, { message: "incorrect password" });
+    });
+
+
 }));
 
 //serializacion 
@@ -57,10 +60,19 @@ passport.serializeUser(function (user, done) {
 
 //deserializacion
 passport.deserializeUser(function (id, done) {
-    done(null, { id: 1, name: "julian" });
+    done(null, { id: id });
 })
-app.get('/inicio', (req, res) => {
+app.get('/', (req, res) => {
     res.render("inicio.ejs");
+});
+app.get('/cierre_Caja/:id/:name',(req,res) =>{
+    res.render('cierre_caja.ejs');
+})
+app.get('/historial/:id/:name',(req,res) =>{
+    res.render('Historial_pedidos.ejs');
+})
+app.get('/actualizar/:id/:name', (req, res) => {
+    res.render("actualizar_inventario.ejs");
 });
 app.get('/pedidos/:id/:name', (req, res) => {
     res.render("pedidos.ejs");
@@ -75,15 +87,14 @@ app.post('/login', (req, res, next) => {
             }
 
             if (!user) {
-                return res.redirect('/inicio');
+                return res.redirect('/');
             }
 
             req.logIn(user, function (err) {
                 if (err) {
                     return next(err);
                 }
-                //return res.redirect('/pedidos/'+user.id+'/'+user.name);
-                res.redirect('/pedidos/' + user.id + '/' + user.name);
+                res.redirect('/pedidos/' + user.username + '/' + user.id);
             });
 
         })(req, res, next);

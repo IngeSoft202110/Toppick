@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" />
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet" />
   <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link rel="shortcut icon" type="image/x-icon" href="../../assets/logo.ico" />
   <link
     href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:ital,wght@1,300&display=swap"
     rel="stylesheet" />
@@ -31,12 +32,12 @@
     <div class="container">
       <form action="/login" method="POST" class="form">
         <div class="box">
-          <p class="punto">seleccione su punto de venta</p>
-          <select name="username" id="select-tienda" value="sleccione tienda" class="select-t"></select>
+          <p class="punto">Digite usuario punto de venta</p>
+          <input name="username" id="entrada" class="select-t">
         </div>
         <div class="box">
           <p class="ingrese">Ingrese la contraseña</p>
-          <input type="password" id="input-password" name="password" />
+          <input type="password" id="entrada" name="password" />
         </div>
         <div class="box">
           <button class="button-send" type="submit">Iniciar sesión</button>
@@ -47,7 +48,7 @@
   <footer>
     <p>Developed by ©Alpha</p>
   </footer>
-  <script type="text/javascript" src="../Scripts/pantalla_inicio.js"></script>
+  
 </body>
 
 </html>

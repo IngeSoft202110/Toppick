@@ -46,7 +46,7 @@ ul {
 ul li {
   margin: 0 30px;
 }
-
+/*
 ul li a {
   font-size: 1.8rem;
   padding: 10px;
@@ -68,7 +68,7 @@ ul li button {
   width: 192px;
   font-family: "Lato", sans-serif;
   border: none;
-}
+}*/
 
 body {
   font-family: Roboto, sans-serif;

@@ -1,36 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="Css/pantallacierrecaja.css">
-    <link rel="shortcut icon" type="image/x-icon" href="assets/logo.ico" />
-    
-    <title>Toppick Admin - pantalla historial de pedidos </title>
-    <!-- Axios library -->
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-</head>
+<%- include("template/header.ejs") %>
 <body class="cupero">
-    <div class = "imgBackgraound">
-        <img src="assets/logo.png" alt="imagenFondo">
-    </div>
-    <header>
-        <nav class='navbar'>
-            <div class="titulo">
-                <h1> Toppick </h1>
-                <p>Admin</p>
+    <link rel="stylesheet" href="../../Css/pantallacierrecaja.css">
+    <%- include("template/navBar.ejs") %>
+    
+    <main>
+        <section class='caja1'>
+            <div class="fecha">
+                <p>Cierre de caja para el día: </p>
+                <p>24-05-2021</p>
             </div>
-            <ul>
-                <li> <a href="pantallapedidos.html"> Pedidos </a></li>
-                <li><a href="actualizar_inventario.html">Actualizar inventario</a></li>
-                <li> <a href="Historial_pedidos.html"> Historial de pedidos </a></li>
-                <li><a>Cierre de caja </a></li>
-                <li><button> Cerrar sesión </button> </li>
-            </ul>
+            <div class="ventas">
+                <p>Ventas totales:</p>
+                <p>$100.000</p>
+            </div>
+            <div>
+                <button class="cierreCaja"><p>Realizar cierre de caja</p></button>
+            </div>
+        </section>
+        <section class='caja2'>
+            <div class='cajaAMasVenidosHoy'>
+                <p>Top 3 de los productos más vendidos hoy:</p>
+                <ol>
+                    <li>Pescadito</li>
+                    <li>Teppannyaki</li>
+                    <li>Chocorramo</li>
+                </ol>
+            </div>
+            <div class='cajaBMasPlataHoy'>
+                <p>Top 3 de los productos con mayor ganacia monetaria hoy:</p>
+                <ol>                    
+                    <li>Teppannyaki</li>
+                    <li>Chocorramo</li>
+                    <li>Papas naturales</li>
+                </ol>
+            </div>
 
-        </nav>
-    </header>
+        </section>
+    </main>
+    <footer>
+        <p class="text-center text-muted"> Developed by ©Alpha </p>
+    </footer>
+
 </body>

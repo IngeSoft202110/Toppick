@@ -24,7 +24,7 @@ let unidadesDisponibles = true;
  * Intervalo para verificar si existen nuevos productos 
  * constantemente en la base de datos 
  */
-setInterval(() => getOrders(), 2000);
+//setInterval(() => getOrders(), 2000);
 
 /**
  * Función que obtiene las nuevas ordenes
@@ -55,16 +55,18 @@ async function cambiarEstadoPedido(idPedido, nuevoEstado , razonRechazo ) {
     // Declarar los parametros del cuerpo de la solicitud POST 
     console.log(nuevoEstado);
     const bodyParams = {
-        order_id: idPedido,
-        store_id: idPuntoDeVenta,
-        new_state: nuevoEstado,
-        reject_reazon: razonRechazo
-    };
+        "estadoPedido":nuevoEstado,
+        "razonRechazo":razonRechazo
+   };
     console.log(bodyParams);
-    // Realizar la solicitud POST al servidor 
-    await axios.post('http://localhost:3000/toppick/admin/change-state-order', bodyParams)
-        .then((response) => console.log(response))
-        .catch((error) => console.log(error));
+    // Realizar la solicitud PATCH al servidor 
+    await axios.patch(
+        {
+            method: "PATCH",
+            url:'http://localhost:3000/toppick/admin/change-state-order',
+            data: bodyParams
+        }
+    );
 }
 // Se prueba la petición con los siguientes parámetros 
 // cambiarEstadoPedido(2, 1, 'Nuevooo');  ----> Funciona 

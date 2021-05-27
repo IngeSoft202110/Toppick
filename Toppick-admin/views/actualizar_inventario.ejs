@@ -1,36 +1,71 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../Css/pantallaActualizarinventario.css">
-    <link rel="shortcut icon" type="image/x-icon" href="assets/logo.ico" />
-    
-    <title>Toppick Admin - pantalla historial de pedidos </title>
-    <!-- Axios library -->
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-</head>
+<%- include("template/header.ejs") %>
 <body class="cupero">
-    <div class = "imgBackgraound">
-        <img src="assets/logo.png" alt="imagenFondo">
-    </div>
-    <header>
-        <nav class='navbar'>
-            <div class="titulo">
-                <h1> Toppick </h1>
-                <p>Admin</p>
+    <link rel="stylesheet" href="../../Css/pantallaActualizarinventario.css">
+    <%- include("template/navBar.ejs") %>
+    <main>
+        <div class='titulo-pro'>
+            <h2>
+                Seleccione el producto a actualizar, recuerde que solo puede actualizar un producto a la vez.
+            </h2>
+        </div>
+        <section class='PantallaBajo'>
+            
+                <label for="producto">
+                    <h3> Producto:</h3>
+                </label>
+                <div class='BotonSelec'>
+                <select id="producto" name="producto">
+                    <option value="papas">
+                        <p>Papas</p>
+                    </option>
+                    <option value="chocorramo">
+                        <p>Chocorramo</p>
+                    </option>
+                    <option value="mani">
+                        <p>Maní</p>
+                    </option>
+                    <option value="pescadito">
+                        <p>Pescadito
+                    </option>
+                </select><br><br>
+                <div >
+                    <button class="botonEnvio" ><p>Actualizar inventario  </p></button>
+                </div>
             </div>
-            <ul>
-                <li> <a href="pantallapedidos.html"> Pedidos </a></li>
-                <li><a>Actualizar inventario</a></li>
-                <li> <a href="Historial_pedidos.html"> Historial de pedidos </a></li>
-                <li><a href="Cierre_caja.html">Cierre de caja </a></li>
-                <li><button> Cerrar sesión </button> </li>
-            </ul>
-
-        </nav>
-    </header>
+            <imput type='submit'></imput>
+            <section class='tabla'>
+                <table>
+                    <caption>
+                        <p>Inventario</p>
+                    </caption>
+                    <tr>
+                        <th>
+                            <p>Nombre del producto </p>
+                        </th>
+                        <th>
+                            <p>Cantidad actual del producto (un)</p>
+                        </th>
+                        <th>
+                            <p>Cantidad de productos recibidos (un)</p>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>Papas margarita natural </p>
+                        </td>
+                        <td>
+                            <p>10</p>
+                        </td>
+                        <td>
+                            <p> 5 </p>
+                        </td>
+                    </tr>
+                </table>
+            </section>
+           
+        </section>
+    </main>
+    <footer>
+        <p class="text-center text-muted"> Developed by ©Alpha </p>
+    </footer>
 </body>
