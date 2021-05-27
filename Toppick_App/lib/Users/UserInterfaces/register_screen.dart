@@ -1,9 +1,10 @@
 import 'package:Toppick_App/GeneralUserInterfaces/generic_button.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/gradiant.dart';
-import 'package:Toppick_App/Users/UserInterfaces/login_screen.dart';
+import 'package:Toppick_App/Orders/Models/pedido.dart';
+import 'package:Toppick_App/Users/Models/cliente.dart';
+import 'package:Toppick_App/Users/UserInterfaces/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:Toppick_App/Users/Bloc/user_controller.dart';
-import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
 class RegisterScreen extends StatelessWidget {
@@ -13,22 +14,39 @@ class RegisterScreen extends StatelessWidget {
 
   late String nameValue;
   late String lastNameValue;
-  late NumberFormat documentValue;
+  late String documentValue;
   late String userNameValue;
   late String passwordValue;
   late String emailValue;
-  late NumberFormat phoneValue;
-  late String dropdownValue;
-  late List listItem = ["C.C.", "T.I.", "C.E."];
+  late String phoneValue;
+  late String dropdownValue = "CC";
 
   final formKey = GlobalKey<FormState>();
+
+  void notifyParent(String nValue){
+    this.dropdownValue = nValue;
+  }
+
   @override
   Widget build(BuildContext context) {
     void main() {
       if (formKey.currentState!.validate()) {
         formKey.currentState!.save();
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => LoginScreen(this.prefs)));
+        Cliente current = Cliente(0, nameValue, lastNameValue, int.parse(documentValue), dropdownValue, emailValue, passwordValue, int.parse(phoneValue));
+        this.controller.showLoader(context);
+        this.controller.register(this.prefs, current).
+        then((value) {
+          if(value){
+            this.prefs.setBool('conectado', true);
+            this.prefs.setInt('pedidos actuales', 0);
+            this.prefs.setString('nombre', current.nombres);
+            Pedido nuevo = Pedido(0, DateTime.now(), 0, DateTime.now(), "Solicitado");
+            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>HomeScreen(nuevo, this.prefs)), (route) => false);
+          }else{
+            this.controller.showRegisterError(context);
+          }
+        }
+        );
       }
     }
 
@@ -129,7 +147,7 @@ class RegisterScreen extends StatelessWidget {
                                 top: 10,
                                 left: 45
                               ), 
-                              child: TipoDocumento())),
+                              child: TipoDocumento(notifyParent))),
                             Flexible(
                               flex: 3,
                               child: Padding(
@@ -147,7 +165,7 @@ class RegisterScreen extends StatelessWidget {
                                     labelText: "Documento",
                                   ),
                                   onSaved: (value) {
-                                    documentValue = value! as NumberFormat;
+                                    documentValue = value!;
                                   },
                                   validator: (value) {
                                     if (!this.controller.validateDocument(value!).contains("correcto")) {
@@ -181,7 +199,6 @@ class RegisterScreen extends StatelessWidget {
                                 return this.controller.validateEmail(value);
                               }
                             },
-                            obscureText: true,
                           ),
                         ),
                         Padding(
@@ -224,7 +241,7 @@ class RegisterScreen extends StatelessWidget {
                               labelText: "Celular",                         
                             ), 
                             onSaved: (value){
-                              phoneValue = value! as NumberFormat;
+                              phoneValue = value!;
                             },
                             validator: (value){
                               if(!this.controller.validatePhone(value!).contains("válido")){
@@ -246,13 +263,16 @@ class RegisterScreen extends StatelessWidget {
 }
 
 class TipoDocumento extends StatefulWidget {
-  TipoDocumento({Key? key}) : super(key: key);
+  TipoDocumento(this.notify, {Key? key}) : super(key: key);
+  final Function(String) notify;
   @override
-  _TipoDocumentoState createState() => _TipoDocumentoState();
+  _TipoDocumentoState createState() => _TipoDocumentoState(this.notify);
 }
 
 class _TipoDocumentoState extends State<TipoDocumento> {
-  String dropdownValue = 'CC';
+  _TipoDocumentoState(this.notify);
+  Function(String) notify;
+  String dropdownValue = "CC";
   @override
   Widget build(BuildContext context) {
     return DropdownButton<String>(
@@ -263,7 +283,7 @@ class _TipoDocumentoState extends State<TipoDocumento> {
       onChanged: (String? newValue) {
         setState(() {
           dropdownValue = newValue!;
-          print(dropdownValue);
+          notify(dropdownValue);
         });
       },
       items: <String>['CC', 'TI', 'CE']

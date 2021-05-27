@@ -30,6 +30,7 @@ class Menu extends StatelessWidget {
           if(value){
             prefs.remove('conectado');
             prefs.remove('cookie');
+            prefs.remove('nombre');
             this.actual.carrito.clear();
             Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainPage(this.prefs)), (route) => false);
           }else{
@@ -70,7 +71,7 @@ class Menu extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   Flexible(
-                    child: Text("¡Hola Pepito!", style: TextStyle(color: Color(0xFFD76060), fontSize: 30, fontWeight: FontWeight.bold),)
+                    child: Text("¡Hola ${this.prefs.getString('nombre')}!", style: TextStyle(color: Color(0xFFD76060), fontSize: 30, fontWeight: FontWeight.bold),)
                   ),
                   Container(
                     padding: EdgeInsets.only(left:5.0),

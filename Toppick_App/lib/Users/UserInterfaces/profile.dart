@@ -32,7 +32,7 @@ class Profile extends StatelessWidget {
   final Pedido actual;
   final prefs;
   final List<Pedido> favoritos = [current2, current3];
-  final Cliente clienteActual = Cliente(1, "Juan Francisco", "Hamon Garzon", "3043045566", "hamon_juan@javeriana.edu.co");
+  final Cliente clienteActual = Cliente(1, "Juan Francisco", "Hamon Garzon", 1026307384, "CC","hamon_juan@javeriana.edu.co", "Juanfran12345", 3044576728);
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +83,7 @@ class Profile extends StatelessWidget {
                                     ],
                                   ),
                                   Text(this.clienteActual.correo, style: TextStyle(color: Color(0xFFB7B7B7), fontSize: 12)),
-                                  Text(this.clienteActual.celular, style: TextStyle(color: Color(0xFFB7B7B7), fontSize: 12)),
+                                  Text("${this.clienteActual.celular}", style: TextStyle(color: Color(0xFFB7B7B7), fontSize: 12)),
                                 ],
                               ),
                             ),

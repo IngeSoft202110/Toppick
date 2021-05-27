@@ -1,3 +1,4 @@
+import 'package:Toppick_App/Users/Models/cliente.dart';
 import 'package:Toppick_App/Users/Repositories/user_queries.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -71,6 +72,10 @@ class UserController{
     return this.userQueries.logout(prefs);
   }
 
+  Future<bool> register(dynamic prefs, Cliente user){
+    return this.userQueries.register(prefs, user);
+  }
+
   showLoader(BuildContext context){
     AlertDialog alert = AlertDialog(
       content: Container(height: 150, child: CircularProgressIndicator())
@@ -114,6 +119,27 @@ class UserController{
     AlertDialog alert = AlertDialog(
       title: Text("Error al intentar iniciar sesión", style: TextStyle(color: Color(0xFFD76060)),),
       content: Text("Ha ocurrido un error al iniciar la sesión"),
+      actions: [
+        okButton,
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showRegisterError(BuildContext context) {
+    Navigator.of(context).pop();
+    Widget okButton = TextButton(
+      child: Text("OK"),
+      onPressed: () { Navigator.of(context).pop();},
+    );
+    AlertDialog alert = AlertDialog(
+      title: Text("Error al intentar registrarse", style: TextStyle(color: Color(0xFFD76060)),),
+      content: Text("Ha ocurrido un error al realizar el registro"),
       actions: [
         okButton,
       ],
