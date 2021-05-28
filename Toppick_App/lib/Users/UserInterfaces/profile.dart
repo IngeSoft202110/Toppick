@@ -1,7 +1,10 @@
 import 'package:Toppick_App/GeneralUserInterfaces/generic_button.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/gradiant.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/header.dart';
+import 'package:Toppick_App/Orders/Models/daviplata.dart';
+import 'package:Toppick_App/Orders/Models/nequi.dart';
 import 'package:Toppick_App/Orders/Models/pedido.dart';
+import 'package:Toppick_App/Orders/UserInterfaces/add_method_start_page.dart';
 import 'package:Toppick_App/Orders/UserInterfaces/payment_method_card.dart';
 import 'package:Toppick_App/Users/Bloc/user_controller.dart';
 import 'package:Toppick_App/Users/Models/cliente.dart';
@@ -18,7 +21,9 @@ class Profile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    clienteActual.metodos = [];
+    var f1 = (){
+      Navigator.push(context, MaterialPageRoute(builder: (context) => AddMethodStartPage(this.clienteActual.metodos)));
+    };
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -91,7 +96,7 @@ class Profile extends StatelessWidget {
                                       itemBuilder: (BuildContext context, int index) => PaymentMethodCard(this.clienteActual.metodos[index])
                                     )
                                   ),
-                                  if(this.clienteActual.metodos.length < 3) Center(child: GenericButton("Agregar método de pago", Color(0xFF0CC665), 200, 30, 15, 5, 0, 5, 15, 15, ()=>{})),
+                                  if(this.clienteActual.metodos.length < 3) Center(child: GenericButton("Agregar método de pago", Color(0xFF0CC665), 200, 30, 15, 5, 0, 5, 15, 15, f1)),
                                   SizedBox(
                                     height: MediaQuery.of(context).size.height*0.25,
                                   )

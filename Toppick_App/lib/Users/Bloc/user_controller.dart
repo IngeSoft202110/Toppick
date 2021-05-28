@@ -78,7 +78,7 @@ class UserController{
 
   Future<Cliente> getUserInfo(String cookie, String email)async{
     Cliente result = await this.userQueries.getUserInfo(cookie, email);
-    this.userQueries.getPaymentMethods(cookie);
+    //this.userQueries.getPaymentMethods(cookie);
     return result;
   }
 
