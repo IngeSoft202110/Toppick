@@ -31,6 +31,8 @@ class Menu extends StatelessWidget {
             prefs.remove('conectado');
             prefs.remove('cookie');
             prefs.remove('nombre');
+            prefs.remove('correo');
+            prefs.remove('password');
             this.actual.carrito.clear();
             Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainPage(this.prefs)), (route) => false);
           }else{

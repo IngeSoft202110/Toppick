@@ -32,14 +32,14 @@ class RegisterScreen extends StatelessWidget {
     void main() {
       if (formKey.currentState!.validate()) {
         formKey.currentState!.save();
-        Cliente current = Cliente(0, nameValue, lastNameValue, int.parse(documentValue), dropdownValue, emailValue, passwordValue, int.parse(phoneValue));
+        Cliente current = Cliente(0, nameValue, int.parse(documentValue), dropdownValue, emailValue, passwordValue, int.parse(phoneValue));
         this.controller.showLoader(context);
         this.controller.register(this.prefs, current).
         then((value) {
           if(value){
             this.prefs.setBool('conectado', true);
             this.prefs.setInt('pedidos actuales', 0);
-            this.prefs.setString('nombre', current.nombres);
+            this.prefs.setString('nombre', current.nombreCompleto.split(" ")[0]);
             Pedido nuevo = Pedido(0, DateTime.now(), 0, DateTime.now(), "Solicitado");
             Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>HomeScreen(nuevo, this.prefs)), (route) => false);
           }else{
@@ -101,33 +101,10 @@ class RegisterScreen extends StatelessWidget {
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20),
                             ),
-                            labelText: "Nombre",
+                            labelText: "Nombre completo",
                           ),
                           onSaved: (value) {
                             nameValue = value!;
-                          },
-                          validator: (value) {
-                            if (!this.controller.isEmpty(value!).contains("válido")) {
-                              return this.controller.isEmpty(value);
-                            }
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          top: 10,
-                          right: 45,
-                          left: 45,
-                        ),
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            labelText: "Apellido",
-                          ),
-                          onSaved: (value) {
-                            lastNameValue = value!;
                           },
                           validator: (value) {
                             if (!this.controller.isEmpty(value!).contains("válido")) {

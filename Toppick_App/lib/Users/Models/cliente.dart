@@ -2,13 +2,16 @@ import 'package:Toppick_App/Orders/Models/metodopago.dart';
 
 class Cliente{
   int id;
-  String nombres;
-  String apellidos;
+  String nombreCompleto = "";
   int documento;
   String tipoDocumento;
   String correo;
   String password;
   int celular;
   List<MetodoPago> metodos = [];
-  Cliente(this.id, this.nombres, this.apellidos, this.documento, this.tipoDocumento, this.correo, this.password, this.celular);
+  Cliente(this.id, this.nombreCompleto, this.documento, this.tipoDocumento, this.correo, this.password, this.celular);
+
+  factory Cliente.fromJson(Map<String, dynamic> json){
+    return Cliente(json['IdCliente'], json['nombreCompleto'], json['idDocumento'], json['tipoDocumento'], "", "", json['celular']);
+  }
 }

@@ -33,15 +33,9 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
-    //Se deja en la pagina de inicio y se borra todo lo anterior, con esto ya luego se redirige a la que sigue dependiendo del estado
-    navigatorKey.currentState?.pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainPage(widget.prefs)), (route) => false);
     PushNotificationService.messagesStream.listen((message) {
-      bool? a = (navigatorKey.currentState?.canPop() != null)
-          ? navigatorKey.currentState?.canPop()
-          : false;
-
-      if (a != null) if (a) navigatorKey.currentState?.pop();
-
+      //Se deja en la pagina de inicio y se borra todo lo anterior, con esto ya luego se redirige a la que sigue dependiendo del estado
+      navigatorKey.currentState?.pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainPage(widget.prefs)), (route) => false);
       if (message == "Rechazado" || message == "Terminado")
         navigatorKey.currentState?.pushNamed('historial');
       else

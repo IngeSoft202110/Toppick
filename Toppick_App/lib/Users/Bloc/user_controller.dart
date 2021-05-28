@@ -76,6 +76,12 @@ class UserController{
     return this.userQueries.register(prefs, user);
   }
 
+  Future<Cliente> getUserInfo(String cookie, String email)async{
+    Cliente result = await this.userQueries.getUserInfo(cookie, email);
+    this.userQueries.getPaymentMethods(cookie);
+    return result;
+  }
+
   showLoader(BuildContext context){
     AlertDialog alert = AlertDialog(
       content: Container(height: 150, child: CircularProgressIndicator())
