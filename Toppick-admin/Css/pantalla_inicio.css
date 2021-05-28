@@ -57,7 +57,7 @@ body .imgBackgraound .img{
     margin-top: 15%;
     margin-left:15%;
 }
-#entrada{
+.entrada{
     margin-left: 15%;
     margin-right: 10%;
     width:70%;
@@ -76,6 +76,9 @@ body .imgBackgraound .img{
     border-radius: 5px;
     border: none ; 
     color :#FFFDE7;
+}
+.button-send:hover{
+    background-color:#47060f;
 }
 footer{
     text-align: center;

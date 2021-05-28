@@ -1,54 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" type="text/css" href="../Css/pantalla_inicio.css" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" />
-  <link rel="shortcut icon" type="image/x-icon" href="../../assets/logo.ico" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:ital,wght@1,300&display=swap"
-    rel="stylesheet" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="../Css/pantalla_inicio.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="../../assets/logo.ico"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:ital,wght@1,300&display=swap"
+      rel="stylesheet"
+    />
     <!-- Axios library -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <title>Document</title>
-</head>
+    <title>Document</title>
+  </head>
 
-<body class="cuerpo">
-  <div class="gift">
-    <img src="../assets/inicio.gif" alt="imagen" class="gift-dondo" />
-  </div>
-  <div>
-    <h1 class="title">Bienvenido</h1>
-  </div>
-  <div class="box-0">
-    <div class="imgBackgraound">
-      <img src="../assets/logo.png" alt="imagenFondo" class="img" />
+  <body class="cuerpo">
+    <div class="gift">
+      <img src="../assets/inicio.gif" alt="imagen" class="gift-dondo" />
     </div>
-    <div class="container">
-      <form action="/login" method="POST" class="form">
+    <div>
+      <h1 class="title">Bienvenido</h1>
+    </div>
+    <div class="box-0">
+      <div class="imgBackgraound">
+        <img src="../assets/logo.png" alt="imagenFondo" class="img" />
+      </div>
+      <div class="container">
         <div class="box">
           <p class="punto">Digite usuario punto de venta</p>
-          <input name="username" id="entrada" class="select-t">
+          <input name="username" class="entrada"  id="username" />
         </div>
         <div class="box">
           <p class="ingrese">Ingrese la contraseña</p>
-          <input type="password" id="entrada" name="password" />
+          <input type="password" class="entrada" id="password" name="password" />
         </div>
         <div class="box">
-          <button class="button-send" type="submit">Iniciar sesión</button>
+          <button class="button-send"  id="boton">
+            Iniciar sesión
+          </button>
         </div>
-      </form>
+      </div>
     </div>
-  </div>
-  <footer>
-    <p>Developed by ©Alpha</p>
-  </footer>
-  
-</body>
-
+    <script type="text/javascript" src="/Scripts/inicio.js"></script>
+    <footer>
+      <p>Developed by ©Alpha</p>
+    </footer>
+  </body>
 </html>

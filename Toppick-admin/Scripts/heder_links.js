@@ -15,15 +15,20 @@ botonPantallaActualizar.addEventListener("click", () => { window.location.replac
 botonPantallaHisto.addEventListener("click", () => { window.location.replace("http://localhost:8080/historial/" + user + "/" + id); });
 botonPantallaCierre.addEventListener("click", () => { window.location.replace("http://localhost:8080/cierre_Caja/" + user + "/" + id); });
 botonCerrarSesion.addEventListener("click", async () => {
-    /*var x = await axios({
+    try{
+    var x = await axios({
         method: "GET",
         url: "https://toppickapp.herokuapp.com/usuarios/logout",
     }).then(response => response.data);
     if (x.data == "") {
         window.location.replace("http://localhost:8080/");
     } else
-        alert("Vuelva a cerrar sesion");*/
-    window.location.replace("http://localhost:8080/");
+        alert("Vuelva a cerrar sesion");
+    }catch(error)
+    {
+        console.log(error);
+    }
+
 }
 );
 

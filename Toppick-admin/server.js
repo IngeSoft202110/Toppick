@@ -1,9 +1,9 @@
 const express = require('express');
 const axios = require('axios').default;
-const passport = require('passport');
-const cookieParser = require('cookie-parser');
-const session = require("express-session");
-const PassportLocal = require('passport-local').Strategy;
+//const passport = require('passport');
+//const cookieParser = require('cookie-parser');
+//const session = require("express-session");
+//const PassportLocal = require('passport-local').Strategy;
 const app = express();
 //configuracion de los valores staticos
 app.set('view engie', 'ejs');
@@ -14,6 +14,7 @@ app.use("/Css", express.static("Css"));
 //conifiguracion de passport 
 //---------------
 app.use(express.urlencoded({ extended: true }));
+/*
 app.use(cookieParser('secret'));
 app.use(session({
     secret: 'secret',
@@ -22,11 +23,13 @@ app.use(session({
 }));
 
 app.use(passport.initialize());
-app.use(passport.session());
+app.use(passport.session());*/
 
 //concet to main server to send information user
 async function validateteUser(user, password) {
     //create the specific json to the sserver post 
+    try
+    {
     var data = {
         "nombreUsuario": user,
         "contraseña": password,
@@ -39,20 +42,23 @@ async function validateteUser(user, password) {
         data: data
     }
     ).then(res => res.data).then(err => err)
+    }catch(error)
+    {
+        return {error: "error"}
+    }
 }
-
+/*
 passport.use(new PassportLocal(function (username, password, done) {
     var user;
     //call the function to autorize the validation of the server
     return validateteUser(username, password).then((res) => {
-        if (res.error == '') //if the server returns no error continue with the process 
+        console.log(res)
+        if (res.error == '' || res.error == 'ya esta logeado') //if the server returns no error continue with the process 
             return done(null, { username: username, id: res.body });
         return done(null, false, { message: "incorrect password" });
     });
-
-
-}));
-
+}));*/
+/*
 //serializacion 
 passport.serializeUser(function (user, done) {
     done(null, user.id);
@@ -61,7 +67,8 @@ passport.serializeUser(function (user, done) {
 //deserializacion
 passport.deserializeUser(function (id, done) {
     done(null, { id: id });
-})
+})*/
+
 app.get('/', (req, res) => {
     res.render("inicio.ejs");
 });
@@ -78,7 +85,7 @@ app.get('/pedidos/:id/:name', (req, res) => {
     res.render("pedidos.ejs");
 });
 
-
+/*
 app.post('/login', (req, res, next) => {
     passport.authenticate('local',
         (err, user, info) => {
@@ -98,6 +105,6 @@ app.post('/login', (req, res, next) => {
             });
 
         })(req, res, next);
-});
+});*/
 app.listen(8080, () => console.log("server started"));
 
