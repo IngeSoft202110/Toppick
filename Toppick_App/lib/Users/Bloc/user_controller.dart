@@ -1,5 +1,8 @@
+import 'package:Toppick_App/Orders/Models/pedido.dart';
+import 'package:Toppick_App/Orders/UserInterfaces/order_card.dart';
 import 'package:Toppick_App/Users/Models/cliente.dart';
 import 'package:Toppick_App/Users/Repositories/user_queries.dart';
+import 'package:Toppick_App/Users/UserInterfaces/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -76,10 +79,16 @@ class UserController{
     return this.userQueries.register(prefs, user);
   }
 
-  Future<Cliente> getUserInfo(String cookie, String email)async{
-    Cliente result = await this.userQueries.getUserInfo(cookie, email);
-    //this.userQueries.getPaymentMethods(cookie);
-    return result;
+  Future<Cliente> getUserInfo(String cookie, String email) async {
+    return await this.userQueries.getUserInfo(cookie, email);
+  }
+
+  Future<dynamic> getPaymentMethods(String cookie) async {
+    return this.userQueries.getPaymentMethods(cookie);
+  }
+
+  Future<bool> registerregisterPaymentMethod(String cookie, String number, String name){
+    return this.userQueries.registerPaymentMethod(cookie, number, name);
   }
 
   showLoader(BuildContext context){
@@ -146,6 +155,59 @@ class UserController{
     AlertDialog alert = AlertDialog(
       title: Text("Error al intentar registrarse", style: TextStyle(color: Color(0xFFD76060)),),
       content: Text("Ha ocurrido un error al realizar el registro"),
+      actions: [
+        okButton,
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showAddMethodError(BuildContext context) {
+    Navigator.of(context).pop();
+    Widget okButton = TextButton(
+      child: Text("OK"),
+      onPressed: () { Navigator.of(context).pop();},
+    );
+    AlertDialog alert = AlertDialog(
+      title: Text("Error al intentar registrar el método de pago", style: TextStyle(color: Color(0xFFD76060)),),
+      content: Text("Ha ocurrido un error al realizar el registro del método de pago"),
+      actions: [
+        okButton,
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showCorrectAddMethod(BuildContext context, String screen, Pedido current, dynamic prefs, dynamic hKey) {
+    Widget okButton = TextButton(
+      child: Text("OK"),
+      onPressed: () { 
+        Navigator.of(context).pop(); //Alerta
+        Navigator.of(context).pop(); //Formulario informacion
+        Navigator.of(context).pop(); //Pantalla seleccion
+        Navigator.of(context).pop(); //Pantalla "actual"
+        if(screen == "Perfil"){
+          Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Profile(current, prefs)));
+        }else if(screen == "Pedido"){
+          Navigator.push(
+            context, MaterialPageRoute(builder: (context) => OrderCard(current, hKey)));
+        }
+      },
+    );
+    AlertDialog alert = AlertDialog(
+      title: Text("Registro completado de forma correcta", style: TextStyle(color: Color(0xFF0CC665)),),
+      content: Text("Su método de pago se ha registrado de forma correcta"),
       actions: [
         okButton,
       ],

@@ -1,6 +1,8 @@
 import 'dart:convert';
 
-import 'package:Toppick_App/Orders/Models/metodopago.dart';
+import 'package:Toppick_App/Orders/Models/daviplata.dart';
+import 'package:Toppick_App/Orders/Models/nequi.dart';
+import 'package:Toppick_App/Orders/Models/pse.dart';
 import 'package:Toppick_App/Services/push_notifications_service.dart';
 import 'package:Toppick_App/Users/Models/cliente.dart';
 import 'package:http/http.dart' as http;
@@ -107,7 +109,7 @@ class UserQueries{
     }
   }
 
-  Future<List<MetodoPago>> getPaymentMethods(String cookie) async{
+  Future<List<dynamic>> getPaymentMethods(String cookie) async{
     final response = await http.get(
       Uri.https(this.domain, '/pagos'),
       headers: {"Accept": "application/json", "Cookie": cookie}
@@ -119,14 +121,40 @@ class UserQueries{
     }
   }
 
-  List<MetodoPago> parsePaymentMethods(String responseBody){
-    List<MetodoPago> result = [];
+  Future<bool> registerPaymentMethod(String cookie, String number, String name) async{
+    int value = 300000;
+    final response = await http.post(
+      Uri.https(this.domain, '/pagos'),
+      headers: {"Accept": "application/json", "Cookie": cookie, "content-type": "application/json"},
+      body:jsonEncode({
+        "metodo":{"saldoTotal":value},
+        "opcionSeleccionada":{
+          "opcion": name,
+          "identificador": number
+        }
+      })
+    );
+    if(response.statusCode == 200){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  List<dynamic> parsePaymentMethods(String responseBody){
+    List<dynamic> result = [];
     final first = json.decode(responseBody);
     final parsed = first['body'];
-    print(parsed);
-    /*for (var val in parsed){
-      result.add()
-    }*/
+    int saldoTotal = parsed['saldoTotal'][0]['saldoTotal'];
+    if(!parsed['daviplata'].isEmpty){
+      result.add(DaviPlata(0, saldoTotal, parsed['daviplata'][0]['numeroCelular']));
+    }
+    if(!parsed['nequi'].isEmpty){
+      result.add(Nequi(0, saldoTotal, parsed['nequi'][0]['numeroCelular']));
+    }
+    if(!parsed['pse'].isEmpty){
+      result.add(PSE(0, saldoTotal, parsed['pse'][0]['numeroCuenta']));
+    }
     return result;
   }
 }

@@ -1,12 +1,11 @@
 import 'package:Toppick_App/Orders/Models/daviplata.dart';
-import 'package:Toppick_App/Orders/Models/metodopago.dart';
 import 'package:Toppick_App/Orders/Models/nequi.dart';
 import 'package:Toppick_App/Orders/Models/pse.dart';
 import 'package:flutter/material.dart';
 
 class RadioButtonListMethods extends StatelessWidget {
   RadioButtonListMethods(this.methods, this.notifyParent);
-  final List<MetodoPago> methods;
+  final List<dynamic> methods;
   final Function(String) notifyParent;
   @override
   Widget build(BuildContext context) {
@@ -22,7 +21,7 @@ class RadioButtonListMethods extends StatelessWidget {
 
 class RadioButtonsMethod extends StatefulWidget {
   RadioButtonsMethod(this.methods, this.notifyParent);
-  final List<MetodoPago> methods;
+  final List<dynamic> methods;
   final Function(String) notifyParent;
   @override
   _RadioButtonsMethodState createState() => _RadioButtonsMethodState();
@@ -48,9 +47,9 @@ class _RadioButtonsMethodState extends State<RadioButtonsMethod> {
     if(!dv){
       result.add(
         ListTile(
-          title: Text("DaviPlata", style: TextStyle(color: Colors.white),),
+          title: Text("Daviplata", style: TextStyle(color: Colors.white),),
           leading: Radio<String>(
-            value: "DaviPlata",
+            value: "Daviplata",
             groupValue: selected,
             activeColor: Colors.white,
             onChanged: (String? value){

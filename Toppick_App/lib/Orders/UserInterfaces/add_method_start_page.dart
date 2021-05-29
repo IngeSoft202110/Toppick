@@ -1,15 +1,17 @@
 import 'package:Toppick_App/GeneralUserInterfaces/generic_button.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/gradiant.dart';
-import 'package:Toppick_App/Orders/Models/metodopago.dart';
+import 'package:Toppick_App/Orders/Models/pedido.dart';
 import 'package:Toppick_App/Orders/UserInterfaces/add_method_radio_buttons.dart';
 import 'package:Toppick_App/Orders/UserInterfaces/add_method_screen.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class AddMethodStartPage extends StatelessWidget {
-  AddMethodStartPage(this.methods,);
-  final List<MetodoPago> methods;
+  AddMethodStartPage(this.methods, this.prefs, this.current);
+  final List<dynamic> methods;
   String selected = "";
+  final prefs;
+  final Pedido current;
 
   void changeValue(String nSelected){
     this.selected = nSelected;
@@ -41,7 +43,7 @@ class AddMethodStartPage extends StatelessWidget {
       if(this.selected.isEmpty){
         showError(context);
       }else{
-        Navigator.push(context, MaterialPageRoute(builder: (context) => AddMethodScreen(this.selected)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => AddMethodScreen(this.selected, this.prefs, this.current)));
       }
     };
     return Scaffold(

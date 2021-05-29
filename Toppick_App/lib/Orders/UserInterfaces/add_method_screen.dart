@@ -1,16 +1,21 @@
 import 'package:Toppick_App/GeneralUserInterfaces/generic_button.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/gradiant.dart';
+import 'package:Toppick_App/Orders/Models/pedido.dart';
+import 'package:Toppick_App/Users/Bloc/user_controller.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class AddMethodScreen extends StatelessWidget {
-  AddMethodScreen(this.selectedMethodName);
+  AddMethodScreen(this.selectedMethodName, this.prefs, this.current);
   final String selectedMethodName;
   final formKey = GlobalKey<FormState>();
   String number = "";
+  final prefs;
+  final Pedido current;
+  final UserController controller = UserController();
 
   Widget image(){
-    if(selectedMethodName == "DaviPlata"){
+    if(selectedMethodName == "Daviplata"){
       return Image.asset("assets/img/daviplata.png", height: 100,);
     }else if(selectedMethodName == "Nequi"){
       return Image.asset("assets/img/nequi.jpg", height: 100,);
@@ -19,15 +24,23 @@ class AddMethodScreen extends StatelessWidget {
     }
   }
 
-  void check(){
-    if(formKey.currentState!.validate()){
-      formKey.currentState!.save();
-      //llamado a la funcion de crear un metodo de pago
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
+    void check(){
+      if(formKey.currentState!.validate()){
+        formKey.currentState!.save();
+        this.controller.showLoader(context);
+        this.controller.registerregisterPaymentMethod(this.prefs.getString('cookie'), this.number, this.selectedMethodName).
+        then((value) {
+          if(value){
+            this.controller.showCorrectAddMethod(context, "Perfil", this.current, this.prefs, 0);
+          }else{
+            this.controller.showAddMethodError(context);
+          }
+        });
+      }
+    }
     bool phone = (this.selectedMethodName=="PSE")?false:true;
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -83,10 +96,13 @@ class AddMethodScreen extends StatelessWidget {
                                   if(value!.isEmpty){
                                     return "Ingrese la información";
                                   }
+                                  else if(!value.contains(new RegExp(r'^[0-9]*$'))){
+                                    return "Solo pueden ser números";
+                                  }else if(value.contains(new RegExp(r'[!@#$%^(),.?":{}|<>]'))){
+                                    return "No deben haber caracteres especiales";
+                                  }
                                   else if(value.length!=10){
-                                    return "Numero de celular invalido";
-                                  }else if(!phone && value.length!=20){
-                                    return "Numero de cuenta invalido";
+                                    return "Tamaño invalido";
                                   }
                                 },
                               ),
