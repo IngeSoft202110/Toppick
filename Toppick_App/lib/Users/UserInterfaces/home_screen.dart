@@ -9,9 +9,14 @@ class HomeScreen extends StatelessWidget {
   final prefs;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-          body: Stack(
-        children: [Gradiant(), HomeCardList(this.current, this.prefs)],
+    return WillPopScope(
+          onWillPop: () async {
+            return Navigator.canPop(context);
+          },
+          child: Scaffold(
+            body: Stack(
+          children: [Gradiant(), HomeCardList(this.current, this.prefs)],
+        ),
       ),
     );
   }

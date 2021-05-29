@@ -61,6 +61,7 @@ class HeaderState extends State<Header> {
           children: <Widget>[
             Container(
               alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.only(left: 5.0),
               width: width*0.33,
               child: GestureDetector(
                 onTap: f2,
