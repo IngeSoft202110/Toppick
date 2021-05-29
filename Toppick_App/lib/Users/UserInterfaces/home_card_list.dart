@@ -34,7 +34,7 @@ class HomeCardList extends StatelessWidget {
       child: ListView(
         scrollDirection: Axis.vertical,
         children: [
-          Header(this.current, this.prefs),
+          Header(this.current, this.prefs,),
           SearchButton("Buscar Puntos de venta/Productos", 1),
           HomeCard(
               "Puntos de venta",

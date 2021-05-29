@@ -25,35 +25,41 @@ class OrderController {
   }
 
   DateTime getMaxShopsHour(Pedido currentP, int day){
-    DateTime current = DateTime.now();
-    Iterable<Tienda?> shops = currentP.carrito.keys;
-    String dayString = getDayName(day);
-    TimeOfDay? result =  shops.first!.getScheduleEndHour(dayString);
-    DateTime resultD = DateTime(current.year, current.month, current.day, result!.hour, result.minute);
-    for(int i = 0; i < shops.length; i++){
-      TimeOfDay? actual = shops.elementAt(i)!.getScheduleEndHour(dayString);
-      DateTime actualD = DateTime(current.year, current.month, current.day, actual!.hour, actual.minute);
-      if(actualD.isBefore(resultD)){
-        resultD = DateTime(current.year, current.month, current.day, actual.hour, actual.minute);
+    if(currentP.carrito.isNotEmpty){
+      DateTime current = DateTime.now();
+      Iterable<Tienda?> shops = currentP.carrito.keys;
+      String dayString = getDayName(day);
+      TimeOfDay? result =  shops.first!.getScheduleEndHour(dayString);
+      DateTime resultD = DateTime(current.year, current.month, current.day, result!.hour, result.minute);
+      for(int i = 0; i < shops.length; i++){
+        TimeOfDay? actual = shops.elementAt(i)!.getScheduleEndHour(dayString);
+        DateTime actualD = DateTime(current.year, current.month, current.day, actual!.hour, actual.minute);
+        if(actualD.isBefore(resultD)){
+          resultD = DateTime(current.year, current.month, current.day, actual.hour, actual.minute);
+        }
       }
+      return resultD;
     }
-    return resultD;
+    return DateTime.now();
   }
 
   DateTime getMinShopsHour(Pedido currentP, int day){
-    DateTime current = DateTime.now();
-    Iterable<Tienda?> shops = currentP.carrito.keys;
-    String dayString = getDayName(day);
-    TimeOfDay? result =  shops.first!.getScheduleStartHour(dayString);
-    DateTime resultD = DateTime(current.year, current.month, current.day, result!.hour, result.minute);
-    for(int i = 0; i < shops.length; i++){
-      TimeOfDay? actual = shops.elementAt(i)!.getScheduleStartHour(dayString);
-      DateTime actualD = DateTime(current.year, current.month, current.day, actual!.hour, actual.minute);
-      if(actualD.isAfter(resultD)){
-        resultD = DateTime(current.year, current.month, current.day, actual.hour, actual.minute);
+    if(currentP.carrito.isNotEmpty){
+      DateTime current = DateTime.now();
+      Iterable<Tienda?> shops = currentP.carrito.keys;
+      String dayString = getDayName(day);
+      TimeOfDay? result =  shops.first!.getScheduleStartHour(dayString);
+      DateTime resultD = DateTime(current.year, current.month, current.day, result!.hour, result.minute);
+      for(int i = 0; i < shops.length; i++){
+        TimeOfDay? actual = shops.elementAt(i)!.getScheduleStartHour(dayString);
+        DateTime actualD = DateTime(current.year, current.month, current.day, actual!.hour, actual.minute);
+        if(actualD.isAfter(resultD)){
+          resultD = DateTime(current.year, current.month, current.day, actual.hour, actual.minute);
+        }
       }
+      return resultD;
     }
-    return resultD;
+    return DateTime.now();
   }
 
   String getDayName(int day){
@@ -114,10 +120,10 @@ class OrderController {
     return DateTime.now().add(Duration(hours: plusHours, minutes: plusMinutes));
   }
 
-  cancelOrderWarning(BuildContext context, Pedido current){
+  cancelOrderWarning(BuildContext context, Pedido current, var key){
     Widget yesButton = TextButton(
       child: Text("Si"),
-      onPressed: () { current.carrito.clear(); Navigator.of(context).pop(); Navigator.of(context).pop();},
+      onPressed: () { key.currentState!.recalculate(0, true);current.carrito.clear(); Navigator.of(context).pop(); Navigator.of(context).pop();},
     );
     Widget noButton = TextButton(
       child: Text("No"),
@@ -219,17 +225,20 @@ class OrderController {
     );
   }
 
-  int changeQuantity(int value, String operationType, Producto selected, Tienda currentShop, int total, Pedido actual, BuildContext context){
+  int changeQuantity(int value, String operationType, Producto selected, Tienda currentShop, int total, Pedido actual, BuildContext context, var hKey){
     if(operationType == "Sum"){
       total+=value;
       int newQuantity = actual.carrito[currentShop]![selected]!+1;
       actual.carrito[currentShop]![selected] = newQuantity;
+      hKey.currentState!.recalculate(1, false);
     }else if(operationType == "Substract"){
       total-=value;
       int newQuantity = actual.carrito[currentShop]![selected]!-1;
       actual.carrito[currentShop]![selected] = newQuantity;
+      hKey.currentState!.recalculate(-1, false);
     }else if(operationType == "Delete"){
       actual.carrito[currentShop]!.remove(selected);
+      hKey.currentState!.recalculate(-1, false);
       if(actual.carrito[currentShop]!.isEmpty){
         actual.carrito.remove(currentShop);
       }

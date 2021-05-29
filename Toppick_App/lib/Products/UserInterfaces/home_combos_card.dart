@@ -142,7 +142,7 @@ showStoreWarning(BuildContext context) {
 
 // ignore: must_be_immutable
 class HomeCombosCard extends StatelessWidget {
-  HomeCombosCard(this.selected, this.shopSelected, this.current, this.prefs);
+  HomeCombosCard(this.selected, this.shopSelected, this.current, this.prefs, this.header);
   final Combo selected;
   List<Tienda> available = [];
   final Pedido current;
@@ -151,6 +151,7 @@ class HomeCombosCard extends StatelessWidget {
   ProductController controller = ProductController();
   ShopController shopController = ShopController();
   final prefs;
+  final header;
 
   void updateStore(Tienda? selected){
     this.shopSelected = selected;
@@ -170,13 +171,16 @@ class HomeCombosCard extends StatelessWidget {
         if (this.current.productInShopOrder(shopSelected!, selected)) {
           this.current.addQuantityToExistingProduct(shopSelected!, selected, quantity);
           showCorrectAdd(context, this.selected.name, this.shopController, this.shopSelected!, this.prefs.getString('cookie'));
+          header.key.currentState!.recalculate(quantity, false);
         } else {
           this.current.addProductToSelectedStore(shopSelected!, selected, quantity);
           showCorrectAdd(context, this.selected.name, this.shopController, this.shopSelected!, this.prefs.getString('cookie'));
+          header.key.currentState!.recalculate(quantity, false);
         }
       } else {
         this.current.addStoreWithProducts(shopSelected!, selected, quantity);
         showCorrectAdd(context, this.selected.name, this.shopController, this.shopSelected!, this.prefs.getString('cookie'));
+        header.key.currentState!.recalculate(quantity, false);
       }
     }else{
       showStoreWarning(context);

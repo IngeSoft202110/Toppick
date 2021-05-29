@@ -1,8 +1,6 @@
 import 'package:Toppick_App/GeneralUserInterfaces/generic_button.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/gradiant.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/header.dart';
-import 'package:Toppick_App/Orders/Models/daviplata.dart';
-import 'package:Toppick_App/Orders/Models/nequi.dart';
 import 'package:Toppick_App/Orders/Models/pedido.dart';
 import 'package:Toppick_App/Orders/UserInterfaces/add_method_start_page.dart';
 import 'package:Toppick_App/Orders/UserInterfaces/payment_method_card.dart';

@@ -16,6 +16,7 @@ class ProductList extends StatefulWidget {
   final Pedido current;
   final List<dynamic> productList;
   final prefs;
+  final hKey = GlobalKey<HeaderState>(debugLabel: "KEY EN PRODUCT LIST");
   @override
   ProductListState createState() => ProductListState(this.productList);
 }
@@ -65,7 +66,7 @@ class ProductListState extends State<ProductList> {
             width: double.infinity,
             child: ListView(
               children: <Widget>[
-                Header(widget.current, widget.prefs),
+                Header(widget.current, widget.prefs, hKey: widget.hKey, showCart: true,),
                 SearchButton("Buscar productos", 3),
                 ListMainText("Escoge la", "comida que amas"),
                 Padding(
@@ -89,7 +90,7 @@ class ProductListState extends State<ProductList> {
                     itemBuilder: selectProductsFromCategory,
                   ),
                 ),
-                ProductCategoryDisplay(this.currentTitle, this.currentDescription, this.filtered, widget.store!, widget.current, widget.prefs),
+                ProductCategoryDisplay(this.currentTitle, this.currentDescription, this.filtered, widget.store!, widget.current, widget.prefs, widget.hKey),
                 SizedBox(
                   height: 10,
                 ),

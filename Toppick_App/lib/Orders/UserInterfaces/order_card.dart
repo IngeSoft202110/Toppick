@@ -20,8 +20,9 @@ List<MetodoPago> methods =[
 
 
 class OrderCard extends StatefulWidget {
-  OrderCard(this.actual);
+  OrderCard(this.actual, this.hKey);
   final Pedido actual;
+  final hKey;
 
   int calculateTotal(){
     int total = 0;
@@ -33,13 +34,13 @@ class OrderCard extends StatefulWidget {
     return total;
   }
   @override
-  _OrderCardState createState() => _OrderCardState(this.actual,calculateTotal());
+  _OrderCardState createState() => _OrderCardState(this.actual,calculateTotal(), this.hKey);
 }
 
 
 
 class _OrderCardState extends State<OrderCard> {
-  _OrderCardState(this.actual, this.total);
+  _OrderCardState(this.actual, this.total, this.hKey);
   final Pedido actual;
   int total;
   MetodoPago? selected;
@@ -51,6 +52,7 @@ class _OrderCardState extends State<OrderCard> {
   DateTime? maxShopTime;
   DateTime? minShopTime;
   DateTime? finalDateSend;
+  final hKey;
 
   Future<Null> selectTime(BuildContext context) async{
     pickedTime = await showTimePicker(
@@ -84,7 +86,7 @@ class _OrderCardState extends State<OrderCard> {
 
   void refresh(int value, String operationType, Producto selected, Tienda currentShop){
     setState(() {
-      total = this.controller.changeQuantity(value, operationType, selected, currentShop, this.total, this.actual, context);
+      total = this.controller.changeQuantity(value, operationType, selected, currentShop, this.total, this.actual, context, this.hKey);
       if(total==0){
         this.controller.showEmptyOrder(context);
       }
@@ -95,7 +97,7 @@ class _OrderCardState extends State<OrderCard> {
   }
 
   List<Widget> fill(var transitionToPay){
-    var cancelTransition = () => this.controller.cancelOrderWarning(context, actual);
+    var cancelTransition = () => this.controller.cancelOrderWarning(context, actual, this.hKey);
     var formatter = NumberFormat('#,###,000');
     Widget showMethods = methods.isNotEmpty ? RadioButtonPaymentList(methods, updateMethod) :
       Center(child: GenericButton("Registrar métodos de pago", Color(0xFF0CC665), 274, 45, 15.0, 0, 0, 0, 22, 30, () => {}));
@@ -179,7 +181,7 @@ class _OrderCardState extends State<OrderCard> {
       else if(this.selected.runtimeType.toString()=="PSE"){
         return PaymentCard("assets/img/pse.jpg", total, selected, this.actual, this.finalDateSend!);
       }  
-      return OrderCard(this.actual);
+      return OrderCard(this.actual, this.hKey);
     }
     var payTransition = () => Navigator.push(context, MaterialPageRoute(builder: construct));
     this.maxShopTime = this.controller.getMaxShopsHour(this.actual, DateTime.now().weekday);

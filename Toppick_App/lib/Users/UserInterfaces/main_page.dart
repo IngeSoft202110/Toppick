@@ -8,12 +8,6 @@ class MainPage extends StatelessWidget {
   final prefs;
   @override
   Widget build(BuildContext context) {
-    final conected = this.prefs.getBool('conectado');
-    if(conected != null){
-      print("Esta conectado");
-    }else{
-      print("No esta conectado");
-    }
     var login = ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen(this.prefs)));
     var register = ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>RegisterScreen(this.prefs)));
     return Scaffold(

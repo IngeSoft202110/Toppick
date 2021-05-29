@@ -8,13 +8,14 @@ import 'home_combos_card.dart';
 import 'home_product_card.dart';
 
 class ProductCategoryDisplay extends StatelessWidget {
-  ProductCategoryDisplay(this.categoryName, this.categoryDescription, this.products, this.store, this.current, this.prefs);
+  ProductCategoryDisplay(this.categoryName, this.categoryDescription, this.products, this.store, this.current, this.prefs, this.hKey);
   final String categoryName;
   final String categoryDescription;
   final List<dynamic> products;
   final Tienda store;
   final Pedido current;
   final prefs;
+  final hKey;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -46,9 +47,9 @@ class ProductCategoryDisplay extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (context) {
                           if(products[index] is Combo){
-                            return HomeCombosCard(products[index], this.store, this.current, this.prefs);
+                            return HomeCombosCard(products[index], this.store, this.current, this.prefs, this.hKey);
                           }else{
-                            return HomeProductCard(products[index], this.store, this.current, this.prefs);
+                            return HomeProductCard(products[index], this.store, this.current, this.prefs, this.hKey);
                           }
                         }
                       )

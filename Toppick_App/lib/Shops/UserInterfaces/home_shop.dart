@@ -7,10 +7,11 @@ import '../../GeneralUserInterfaces/gradiant.dart';
 import '../../UserInterfaces/../Shops/UserInterfaces/home_shop_card.dart';
 
 class HomeShop extends StatelessWidget {
-  HomeShop(this.selectedShop, this.current, this.prefs);
+  HomeShop(this.selectedShop, this.current, this.prefs,{this.anterior = ""});
   final Pedido current;
   final Tienda selectedShop;
   final prefs;
+  final String anterior;
   @override
   Widget build(BuildContext context) {
     final fusionBody = Container(
