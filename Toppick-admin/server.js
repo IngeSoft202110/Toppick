@@ -5,105 +5,101 @@ const cookieParser = require('cookie-parser');
 const session = require("express-session");
 const PassportLocal = require('passport-local').Strategy;
 const app = express();
+require('./Passport.js'); 
+
+//-------------------------------------------------------
+//                  Server configuration 
+//------------------------------------------------------- 
 //configuracion de los valores staticos
 app.set('view engie', 'ejs');
 app.use("/assets", express.static("assets"));
 app.use("/Scripts", express.static("Scripts"));
 app.use("/Css", express.static("Css"));
-//---------------
-//conifiguracion de passport 
-//---------------
-app.use(express.urlencoded({ extended: true }));
 
-app.use(cookieParser('secret'));
+const PORT = process.env.PORT || 8080; // Port in which the server will be listening to requests
+
+//----------------------------------------------------
+//                     Middlewares                   
+//----------------------------------------------------
+app.use(express.json()); 
+app.use(express.urlencoded({ extended: false })); // False, because we aren't recieving big files
+//---- Passport ----
+// Configure session
 app.use(session({
-    secret: 'secret',
-    resave: true,
-    saveUninitialized: true
+    secret: 'TOPPICK-ADMIN', 
+    resave: false, 
+    saveUninitialized: false
 }));
+app.use(passport.initialize()); // Initialize passport
+app.use(passport.session()); // Initialize passport session  
 
-app.use(passport.initialize());
-app.use(passport.session());
+//---------------------------------------
+//          Verification methods
+//---------------------------------------
+const isStoreAlreadyLoggedIn = (req, res, next) => {
+    console.log(req.user); 
+    if (req.isAuthenticated()) return res.redirect(`/pedidos/${ req.user.id }/${ req.user.username }`); 
+    else return next(); 
+}; 
 
-//concet to main server to send information user
-async function validateteUser(user, password) {
-    //create the specific json to the sserver post 
-    try
-    {
-    var data = {
-        "nombreUsuario": user,
-        "contraseña": password,
-    }
-    //retun the response of the main server 
-    return await axios({
-        method: "POST",
-        url: "https://toppickapp.herokuapp.com/usuarios/login",
-        data: data
-    }
-    ).then(res => res.data).then(err => err)
-    }catch(error)
-    {
-        return {error: "error"}
-    }
-}
+const isStoreLoggedIn = (req, res, next) => {
+    if (req.isAuthenticated()) return next(); 
+    else return res.redirect('/'); 
+}; 
 
-passport.use(new PassportLocal(function (username, password, done) {
-    var user;
-    //call the function to autorize the validation of the server
-    return validateteUser(username, password).then((res) => {
-        console.log(res)
-        if (res.error == '' || res.error == 'ya esta logeado') //if the server returns no error continue with the process 
-            return done(null, { username: username, id: res.body });
-        return done(null, false, { message: "incorrect password" });
-    });
-}));
-
-//serializacion 
-passport.serializeUser(function (user, done) {
-    done(null, user.id);
-});
-
-//deserializacion
-passport.deserializeUser(function (id, done) {
-    done(null, { id: id });
-})
-
-app.get('/', (req, res) => {
-
+//-------------------------------------------------------
+//                  LOGIN routes
+//-------------------------------------------------------
+app.get('/', isStoreAlreadyLoggedIn, (req, res) => {
     res.render("inicio.ejs");
 });
-app.get('/cierre_Caja/:id/:name',(req,res) =>{
+
+app.post('/login', (req, res, next) => { 
+    passport.authenticate('local-login', (err, user, info) => {
+        // If an error occurs
+        if (err) return res.redirect('/'); 
+
+        // If user doesn't exist in db
+        if (!user) return res.redirect('/'); 
+
+        // If user exists in the DB
+        req.logIn(user, (err) => {
+            if (err) return next(err); 
+            else return res.redirect(`/pedidos/${ user.id }/${ user.username }`)
+        }); 
+
+    }) (req, res, next); 
+}); 
+
+//-------------------------------------------------------
+//                  LOGIN routes
+//-------------------------------------------------------
+app.get('/cierre_Caja/:id/:name', isStoreLoggedIn, (req,res) =>{
     res.render('cierre_caja.ejs');
 })
+
+//-------------------------------------------------------
+//                  HISTORIAL routes
+//-------------------------------------------------------
 app.get('/historial/:id/:name',(req,res) =>{
     res.render('Historial_pedidos.ejs');
 })
-app.get('/actualizar/:id/:name', (req, res) => {
+
+//-------------------------------------------------------
+//              UPDATE INVENTORY routes
+//-------------------------------------------------------
+app.get('/actualizar/:id/:name', isStoreLoggedIn, (req, res) => {
     res.render("actualizar_inventario.ejs");
 });
-app.get('/pedidos/:id/:name', (req, res) => {
+
+//-------------------------------------------------------
+//                  ORDERS routes
+//-------------------------------------------------------
+app.get('/pedidos/:id/:name', isStoreLoggedIn, (req, res) => {
     res.render("pedidos.ejs");
 });
 
-app.post('/login', (req, res, next) => {
-    passport.authenticate('local',
-        (err, user, info) => {
-            if (err) {
-                return next(err);
-            }
-
-            if (!user) {
-                return res.redirect('/');
-            }
-
-            req.logIn(user, function (err) {
-                if (err) {
-                    return next(err);
-                }
-                res.redirect('/pedidos/' + user.username + '/' + user.id);
-            });
-
-        })(req, res, next);
-});
-app.listen(8080, () => console.log("server started"));
-
+//-------------------------------------------------------
+//                  Listening port  
+//-------------------------------------------------------
+app.listen(PORT, () => console.log(`Server listenning on port : ${PORT}`));
