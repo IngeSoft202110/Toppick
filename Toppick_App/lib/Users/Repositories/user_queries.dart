@@ -141,6 +141,24 @@ class UserQueries{
     }
   }
 
+  Future<bool> updatePaymentMethod(String cookie, String methodName, int id, int toAdd, int current) async{
+    int add = current+toAdd;
+    final response = await http.patch(
+      Uri.https(this.domain, '/pagos'),
+      headers: {"Accept": "application/json", "Cookie": cookie},
+      body:{
+        "metodo": methodName,
+        "identificador": id.toString(),
+        "saldo": add.toString()
+      }
+    );
+    if(response.statusCode==200){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
   List<dynamic> parsePaymentMethods(String responseBody){
     List<dynamic> result = [];
     final first = json.decode(responseBody);

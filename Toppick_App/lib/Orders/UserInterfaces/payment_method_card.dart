@@ -1,9 +1,13 @@
 import 'package:Toppick_App/GeneralUserInterfaces/generic_button.dart';
+import 'package:Toppick_App/Orders/Models/pedido.dart';
+import 'package:Toppick_App/Orders/UserInterfaces/edit_method_screen.dart';
 import 'package:flutter/material.dart';
 
 class PaymentMethodCard extends StatelessWidget {
-  PaymentMethodCard(this.current);
+  PaymentMethodCard(this.current, this.prefs, this.actual);
   final dynamic current;
+  final prefs;
+  final Pedido actual;
 
   Widget image(String typ){
     if(typ == "DaviPlata"){
@@ -25,6 +29,7 @@ class PaymentMethodCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var editPage = (){Navigator.push(context, MaterialPageRoute(builder: (context) => EditMethodScreen(this.current, this.prefs, this.actual)));};
     return Padding(
       padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0, bottom: 10.0),
       child: Container(
@@ -44,7 +49,7 @@ class PaymentMethodCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             image(this.current.runtimeType.toString()),
-            Center(child: GenericButton("Editar", Color(0xFF2196F3), 130, 20, 5, 5, 5, 5, 15, 15, ()=>{})),
+            Center(child: GenericButton("Editar", Color(0xFF2196F3), 130, 20, 5, 5, 5, 5, 15, 15, editPage)),
           ],
         ),
       ),

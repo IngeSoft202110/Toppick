@@ -113,7 +113,7 @@ class Profile extends StatelessWidget {
                                                   child: ListView.builder(
                                                     itemCount: this.clienteActual.metodos.length,
                                                     scrollDirection: Axis.horizontal,
-                                                    itemBuilder: (BuildContext context, int index) => PaymentMethodCard(this.clienteActual.metodos[index])
+                                                    itemBuilder: (BuildContext context, int index) => PaymentMethodCard(this.clienteActual.metodos[index], this.prefs, this.actual)
                                                   )
                                                 ),
                                                 if(this.clienteActual.metodos.length < 3)

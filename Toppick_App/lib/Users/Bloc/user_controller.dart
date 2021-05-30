@@ -91,6 +91,10 @@ class UserController{
     return this.userQueries.registerPaymentMethod(cookie, number, name);
   }
 
+  Future<bool> updatePaymentMethod(String cookie, String methodName, int id, int toAdd, int current){
+    return this.userQueries.updatePaymentMethod(cookie, methodName, id, toAdd, current);
+  }
+
   showLoader(BuildContext context){
     AlertDialog alert = AlertDialog(
       content: Container(height: 150, child: CircularProgressIndicator())
@@ -208,6 +212,54 @@ class UserController{
     AlertDialog alert = AlertDialog(
       title: Text("Registro completado de forma correcta", style: TextStyle(color: Color(0xFF0CC665)),),
       content: Text("Su método de pago se ha registrado de forma correcta"),
+      actions: [
+        okButton,
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showUpdateMethodError(BuildContext context) {
+    Navigator.of(context).pop();
+    Widget okButton = TextButton(
+      child: Text("OK"),
+      onPressed: () { Navigator.of(context).pop();},
+    );
+    AlertDialog alert = AlertDialog(
+      title: Text("Error en actualización información del método de pago", style: TextStyle(color: Color(0xFFD76060)),),
+      content: Text("Ha ocurrido un error al intentar actualizar la información del método de pago"),
+      actions: [
+        okButton,
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showCorrectUpdateMethod(BuildContext context, Pedido current, dynamic prefs) {
+    Widget okButton = TextButton(
+      child: Text("OK"),
+      onPressed: () { 
+        Navigator.of(context).pop(); //Alerta
+        Navigator.of(context).pop(); //Formulario actualizar
+        Navigator.of(context).pop(); //Pantalla perfil
+        Navigator.of(context).pop(); //Pantalla perfil
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Profile(current, prefs)));
+      },
+    );
+    AlertDialog alert = AlertDialog(
+      title: Text("Actualización completada correctamente", style: TextStyle(color: Color(0xFF0CC665)),),
+      content: Text("La información de su método de pago se ha actualizado de forma correcta"),
       actions: [
         okButton,
       ],
