@@ -36,7 +36,7 @@ passport.use('local-login', new LocalStrategy({
 
         // Return store information on succsessfull server response
         const store = { username: username, id: res.data.body.id };
-        req.user = store; 
+        // req.user = store; 
         done(null, store); 
 
     } catch( error ) {

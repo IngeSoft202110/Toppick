@@ -14,7 +14,11 @@
             <li><button class="BotonHeader" id="PatnallaActualizar" style="text-decoration: none;">Actualizar inventario</button></li>
             <li><button class="BotonHeader" id="PantallaHisto" style=" text-decoration: none;"> Historial de pedidos </button></li>
             <li><button class="BotonHeader" id="PantallaCierre" style="text-decoration: none;">Cierre de caja </button></li>
-            <li><button id = "Cerrar"> Cerrar sesión </button> </li>
+            <li>
+                <form method="POST" action="/logout">
+                    <button id="Cerrar"> Cerrar sesión </button> 
+                </form>
+            </li>
         </ul>
 
     </nav>

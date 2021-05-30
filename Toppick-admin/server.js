@@ -48,6 +48,14 @@ const isStoreLoggedIn = (req, res, next) => {
 }; 
 
 //-------------------------------------------------------
+//                  LOGOUT route
+//-------------------------------------------------------
+app.post('/logout', (req, res) => {
+    req.logout(); 
+    res.redirect('/'); 
+}); 
+
+//-------------------------------------------------------
 //                  LOGIN routes
 //-------------------------------------------------------
 app.get('/', isStoreAlreadyLoggedIn, (req, res) => {
@@ -72,7 +80,7 @@ app.post('/login', (req, res, next) => {
 }); 
 
 //-------------------------------------------------------
-//                  LOGIN routes
+//                   CIERRE DE CAJA routes
 //-------------------------------------------------------
 app.get('/cierre_Caja/:id/:name', isStoreLoggedIn, (req,res) =>{
     res.render('cierre_caja.ejs');
