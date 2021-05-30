@@ -59,18 +59,12 @@ class ProductController {
     this.productqueries = new ProductQueries();
   }
 
-  Future<List<dynamic>> getAllAvailableProducts(String cookie, BuildContext context) async{
-    this.showLoader(context);
-    List<dynamic> result = await this.productqueries.getAllAvailableProducts(cookie);
-    Navigator.of(context).pop();
-    return result;
+  Future<List<dynamic>> getAllAvailableProducts(String cookie) async{
+    return await this.productqueries.getAllAvailableProducts(cookie);
   }
 
-  Future<List<dynamic>> getProductCatalogueById(int storeId, String cookie, BuildContext context) async {
-    this.showLoader(context);
-    List<dynamic> result = await this.productqueries.getProductCatalogueById(storeId, cookie);
-    Navigator.of(context).pop();
-    return result;
+  Future<List<dynamic>> getProductCatalogueById(int storeId, String cookie) async {
+    return await this.productqueries.getProductCatalogueById(storeId, cookie);
   }
 
   Future<List<dynamic>> getComboProducts(int comboId, String cookie){

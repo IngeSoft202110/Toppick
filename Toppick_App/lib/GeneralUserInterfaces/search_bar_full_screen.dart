@@ -1,9 +1,21 @@
+import 'package:Toppick_App/Orders/Models/pedido.dart';
+import 'package:Toppick_App/Products/Bloc/product_controller.dart';
+import 'package:Toppick_App/Products/Models/combo.dart';
+import 'package:Toppick_App/Products/UserInterfaces/home_combos_card.dart';
+import 'package:Toppick_App/Products/UserInterfaces/home_product_card.dart';
+import 'package:Toppick_App/Shops/Bloc/shop_controller.dart';
+import 'package:Toppick_App/Shops/Models/tienda.dart';
+import 'package:Toppick_App/Shops/UserInterfaces/home_shop.dart';
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
 class SearchScreen extends StatefulWidget {
-  int option;
-  SearchScreen(this.option);
+  SearchScreen(this.option, this.prefs, this.actual, {this.id=-1, this.hKey="", this.sName=""});
+  final int option;
+  final prefs;
+  final Pedido actual;
+  final int id; //Este id es -1 si se llama desde una pantalla que no sea el catalogo de productos un punto de venta
+  final hKey; //Solo necesito la llave del estado cuando me llaman desde uno de los catalogos de productos o desde la pantalla inicial
+  final String sName; //Este valor es "" si se llama desde una pantalla que no sea el catalogo de productos de un punto de venta
   @override
   _SearchScreenState createState() => _SearchScreenState(this.option);
 }
@@ -15,6 +27,8 @@ class _SearchScreenState extends State<SearchScreen> {
   List filteredNames = [];
   int option = 0;
   Widget _appBarTitle = new Text('');
+  ShopController sController = ShopController();
+  ProductController pController = ProductController();
 
   _SearchScreenState(int option) {
     this.option = option;
@@ -52,7 +66,7 @@ class _SearchScreenState extends State<SearchScreen> {
     this._appBarTitle = new TextField(
       controller: _filter,
       decoration: new InputDecoration(
-        hintText: 'Buscar Tienda/Producto',
+        hintText: 'Buscar',
         hintStyle: TextStyle(color: Color(0xFFC4C4C4)),
       ),
     );
@@ -84,11 +98,40 @@ class _SearchScreenState extends State<SearchScreen> {
       filteredNames = tempList;
     }
     return ListView.builder(
-      itemCount: names == null ? 0 : filteredNames.length,
+      itemCount: names.isEmpty ? 0 : filteredNames.length,
       itemBuilder: (BuildContext context, int index) {
         return new ListTile(
           title: Text(filteredNames[index]['name']),
-          onTap: () => print(filteredNames[index]['name']),
+          onTap: (){
+            if(this.option==1){
+              Navigator.of(context).pop();
+              if(filteredNames[index]['store'] != null){
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => HomeShop(filteredNames[index]['store'], widget.actual, widget.prefs)));
+              }else{
+                if(filteredNames[index]['product'] is Combo){
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => HomeCombosCard(filteredNames[index]['product'], Tienda(widget.id, widget.sName, "", "", "", "",""), widget.actual, widget.prefs, widget.hKey)));
+                }else{
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => HomeProductCard(filteredNames[index]['product'], Tienda(widget.id, widget.sName, "", "", "", "",""), widget.actual, widget.prefs, widget.hKey)));
+                }
+              }
+            }else if(this.option==2){
+              Navigator.of(context).pop();
+              Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => HomeShop(filteredNames[index]['store'], widget.actual, widget.prefs)));
+            }else{
+              Navigator.of(context).pop();
+              if(filteredNames[index]['product'] is Combo){
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => HomeCombosCard(filteredNames[index]['product'], Tienda(widget.id, widget.sName, "", "", "", "",""), widget.actual, widget.prefs, widget.hKey)));
+              }else{
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => HomeProductCard(filteredNames[index]['product'], Tienda(widget.id, widget.sName, "", "", "", "",""), widget.actual, widget.prefs, widget.hKey)));
+              }
+            }
+          },
         );
       },
     );
@@ -101,26 +144,59 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   void _getNames() async {
-    List a;
+    List a = [];
     if (this.option == 1) {
-      a = [
-        {"name": "pescadito"},
-        {"name": "La central"},
-        {"name": "ponque"},
-      ];
+      this.sController.getAllAvailableShops(widget.prefs.getString('cookie')).then(
+        (value){
+          if(value.isNotEmpty){
+            value.forEach((element) {
+              a.add({"name":element.name, "store":element});
+            });
+          }
+        }
+      );
+      this.pController.getAllAvailableProducts(widget.prefs.getString('cookie')).then(
+        (value) {
+          if(value.isNotEmpty){
+            value.forEach((element) {
+              a.add({"name":element.name, "product":element});
+            });
+          }
+        }
+      );
     } else if (this.option == 2) {
-      a = [
-        {"name": "Pecera"},
-        {"name": "La central"},
-        {"name": "parqueaderos"},
-      ];
+      this.sController.getAllAvailableShops(widget.prefs.getString('cookie')).then(
+        (value){
+          if(value.isNotEmpty){
+            value.forEach((element) {
+              a.add({"name":element.name, "store":element});
+            });
+          }
+        }
+      );
     } else {
-      a = [
-        {"name": "pescadito"},
-        {"name": "ponque"},
-        {"name": "aguacate"},
-        {"name": "Manzana"},
-      ];
+      if(widget.id == -1){
+        this.pController.getAllAvailableProducts(widget.prefs.getString('cookie')).then(
+          (value) {
+            if(value.isNotEmpty){
+              value.forEach((element) {
+                a.add({"name":element.name, "product":element});
+              });
+            }
+          }
+        );
+      }else{
+        this.pController.getProductCatalogueById(widget.id, widget.prefs.getString('cookie')).then(
+          (value) {
+            if(value.isNotEmpty){
+              value.forEach((element) {
+                a.add({"name":element.name, "product":element});
+              });
+            }
+          }
+        );
+      }
+      
     }
 
     List tempList = [];

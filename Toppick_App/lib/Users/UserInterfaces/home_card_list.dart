@@ -16,12 +16,15 @@ class HomeCardList extends StatelessWidget {
   final prefs;
   final ProductController controller = ProductController();
   List<dynamic> result = [];
+  final hKey = GlobalKey<HeaderState>(debugLabel: "KEY EN HOME");
   @override
   Widget build(BuildContext context) {
     var f1 = () => Navigator.push(
         context, MaterialPageRoute(builder: (context) => ShopCategoryList(this.current, this.prefs)));
     var f2 = () { 
-      controller.getAllAvailableProducts(prefs.getString('cookie'), context).then((value) { 
+      controller.showLoader(context);
+      controller.getAllAvailableProducts(prefs.getString('cookie')).then((value) {
+        Navigator.of(context).pop();
         result = value;
         Navigator.push(
         context, MaterialPageRoute(builder: (context) => ProductList(this.current, new Tienda(-1, "", "", "", "", "Cerrado", ""), this.result, this.prefs)));
@@ -34,8 +37,8 @@ class HomeCardList extends StatelessWidget {
       child: ListView(
         scrollDirection: Axis.vertical,
         children: [
-          Header(this.current, this.prefs,),
-          SearchButton("Buscar Puntos de venta/Productos", 1),
+          Header(this.current, this.prefs, hKey: this.hKey),
+          SearchButton("Buscar Puntos de venta/Productos", 1, this.prefs, this.current, hKey: this.hKey,),
           HomeCard(
               "Puntos de venta",
               "assets/img/store.png",

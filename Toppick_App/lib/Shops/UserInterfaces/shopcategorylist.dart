@@ -56,7 +56,7 @@ class ShopCategoryList extends StatelessWidget {
             child: ListView(
               children: <Widget>[
                 Header(this.current, this.prefs),
-                SearchButton("Buscar puntos de venta", 2),
+                SearchButton("Buscar puntos de venta", 2, this.prefs, this.current),
                 Padding(
                   padding: const EdgeInsets.only(top: 20.0),
                   child: ListMainText("Escoge", "Tu forma de comer"),

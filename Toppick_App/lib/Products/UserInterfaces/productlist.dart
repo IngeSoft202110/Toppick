@@ -67,7 +67,7 @@ class ProductListState extends State<ProductList> {
             child: ListView(
               children: <Widget>[
                 Header(widget.current, widget.prefs, hKey: widget.hKey, showCart: true,),
-                SearchButton("Buscar productos", 3),
+                SearchButton("Buscar productos", 3, widget.prefs, widget.current, hKey: widget.hKey, id: widget.store!.id, sName: widget.store!.name,),
                 ListMainText("Escoge la", "comida que amas"),
                 Padding(
                   padding: const EdgeInsets.only(top: 10.0, left: 10.0, bottom: 10.0),

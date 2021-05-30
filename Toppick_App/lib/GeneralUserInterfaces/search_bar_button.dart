@@ -1,11 +1,17 @@
 import 'package:Toppick_App/GeneralUserInterfaces/search_bar_full_screen.dart';
+import 'package:Toppick_App/Orders/Models/pedido.dart';
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
 class SearchButton extends StatelessWidget {
-  String buttonText;
-  int option;
-  SearchButton(this.buttonText, this.option);
+  
+  SearchButton(this.buttonText, this.option, this.prefs, this.current, {this.id=-1, this.hKey="", this.sName=""});
+  final String buttonText;
+  final int option;
+  final prefs;
+  final Pedido current;
+  final int id;
+  final hKey;
+  final String sName;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -16,7 +22,7 @@ class SearchButton extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => SearchScreen(this.option)),
+                  builder: (context) => SearchScreen(this.option, this.prefs, this.current, hKey: this.hKey, id: this.id, sName: this.sName)),
             )
           },
           child: Container(

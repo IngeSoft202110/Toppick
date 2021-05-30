@@ -129,7 +129,9 @@ class HomeShopCard extends StatelessWidget {
   Widget build(BuildContext context) {
     var transition = (){
       List<dynamic> products = [];
-      pController.getProductCatalogueById(this.selected.id, prefs.getString('cookie'), context).then((value) {
+      this.pController.showLoader(context);
+      pController.getProductCatalogueById(this.selected.id, prefs.getString('cookie')).then((value) {
+        Navigator.of(context).pop();
         products = value;
         Navigator.push(context, MaterialPageRoute(builder: (context) => ProductList(this.current, this.selected, products, this.prefs)));
       });
