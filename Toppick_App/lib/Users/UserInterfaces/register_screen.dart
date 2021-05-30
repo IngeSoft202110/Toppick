@@ -110,6 +110,12 @@ class RegisterScreen extends StatelessWidget {
                             if (!this.controller.isEmpty(value!).contains("válido")) {
                               return this.controller.isEmpty(value);
                             }
+                            else if (value.contains(new RegExp(r'[!@#$%^(),.?":{}|<>]'))){
+                              return "Sin caracteres especiales";
+                            }
+                            else if (value.contains(new RegExp(r'[0-9]'))){
+                              return "No pueden haber números en su nombre";
+                            }
                           },
                         ),
                       ),
@@ -124,7 +130,7 @@ class RegisterScreen extends StatelessWidget {
                                 top: 10,
                                 left: 45
                               ), 
-                              child: TipoDocumento(notifyParent))),
+                              child: TipoDocumento(notifyParent, "CC"))),
                             Flexible(
                               flex: 3,
                               child: Padding(
@@ -239,9 +245,11 @@ class RegisterScreen extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class TipoDocumento extends StatefulWidget {
-  TipoDocumento(this.notify, {Key? key}) : super(key: key);
+  TipoDocumento(this.notify, this.dropValue, {Key? key}) : super(key: key);
   final Function(String) notify;
+  String dropValue;
   @override
   _TipoDocumentoState createState() => _TipoDocumentoState(this.notify);
 }
@@ -249,9 +257,9 @@ class TipoDocumento extends StatefulWidget {
 class _TipoDocumentoState extends State<TipoDocumento> {
   _TipoDocumentoState(this.notify);
   Function(String) notify;
-  String dropdownValue = "CC";
   @override
   Widget build(BuildContext context) {
+    String dropdownValue = widget.dropValue;
     return DropdownButton<String>(
       value: dropdownValue,
       icon: const Icon(Icons.arrow_drop_down),

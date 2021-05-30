@@ -83,6 +83,10 @@ class UserController{
     return await this.userQueries.getUserInfo(cookie, email);
   }
 
+  Future<bool> updateUserInfo(String cookie, String nName, String nType, String document, String number){
+    return this.userQueries.updateUserInfo(cookie, nName, nType, document, number);
+  }
+
   Future<dynamic> getPaymentMethods(String cookie) async {
     return this.userQueries.getPaymentMethods(cookie);
   }
@@ -260,6 +264,54 @@ class UserController{
     AlertDialog alert = AlertDialog(
       title: Text("Actualización completada correctamente", style: TextStyle(color: Color(0xFF0CC665)),),
       content: Text("La información de su método de pago se ha actualizado de forma correcta"),
+      actions: [
+        okButton,
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showUpdateUserInfoError(BuildContext context) {
+    Navigator.of(context).pop();
+    Widget okButton = TextButton(
+      child: Text("OK"),
+      onPressed: () { Navigator.of(context).pop();},
+    );
+    AlertDialog alert = AlertDialog(
+      title: Text("Error en actualización información perfil", style: TextStyle(color: Color(0xFFD76060)),),
+      content: Text("Ha ocurrido un error al intentar actualizar la información de su perfil"),
+      actions: [
+        okButton,
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showCorrectUpdateUserInfo(BuildContext context, Pedido current, dynamic prefs) {
+    Widget okButton = TextButton(
+      child: Text("OK"),
+      onPressed: () { 
+        Navigator.of(context).pop(); //Alerta
+        Navigator.of(context).pop(); //Formulario actualizar
+        Navigator.of(context).pop(); //Pantalla perfil
+        Navigator.of(context).pop(); //Pantalla perfil
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Profile(current, prefs)));
+      },
+    );
+    AlertDialog alert = AlertDialog(
+      title: Text("Actualización completada correctamente", style: TextStyle(color: Color(0xFF0CC665)),),
+      content: Text("La información de su perfil se ha actualizado de forma correcta"),
       actions: [
         okButton,
       ],

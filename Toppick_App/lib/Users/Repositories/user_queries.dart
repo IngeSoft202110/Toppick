@@ -109,6 +109,24 @@ class UserQueries{
     }
   }
 
+  Future<bool> updateUserInfo(String cookie, String nName, String nType, String document, String number) async {
+    final response = await http.patch(
+      Uri.https(this.domain, '/usuarios'),
+      headers: {"Accept": "application/json", "Cookie": cookie},
+      body:{
+        "nombreCompleto": nName,
+        "tipoDocumento": nType,
+        "idDocumento": document,
+        "celular": number,
+      }
+    );
+    if(response.statusCode == 200){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
   Future<List<dynamic>> getPaymentMethods(String cookie) async{
     final response = await http.get(
       Uri.https(this.domain, '/pagos'),
@@ -117,7 +135,7 @@ class UserQueries{
     if(response.statusCode == 200){
       return parsePaymentMethods(response.body);
     }else{
-      throw Exception('Error');
+      return [];
     }
   }
 

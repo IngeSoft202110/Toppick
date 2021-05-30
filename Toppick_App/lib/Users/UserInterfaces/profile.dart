@@ -6,6 +6,7 @@ import 'package:Toppick_App/Orders/UserInterfaces/add_method_start_page.dart';
 import 'package:Toppick_App/Orders/UserInterfaces/payment_method_card.dart';
 import 'package:Toppick_App/Users/Bloc/user_controller.dart';
 import 'package:Toppick_App/Users/Models/cliente.dart';
+import 'package:Toppick_App/Users/UserInterfaces/edit_user_info_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -22,6 +23,9 @@ class Profile extends StatelessWidget {
   Widget build(BuildContext context) {
     var f1 = (){
       Navigator.push(context, MaterialPageRoute(builder: (context) => AddMethodStartPage(this.clienteActual.metodos, this.prefs, this.actual)));
+    };
+    var f2 = (){
+      Navigator.push(context, MaterialPageRoute(builder: (context) => EditUserInfoScreen(this.clienteActual, this.prefs, this.actual)));
     };
     var formatter = NumberFormat('#,###,000');
     int money = 0;
@@ -81,7 +85,7 @@ class Profile extends StatelessWidget {
                                           ],
                                         ),
                                       ),
-                                      IconButton(icon: Icon(Icons.edit), onPressed: ()=>{})
+                                      IconButton(icon: Icon(Icons.edit), onPressed: f2)
                                     ],
                                   ),
                                   Padding(
