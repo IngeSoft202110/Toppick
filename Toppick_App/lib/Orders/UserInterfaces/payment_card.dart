@@ -1,6 +1,5 @@
 import 'package:Toppick_App/GeneralUserInterfaces/generic_button.dart';
 import 'package:Toppick_App/Orders/Bloc/order_controller.dart';
-import 'package:Toppick_App/Orders/Models/metodopago.dart';
 import 'package:Toppick_App/Orders/Models/pedido.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -13,6 +12,46 @@ showCorrectPayment(BuildContext context){
   AlertDialog alert = AlertDialog(
     title: Text("Pedido realizado", style: TextStyle(color: Color(0xFF0CC665)),),
     content: Text("Pedido realizado, muchas gracias por elegirnos."),
+    actions: [
+      okButton,
+    ],
+  );
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+showInCorrectPayment(BuildContext context){
+  Widget okButton = TextButton(
+    child: Text("OK"),
+    onPressed: () { Navigator.of(context).pop(); Navigator.of(context).pop();Navigator.of(context).pop();}
+  );
+  AlertDialog alert = AlertDialog(
+    title: Text("Error realizando el pedido", style: TextStyle(color: Color(0xFFD76060)),),
+    content: Text("Ha ocurrido un error realizando el pedido."),
+    actions: [
+      okButton,
+    ],
+  );
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+showNotEnoughMoney(BuildContext context){
+  Widget okButton = TextButton(
+    child: Text("OK"),
+    onPressed: () { Navigator.of(context).pop();Navigator.of(context).pop();}
+  );
+  AlertDialog alert = AlertDialog(
+    title: Text("No hay dinero suficiente", style: TextStyle(color: Color(0xFFD76060)),),
+    content: Text("Su método de pago no tiene dinero suficiente para realizar el pedio, por favor seleccione otro."),
     actions: [
       okButton,
     ],
@@ -97,14 +136,22 @@ class PaymentCard extends StatelessWidget {
       if(this.paymentMethod!.availableAmount > this.totalValue){
         this.actual.fechaCreacion = DateTime.now();
         this.actual.costoTotal = this.totalValue;
-        print(this.actual.costoTotal);
-        this.controller.sendOrder(this.actual, this.prefs);
+        this.controller.sendOrder(this.actual, this.prefs).then(
+          (value){
+            if(value){
+              this.actual.carrito.clear();
+              this.actual.costoTotal = 0;
+              this.actual.fechaCreacion = DateTime.now();
+              this.actual.fechaReclamo = DateTime.now();
+              showCorrectPayment(context);
+            }else{
+              showInCorrectPayment(context);
+            }
+          }
+        );
+      }else{
+        showNotEnoughMoney(context);
       }
-      /*this.actual.carrito.clear();
-      this.actual.costoTotal = 0;
-      this.actual.fechaCreacion = DateTime.now();
-      this.actual.fechaReclamo = DateTime.now();
-      showCorrectPayment(context);*/
     }
     var transitionFinishOrder = () => finish(context);
     var transitionBack = () => showBackWarning(context);

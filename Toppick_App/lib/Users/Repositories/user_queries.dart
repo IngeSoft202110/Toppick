@@ -180,7 +180,10 @@ class UserQueries{
   List<dynamic> parsePaymentMethods(String responseBody){
     List<dynamic> result = [];
     final first = json.decode(responseBody);
-    int saldoTotal = first['body']['saldoTotal'][0]['saldoTotal'];
+    int saldoTotal = 0;
+    if(!first['body']['saldoTotal'].isEmpty){
+      saldoTotal = first['body']['saldoTotal'][0]['saldoTotal'];
+    }
     if(!first['body']['daviplata'].isEmpty){
       result.add(DaviPlata(0, saldoTotal, first['body']['daviplata'][0]['numeroCelular']));
     }

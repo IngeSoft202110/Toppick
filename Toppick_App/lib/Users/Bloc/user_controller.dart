@@ -1,5 +1,4 @@
 import 'package:Toppick_App/Orders/Models/pedido.dart';
-import 'package:Toppick_App/Orders/UserInterfaces/order_card.dart';
 import 'package:Toppick_App/Users/Models/cliente.dart';
 import 'package:Toppick_App/Users/Repositories/user_queries.dart';
 import 'package:Toppick_App/Users/UserInterfaces/profile.dart';
@@ -87,7 +86,7 @@ class UserController{
     return this.userQueries.updateUserInfo(cookie, nName, nType, document, number);
   }
 
-  Future<dynamic> getPaymentMethods(String cookie) {
+  Future<List<dynamic>> getPaymentMethods(String cookie) {
     return this.userQueries.getPaymentMethods(cookie);
   }
 
@@ -200,16 +199,18 @@ class UserController{
     Widget okButton = TextButton(
       child: Text("OK"),
       onPressed: () { 
-        Navigator.of(context).pop(); //Alerta
-        Navigator.of(context).pop(); //Formulario informacion
-        Navigator.of(context).pop(); //Pantalla seleccion
-        Navigator.of(context).pop(); //Pantalla "actual"
         if(screen == "Perfil"){
+          Navigator.of(context).pop(); //Alerta
+          Navigator.of(context).pop(); //Formulario informacion
+          Navigator.of(context).pop(); //Pantalla seleccion
+          Navigator.of(context).pop(); //Pantalla "actual"
           Navigator.push(
             context, MaterialPageRoute(builder: (context) => Profile(current, prefs)));
         }else if(screen == "Pedido"){
-          Navigator.push(
-            context, MaterialPageRoute(builder: (context) => OrderCard(current, hKey, prefs)));
+          Navigator.of(context).pop(); //Alerta
+          Navigator.of(context).pop(); //Formulario informacion
+          Navigator.of(context).pop(); //Pantalla seleccion
+          Navigator.of(context).pop(); //Pantalla "actual"
         }
       },
     );

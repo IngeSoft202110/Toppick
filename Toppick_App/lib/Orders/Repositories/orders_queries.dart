@@ -62,7 +62,9 @@ class OrdersQueries {
         if(key is Especialidad){
           List<Map<String,int>> acompanamientos = [];
           key.selecciones.forEach((key, value) {
-            acompanamientos.add({"Acompañamiento_idAcompañamiento":key.id});
+            if(value){
+              acompanamientos.add({"Acompañamiento_idAcompañamiento":key.id});
+            }
           });
           current.addAll({"Acompañaminetos":acompanamientos});
         }

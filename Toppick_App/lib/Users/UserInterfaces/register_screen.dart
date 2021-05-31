@@ -40,6 +40,7 @@ class RegisterScreen extends StatelessWidget {
             this.prefs.setBool('conectado', true);
             this.prefs.setInt('pedidos actuales', 0);
             this.prefs.setString('nombre', current.nombreCompleto.split(" ")[0]);
+            this.prefs.setInt('cantidades', 0);
             Pedido nuevo = Pedido(0, DateTime.now(), 0, DateTime.now(), "Solicitado");
             Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>HomeScreen(nuevo, this.prefs)), (route) => false);
           }else{

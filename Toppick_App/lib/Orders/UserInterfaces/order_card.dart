@@ -1,9 +1,6 @@
 import 'package:Toppick_App/GeneralUserInterfaces/generic_button.dart';
 import 'package:Toppick_App/GeneralUserInterfaces/gradiant.dart';
 import 'package:Toppick_App/Orders/Bloc/order_controller.dart';
-import 'package:Toppick_App/Orders/Models/daviplata.dart';
-import 'package:Toppick_App/Orders/Models/metodopago.dart';
-import 'package:Toppick_App/Orders/Models/nequi.dart';
 import 'package:Toppick_App/Orders/Models/pedido.dart';
 import 'package:Toppick_App/Orders/UserInterfaces/add_subtract_total.dart';
 import 'package:Toppick_App/Orders/UserInterfaces/payment_card.dart';
@@ -15,11 +12,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 
+// ignore: must_be_immutable
 class OrderCard extends StatefulWidget {
-  OrderCard(this.actual, this.hKey, this.prefs);
+  OrderCard(this.actual, this.hKey, this.prefs, this.methods);
   final Pedido actual;
   final hKey;
   final prefs;
+  List<dynamic> methods;
 
   int calculateTotal(){
     int total = 0;
@@ -50,7 +49,6 @@ class _OrderCardState extends State<OrderCard> {
   DateTime? maxShopTime;
   DateTime? minShopTime;
   DateTime? finalDateSend;
-  List<dynamic> methods = [];
   final hKey;
 
   Future<Null> selectTime(BuildContext context) async{
@@ -99,8 +97,13 @@ class _OrderCardState extends State<OrderCard> {
   List<Widget> fill(var transitionToPay){
     var cancelTransition = () => this.controller.cancelOrderWarning(context, actual, this.hKey);
     var formatter = NumberFormat('#,###,000');
-    Widget showMethods = methods.isNotEmpty ? RadioButtonPaymentList(methods, updateMethod) :
-      Center(child: GenericButton("Registrar métodos de pago", Color(0xFF0CC665), 274, 45, 15.0, 0, 0, 0, 22, 30, () => {}));
+    Widget showMethods = widget.methods.isNotEmpty ? RadioButtonPaymentList(widget.methods, updateMethod) :
+      Center(
+        child:Container(
+          padding: const EdgeInsets.all(10.0),
+          child: Text("No tienes métodos de pago registrados, por favor ve a tu perfil para registrar al menos un método.")
+        )
+      );
     List<Widget> result = [];
     result.add(
       Center(
@@ -181,7 +184,7 @@ class _OrderCardState extends State<OrderCard> {
       else if(this.selected.runtimeType.toString()=="PSE"){
         return PaymentCard("assets/img/pse.jpg", total, selected, this.actual, this.finalDateSend!, widget.prefs);
       }  
-      return OrderCard(this.actual, this.hKey, widget.prefs);
+      return OrderCard(this.actual, this.hKey, widget.prefs, widget.methods);
     }
     var payTransition = () => Navigator.push(context, MaterialPageRoute(builder: construct));
     this.maxShopTime = this.controller.getMaxShopsHour(this.actual, DateTime.now().weekday);
@@ -211,37 +214,13 @@ class _OrderCardState extends State<OrderCard> {
                 ),
                 Container(
                   decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40)), color: Color(0xFFFFFEEE),),
-                  child: FutureBuilder(
-                    future: this.uContreoller.getPaymentMethods(widget.prefs.getString('cookie')),
-                    builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot){
-                      switch(snapshot.connectionState){
-                        case ConnectionState.none:
-                          break;
-                        case ConnectionState.waiting:
-                          break;
-                        case ConnectionState.active:
-                          break;
-                        case ConnectionState.done:
-                        if(snapshot.hasData){
-                          this.methods = snapshot.data!;
-                          return Column(
-                            key: Key(this.actual.carrito.length.toString()),
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: fill(payTransition),
-                          );
-                        }
-                      }
-                      return Center(
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          height: 50,
-                          child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.red),)
-                        ),
-                      );
-                    }
-                  ),
-                )
+                  child: Column(
+                    key: Key(this.actual.carrito.length.toString()),
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: fill(payTransition),
+                  )
+                ),
               ],
             ),
           )

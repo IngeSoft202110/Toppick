@@ -6,13 +6,14 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class AddMethodScreen extends StatelessWidget {
-  AddMethodScreen(this.selectedMethodName, this.prefs, this.current);
+  AddMethodScreen(this.selectedMethodName, this.prefs, this.current, this.namePageParent);
   final String selectedMethodName;
   final formKey = GlobalKey<FormState>();
   String number = "";
   final prefs;
   final Pedido current;
   final UserController controller = UserController();
+  final String namePageParent;
 
   Widget image(){
     if(selectedMethodName == "Daviplata"){
@@ -34,7 +35,7 @@ class AddMethodScreen extends StatelessWidget {
         this.controller.registerregisterPaymentMethod(this.prefs.getString('cookie'), this.number, this.selectedMethodName).
         then((value) {
           if(value){
-            this.controller.showCorrectAddMethod(context, "Perfil", this.current, this.prefs, 0);
+            this.controller.showCorrectAddMethod(context, this.namePageParent, this.current, this.prefs, 0);
           }else{
             this.controller.showAddMethodError(context);
           }

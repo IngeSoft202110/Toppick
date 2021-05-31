@@ -8,11 +8,12 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class AddMethodStartPage extends StatelessWidget {
-  AddMethodStartPage(this.methods, this.prefs, this.current);
+  AddMethodStartPage(this.methods, this.prefs, this.current, this.namePageParent);
   final List<dynamic> methods;
   String selected = "";
   final prefs;
   final Pedido current;
+  final String namePageParent;
 
   void changeValue(String nSelected){
     this.selected = nSelected;
@@ -44,12 +45,14 @@ class AddMethodStartPage extends StatelessWidget {
       if(this.selected.isEmpty){
         showError(context);
       }else{
-        Navigator.push(context, MaterialPageRoute(builder: (context) => AddMethodScreen(this.selected, this.prefs, this.current)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => AddMethodScreen(this.selected, this.prefs, this.current, this.namePageParent)));
       }
     };
     final back =(){
       Navigator.pop(context);
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(this.current, this.prefs)));
+      if(this.namePageParent == "Perfil"){
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(this.current, this.prefs)));
+      }
     };
     return WillPopScope(
       onWillPop: () async{

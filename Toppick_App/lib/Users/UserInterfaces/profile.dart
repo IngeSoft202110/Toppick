@@ -23,7 +23,7 @@ class Profile extends StatelessWidget {
   Widget build(BuildContext context) {
     var f1 = (){
       Navigator.pop(context);
-      Navigator.push(context, MaterialPageRoute(builder: (context) => AddMethodStartPage(this.clienteActual.metodos, this.prefs, this.actual)));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => AddMethodStartPage(this.clienteActual.metodos, this.prefs, this.actual, "Perfil")));
     };
     var f2 = (){
       Navigator.pop(context);
@@ -106,12 +106,17 @@ class Profile extends StatelessWidget {
                                           break;
                                         case ConnectionState.done:
                                           if(snapshot.hasData){
+                                            
                                             this.clienteActual.metodos = snapshot.data!;
-                                            money = this.clienteActual.metodos.first.availableAmount;
+                                            if(this.clienteActual.metodos.isEmpty){
+                                              money = 0;
+                                            }else{
+                                              money = this.clienteActual.metodos.first.availableAmount;
+                                            }
                                             return Column(
                                               children: <Widget>[
                                                 Text(
-                                                  "Saldo total \$${formatter.format(money)}",
+                                                  (money!=0)?"Saldo total \$${formatter.format(money)}":"Saldo total \$$money",
                                                   style: TextStyle(color: Color(0xFF0CC665), fontSize: 25, fontWeight: FontWeight.bold),
                                                 ),
                                                 SizedBox(

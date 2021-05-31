@@ -1,6 +1,7 @@
 import 'package:Toppick_App/Orders/Models/pedido.dart';
 import 'package:Toppick_App/Orders/UserInterfaces/order_card.dart';
 import 'package:Toppick_App/Products/UserInterfaces/custom_rect_tween.dart';
+import 'package:Toppick_App/Users/Bloc/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart';
 import 'menu.dart';
@@ -37,6 +38,7 @@ class Header extends StatefulWidget {
 
 class HeaderState extends State<Header> {
 
+  final UserController uController = UserController();
   void recalculate(int nCants, bool empty){
     setState(() {
       if(empty){
@@ -52,8 +54,20 @@ class HeaderState extends State<Header> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    var f1 = () => Navigator.push(context, MaterialPageRoute(builder: (context) => OrderCard(widget.actual, widget.key, this.widget.prefs)));
     var f2 = () => Navigator.push(context, MaterialPageRoute(builder: (context) => Menu(widget.actual, this.widget.prefs)));
+    var currentOrder=(){
+      if(widget.actual.carrito.isNotEmpty){
+        uController.showLoader(context);
+        this.uController.getPaymentMethods(widget.prefs.getString('cookie')).then(
+          (value) {
+            Navigator.of(context).pop();
+            Navigator.push(context, MaterialPageRoute(builder: (context) => OrderCard(widget.actual, widget.key, this.widget.prefs, value)));
+          }
+        );
+      }else{
+        showAlert(context);
+      }
+    };
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.only(left: 3.0, right: 3.0),
@@ -93,7 +107,7 @@ class HeaderState extends State<Header> {
               width: width*0.29,
               alignment: Alignment.centerRight,
               child: GestureDetector(
-                onTap: (){(widget.actual.carrito.isNotEmpty)?f1():showAlert(context);},
+                onTap: currentOrder,
                 child: Badge(
                   badgeContent: Text('${widget.prefs.getInt('cantidades')}'),
                   badgeColor: Colors.white,
