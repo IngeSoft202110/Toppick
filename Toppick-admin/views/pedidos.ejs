@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="../../Css/pantallapedidos.css">
     <%- include("template/navbar.ejs") %>
     
-    <main>
+    <main id="idPunto" class="<%= idPunto %>">
         <section class='ppc'>
             <!-- clase para pedidos por confirmar -->
             <div class="titulo-contenedor">
@@ -47,8 +47,6 @@
                 </div><!--fin carata pl-->
             </div>
         </section>
-        <p  id="id"> <%= idPunto %> </p>
-        
     </main>
 
     <footer>

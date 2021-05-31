@@ -1,6 +1,7 @@
 
-var idPuntoDeVenta = document.getElementById("id");
-console.log(idPuntoDeVenta.innerHTML);
+var idPuntoDeVenta = document.getElementById("idPunto");
+idPuntoDeVenta = idPuntoDeVenta.className;
+
 /*
 estructura de JSON de los pedidos
 {
@@ -20,36 +21,49 @@ const socket = io('https://toppickapp.herokuapp.com');
 
 
 socket.emit('new_Store', idPuntoDeVenta);
-
+console.log(idPuntoDeVenta);
 
 socket.on('pedidos', pedido => {
-  if (pedido.PuntoDeVenta_idPuntodeVenta == storeid) {
-	console.log(pedido);
-    let fehcaReclamo = pedido.fechaReclamo;
-    let productos = []
-    pedido.carrito.forEach((producto) =>
-    {
-        let comentario = "cantidad: "+toString(producto.CantidadProducto)
-        if (producto.Acompañamientos.length != 0)
-        {
-            comentario = comentario + " Adición: "
-            producto.Acompañamientos.forEach((a)=>{
-                comentario  = comentario + a.nombreAcompañamiento + " "
-            });
+    if (pedido.PuntoDeVenta_idPuntodeVenta == parseInt(idPuntoDeVenta)) {
+        console.log(pedido);
+        const fechaSegundos = pedido.fechaReclamo.split("T");
+        const fechaSegundos2 = fechaSegundos[1].split(".");
+        let fechaReclamo = fechaSegundos2[0];
+        let productos = pedido.carrito;
+        let productosd = [];
+        for (let i = 0; i < productos.length; i++) {
+            const elemento = productos[i];
+            //console.log(elemento);
+            let comentario = `cantidad:  ${elemento.CantidadProducto}`;
+            if (elemento["Acompañamientos"]) {
+                if (elemento["Acompañamientos"].length > 0) {
+                    const acompañamiento = elemento["Acompañamientos"];
+                    comentario = comentario + " Adición: "
+                    for (let j = 0; j < acompañamiento.length; j++) {
+                        const a = acompañamiento[j];
+                        console.log(a["nombreAcompañamiento"]);
+                        comentario += ` ${a["nombreAcompañamiento"]},`;
+                    }
+                }
+            }
+            const aux = elemento.comentario || "No hay";
+            comentario += `Comentario: ${aux},`
+            const p = {
+                idProducto: elemento.Producto_idProducto,
+                nombreProducto: elemento.nombreProducto,
+                comentarios: comentario
+            };
+
+            productosd.push(p);
         }
-        let p = {
-            idProducto : producto.Producto_idproducto,
-            nombreProducto : producto.NombreProducto,
-            comentarios: comentario
-        };
-        producto.append(p);
-    });
-    let nuevoPedido = {
-        id:123,
-        horaEntrga: fechaReclamo,
-        productos: productos
+        console.log(productosd);
+        let nuevoP = {
+            id: pedido.idPedido,
+            horaEntrega: fechaReclamo,
+            productos: productosd
+        }
+        nuevoPedido(nuevoP);
     }
-  }
 });
 
 
@@ -60,7 +74,7 @@ socket.on('pedidos', pedido => {
 var listaConfirmar = [];
 var listaEnCurso = [];
 var listaListos = [];
-let unidadesDisponibles = true; 
+let unidadesDisponibles = true;
 
 /**
  * Intervalo para verificar si existen nuevos productos 
@@ -73,42 +87,95 @@ let unidadesDisponibles = true;
  */
 var last_id = 1;
 async function getOrders() {
-    let numeroPedido = last_id;
     try {
-        const response = await axios.get('http://localhost:3000/toppick/admin/' + numeroPedido.toString());
-        if (!response.data)
-            throw "no hay pedidos nuevos";
-        // Crear un nuevo pedido 
-        nuevoPedido(response.data);
-        last_id++;
-        return response.data;
+        const response = await axios({
+            method: "GET",
+            url: `https://toppickapp.herokuapp.com/pedidos/tienda/${idPuntoDeVenta}`
+        });
+        console.log(response);
+        // Get data from response
+
+        response.data.body.forEach(pedido => {
+            const fechaSegundos = pedido.fechaReclamo.split("T");
+            const fechaSegundos2 = fechaSegundos[1].split(".");
+            let fechaReclamo = fechaSegundos2[0];
+            //console.log(fechaReclamo);
+            let productos = pedido.carrito;
+            let productosd = [];
+            for (let i = 0; i < productos.length; i++) {
+                const elemento = productos[i];
+                //console.log(elemento);
+                let comentario = `cantidad:  ${elemento.CantidadProducto}`;
+                if (elemento["Acompañamientos"]) {
+                    if (elemento["Acompañamientos"].length > 0) {
+                        const acompañamiento = elemento["Acompañamientos"];
+                        comentario = comentario + " Adición: "
+                        for (let j = 0; j < acompañamiento.length; j++) {
+                            const a = acompañamiento[j];
+                            console.log(a["nombreAcompañamiento"]);
+                            comentario += ` ${a["nombreAcompañamiento"]} `;
+                        }
+                    }
+                }
+                const aux = elemento.comentario || "No hay";
+                comentario += `Comentario: ${aux},`
+                const p = {
+                    idProducto: elemento.Producto_idProducto,
+                    nombreProducto: elemento.nombreProducto,
+                    comentarios: comentario
+                };
+
+                productosd.push(p);
+
+
+            }
+            let nuevoP = {
+                id: pedido.idPedido,
+                horaEntrega: fechaReclamo,
+                productos: productosd
+            }
+            if (pedido.estadoPedido == "Solicitado")
+                nuevoPedido(nuevoP);
+            else if (pedido.estadoPedido == "Aceptado")
+                nuevoPedidoCurso(nuevoP);
+            else if (pedido.estadoPedido == "Listo")
+                pedidoListo(nuevoP);
+        });
+
+        // Create object that will be passed to the view       
+
     } catch (error) {
         console.log(error);
     }
 }
-
+getOrders();
 /**
  * Función que realiza una petición de tipo POST al servidor 
  * y pretende cambiar el estado de un pedido en una tienda. 
  * Recibe como parámetros la información para el cambio de un pedido 
  * y si no recibe los parámetros, los asigna por defecto 
  */
-async function cambiarEstadoPedido(idPedido, nuevoEstado , razonRechazo ) {
+async function cambiarEstadoPedido(idPedido, nuevoEstado, razonRechazo) {
     // Declarar los parametros del cuerpo de la solicitud POST 
     console.log(nuevoEstado);
     const bodyParams = {
-        "estadoPedido":nuevoEstado,
-        "razonRechazo":razonRechazo
-   };
+        "estadoPedido": nuevoEstado,
+        "razonRechazo": razonRechazo
+    };
     console.log(bodyParams);
-    // Realizar la solicitud PATCH al servidor 
-    await axios.patch(
-        {
+    try {
+        const response = await axios({
             method: "PATCH",
-            url:'http://localhost:3000/toppick/admin/change-state-order',
+            url: `https://toppickapp.herokuapp.com/pedidos/pedido/${idPedido}`,
             data: bodyParams
-        }
-    );
+        });
+    } catch (err) {
+        console.log(err);
+    }
+
+    // Realizar la solicitud PATCH al servidor 
+
+
 }
 // Se prueba la petición con los siguientes parámetros 
 // cambiarEstadoPedido(2, 1, 'Nuevooo');  ----> Funciona 
@@ -187,13 +254,11 @@ function listarProductos(numero) {
         c.className = "columna pedidos";
         if (p.comentario == "Sin comentario") {
             c.innerHTML = "  ";
-            console.log(p);
         }
         else {
-            c.innerHTML = p.comentario;
+            c.innerHTML = p.comentarios;
         }
         pro.append(c);
-        console.log(pro);
         lista.appendChild(pro);
     });
     return lista;
@@ -250,7 +315,6 @@ function formRechazar(papa, divPedido, p) {
 
         removeAllChildNodes(divPedido);
         divPedido.remove(divPedido);
-        console.log(select.value);
         cambiarEstadoPedido(idPedido = p.id, nuevoEstado = "Rechazado", razonRechazo = select.value);
     });
     form.appendChild(submit);
@@ -309,14 +373,14 @@ function plantilla_nuevo_producto(p) {
     //evento del boton de aceptar
     botonVerde.addEventListener("click", () => {
         // Validar unidades ----> TO DO: Realizar funci'on que valide las cantidades reales 
-        p.productos.forEach( (producto) => {
+        p.productos.forEach((producto) => {
             if (producto.cantidad > 10) {
                 unidadesDisponibles = false;
             }
-        } ); 
+        });
         if (!unidadesDisponibles) {
-            alert('No hay unidades suficientes en el inventario para aceptar el pedido'); 
-            return;  
+            alert('No hay unidades suficientes en el inventario para aceptar el pedido');
+            return;
         }
 
         nuevoPedidoCurso(p);
@@ -403,8 +467,8 @@ function plantilla_nuevo_producto(p) {
     let colum32 = document.createElement("div");
     parte3.appendChild(colum32);
     let par2 = document.createElement("p");
-    let fecha = new Date(JSON.stringify(p.horaEntrega).slice(1, -1));
-    par2.innerHTML = fecha.getHours() + ":" + fecha.getMinutes();
+    let fecha = p.horaEntrega;
+    par2.innerHTML = p.horaEntrega;
     colum32.appendChild(par2);
 
     return divPedido;
@@ -509,7 +573,7 @@ function plantila_General_curso(p) {
     colum2.appendChild(botonVerde);
 
     botonVerde.addEventListener("click", () => {
-        console.log("entra");
+
         pedidoListo(p);
         removeAllChildNodes(divPedido);
         divPedido.remove(divPedido);
@@ -528,8 +592,8 @@ function plantila_General_curso(p) {
     let colum32 = document.createElement("div");
     parte3.appendChild(colum32);
     let par2 = document.createElement("p");
-    let fecha = new Date(JSON.stringify(p.horaEntrega).slice(1, -1));
-    par2.innerHTML = fecha.getHours() + ":" + fecha.getMinutes();
+    let fecha = p.horaEntrega;
+    par2.innerHTML = fecha;
     colum32.appendChild(par2);
 
     return divPedido;
@@ -594,8 +658,6 @@ function plantila_General_listos(p) {
             botonAzul.style = "font-size:small;";
             setTimeout(() => {
                 let l = pedido.lastChild;
-                console.log("aca");
-                console.log(l);
                 l.className = "detalles activo";
             }, 200)
         }
@@ -638,8 +700,8 @@ function plantila_General_listos(p) {
     let colum32 = document.createElement("div");
     parte3.appendChild(colum32);
     let par2 = document.createElement("p");
-    let fecha = new Date(JSON.stringify(p.horaEntrega).slice(1, -1));
-    par2.innerHTML = fecha.getHours() + ":" + fecha.getMinutes();
+    let fecha = p.horaEntrega;
+    par2.innerHTML = fecha;
     colum32.appendChild(par2);
 
     return divPedido;
