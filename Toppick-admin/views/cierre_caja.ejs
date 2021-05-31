@@ -14,7 +14,7 @@
                 <p> $ <%- ventas %> </p>
             </div>
             <div>
-                <button class="cierreCaja"><p>Realizar cierre de caja</p></button>
+                <!-- <button class="cierreCaja"><p>Realizar cierre de caja</p></button> --> 
             </div>
         </section>
         <section class='caja2'>
@@ -22,7 +22,7 @@
                 <p>Top 3 de los productos más vendidos hoy:</p>
                 <ol>
                     <% masVendidos.forEach( (producto) => { %> 
-                        <li> <%= producto %> </li>
+                        <li> <%= producto.id %> </li>
                     <% }); %>
                 </ol>
             </div>
@@ -30,7 +30,7 @@
                 <p>Top 3 de los productos con mayor ganacia monetaria hoy:</p>
                 <ol>                    
                     <% mayorGanancia.forEach( (producto) => { %> 
-                        <li> <%= producto %> </li>
+                        <li> <%= producto.id %> </li>
                     <% }); %>
                 </ol>
             </div>

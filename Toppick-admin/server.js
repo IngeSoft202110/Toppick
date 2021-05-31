@@ -115,7 +115,20 @@ app.get('/cierre_caja', isStoreLoggedIn, async (req,res) =>{
 
         let p1_mc = mi[0].id, p2_mc = mi[1].id, p3_mc = mi[2].id; 
         let p1_mi = mc[0].id, p2_mi = mi[1].id, p3_mi = mi[2].id; 
-        console.log(p1_mc, p1_mi, p2_mc, p2_mi, p3_mc, p3_mi); 
+        
+        // // Make a request for a user with a given ID
+        // axios.get('https://toppickapp.herokuapp.com/productos/p1_mc')
+        // .then(function (response) {
+        // // handle success
+        // console.log(response);
+        // })
+        // .catch(function (error) {
+        // // handle error
+        // console.log(error);
+        // })
+        // .then(function () {
+        // // always executed
+        // });
 
         // Get data from response
         const today = new Date();
