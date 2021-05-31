@@ -38,7 +38,7 @@ app.use(passport.session()); // Initialize passport session
 //---------------------------------------
 const isStoreAlreadyLoggedIn = (req, res, next) => {
     console.log(req.user); 
-    if (req.isAuthenticated()) return res.redirect(`/pedidos/${ req.user.id }/${ req.user.username }`); 
+    if (req.isAuthenticated()) return res.redirect(`/pedidos`); 
     else return next(); 
 }; 
 
@@ -50,9 +50,28 @@ const isStoreLoggedIn = (req, res, next) => {
 //-------------------------------------------------------
 //                  LOGOUT route
 //-------------------------------------------------------
-app.post('/logout', (req, res) => {
+app.post('/logout', async (req, res) => {
+
+
+    try {
+        // Logout 
+        const response = await axios({
+            method: "get",
+            url: 'https://toppickapp.herokuapp.com/usuarios/logout'
+        }); 
+        // Return to login page        
+        console.log('Succsessfull logout'); 
+        return res.redirect('/'); 
+    } catch( error ) {
+        // Return to login page
+        console.log('Error while logging out'); 
+        console.log('ERROR', error); 
+        return res.redirect('/'); 
+    }
+
+
     req.logout(); 
-    res.redirect('/'); 
+    reredirect('/'); 
 }); 
 
 //-------------------------------------------------------
@@ -73,7 +92,7 @@ app.post('/login', (req, res, next) => {
         // If user exists in the DB
         req.logIn(user, (err) => {
             if (err) return next(err); 
-            else return res.redirect(`/pedidos/${ user.id }/${ user.username }`)
+            else return res.redirect(`/pedidos`)
         }); 
 
     }) (req, res, next); 
@@ -82,28 +101,59 @@ app.post('/login', (req, res, next) => {
 //-------------------------------------------------------
 //                   CIERRE DE CAJA routes
 //-------------------------------------------------------
-app.get('/cierre_Caja/:id/:name', isStoreLoggedIn, (req,res) =>{
-    res.render('cierre_caja.ejs');
+app.get('/cierre_caja', isStoreLoggedIn, async (req,res) =>{
+
+    console.log('USER', req.user); 
+    try {
+        const response = await axios({
+            method: "get",
+            url: `https://toppickapp.herokuapp.com/tienda/cierre/${ req.user.id }`
+        }); 
+
+        const mi = response.data.body.masingresos; 
+        const mc = response.data.body.mascantidad; 
+
+        let p1_mc = mi[0].id, p2_mc = mi[1].id, p3_mc = mi[2].id; 
+        let p1_mi = mc[0].id, p2_mi = mi[1].id, p3_mi = mi[2].id; 
+        console.log(p1_mc, p1_mi, p2_mc, p2_mi, p3_mc, p3_mi); 
+
+        // Get data from response
+        const today = new Date();
+        const totalVentas = response.data.body.total; 
+        const productosMasVendidos = response.data.body.mascantidad; 
+        const productosMayorGanancia = response.data.body.masingresos; 
+        const dataObj = {
+            fecha: today.getDate() + ' / ' + today.getMonth() + ' / ' + today.getFullYear(),
+            ventas: totalVentas, 
+            masVendidos: productosMasVendidos, 
+            mayorGanancia: productosMayorGanancia
+        }; 
+        // Render page with information from DB
+        res.render('cierre_caja.ejs', dataObj); 
+
+    } catch( error ) {
+        console.log('CIERRE CAJA : Error while making request to server'); 
+    } 
 })
 
 //-------------------------------------------------------
 //                  HISTORIAL routes
 //-------------------------------------------------------
-app.get('/historial/:id/:name',(req,res) =>{
+app.get('/historial', isStoreLoggedIn, (req,res) =>{
     res.render('Historial_pedidos.ejs');
 })
 
 //-------------------------------------------------------
 //              UPDATE INVENTORY routes
 //-------------------------------------------------------
-app.get('/actualizar/:id/:name', isStoreLoggedIn, (req, res) => {
+app.get('/actualizar', isStoreLoggedIn, (req, res) => {
     res.render("actualizar_inventario.ejs");
 });
 
 //-------------------------------------------------------
 //                  ORDERS routes
 //-------------------------------------------------------
-app.get('/pedidos/:id/:name', isStoreLoggedIn, (req, res) => {
+app.get('/pedidos', isStoreLoggedIn, (req, res) => {
     res.render("pedidos.ejs");
 });
 

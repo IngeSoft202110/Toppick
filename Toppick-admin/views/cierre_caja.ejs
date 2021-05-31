@@ -6,12 +6,12 @@
     <main>
         <section class='caja1'>
             <div class="fecha">
-                <p>Cierre de caja para el día: </p>
-                <p>24-05-2021</p>
+                <p> Cierre de caja para el día: </p>
+                <p> <%= fecha %> </p>
             </div>
             <div class="ventas">
                 <p>Ventas totales:</p>
-                <p>$100.000</p>
+                <p> $ <%- ventas %> </p>
             </div>
             <div>
                 <button class="cierreCaja"><p>Realizar cierre de caja</p></button>
@@ -21,17 +21,17 @@
             <div class='cajaAMasVenidosHoy'>
                 <p>Top 3 de los productos más vendidos hoy:</p>
                 <ol>
-                    <li>Pescadito</li>
-                    <li>Teppannyaki</li>
-                    <li>Chocorramo</li>
+                    <% masVendidos.forEach( (producto) => { %> 
+                        <li> <%= producto %> </li>
+                    <% }); %>
                 </ol>
             </div>
             <div class='cajaBMasPlataHoy'>
                 <p>Top 3 de los productos con mayor ganacia monetaria hoy:</p>
                 <ol>                    
-                    <li>Teppannyaki</li>
-                    <li>Chocorramo</li>
-                    <li>Papas naturales</li>
+                    <% mayorGanancia.forEach( (producto) => { %> 
+                        <li> <%= producto %> </li>
+                    <% }); %>
                 </ol>
             </div>
 

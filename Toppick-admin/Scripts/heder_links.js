@@ -13,7 +13,8 @@ botonPantallaPedidos.addEventListener("click", () => {
 });
 botonPantallaActualizar.addEventListener("click", () => { window.location.replace("http://localhost:8080/actualizar/" + user + "/" + id); });
 botonPantallaHisto.addEventListener("click", () => { window.location.replace("http://localhost:8080/historial/" + user + "/" + id); });
-botonPantallaCierre.addEventListener("click", () => { window.location.replace("http://localhost:8080/cierre_Caja/" + user + "/" + id); });
+botonPantallaCierre.addEventListener("click", () => { window.location.replace('http://localhost:8080/cierre_caja'); });
+
 // botonCerrarSesion.addEventListener("click", async () => {
 //     try{
 //     var x = await axios({
