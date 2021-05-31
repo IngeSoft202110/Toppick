@@ -31,7 +31,7 @@ class Producto {
       json['precio'],
       json['tiempoPreparacion'],
       (json['calificacion']==null)?0:json['calificacion'],
-      (json['urlImagen']==null)?"":json['urlImagen'],
+      (json['urlImagen']==null)?"assets/img/pescadito.jpg":json['urlImagen'],
       json['categoria'],
       json['tipo']
     );

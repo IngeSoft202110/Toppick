@@ -1,5 +1,6 @@
 import 'package:Toppick_App/Reviews/Models/rewiew.dart';
 import 'package:Toppick_App/Reviews/Repositories/review_queries.dart';
+import 'package:Toppick_App/Reviews/UserInterfaces/product_review_screen.dart';
 import 'package:Toppick_App/Reviews/UserInterfaces/shop_review_screen.dart';
 import 'package:Toppick_App/Shops/Models/tienda.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,14 @@ class ReviewController{
 
   Future<bool> publishShopReview(String cookie, int shopId, Resena review){
     return this.reviewQueries.publishShopReview(cookie, shopId, review);
+  }
+
+  Future<List<Resena>> getProductReviews(String cookie, int productId){
+    return this.reviewQueries.getProductReviews(cookie, productId);
+  }
+
+  Future<bool> publishProductReview(String cookie, int productId, Resena review){
+    return this.reviewQueries.publishProductReview(cookie, productId, review);
   }
 
   showLoader(BuildContext context){
@@ -63,6 +72,54 @@ class ReviewController{
         Navigator.of(context).pop();
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => ShopReviewScreen(shop, shop.url, prefs)));
+      },
+    );
+    AlertDialog alert = AlertDialog(
+      title: Text("Publicación de reseña exitosa", style: TextStyle(color: Color(0xFF0CC665)),),
+      content: Text("Su reseña se ha publicado de forma correcta."),
+      actions: [
+        okButton,
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showPublishProductReviewError(BuildContext context) {
+    Navigator.of(context).pop();
+    Widget okButton = TextButton(
+      child: Text("OK"),
+      onPressed: () { Navigator.of(context).pop();},
+    );
+    AlertDialog alert = AlertDialog(
+      title: Text("Error al intentar opinar", style: TextStyle(color: Color(0xFFD76060)),),
+      content: Text("Ha ocurrido un error al intentar enviar la reseña"),
+      actions: [
+        okButton,
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showCorrectPublishProductReview(BuildContext context, dynamic product, dynamic prefs) {
+    Widget okButton = TextButton(
+      child: Text("OK"),
+      onPressed: () { 
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+        Navigator.push(
+          context, MaterialPageRoute(builder: (context) => ProductReviewScreen(product, product.ulrImage, prefs)));
       },
     );
     AlertDialog alert = AlertDialog(

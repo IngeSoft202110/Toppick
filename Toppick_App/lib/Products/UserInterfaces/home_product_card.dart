@@ -3,6 +3,7 @@ import 'package:Toppick_App/Products/Bloc/product_controller.dart';
 import 'package:Toppick_App/Products/Models/acompanamiento.dart';
 import 'package:Toppick_App/Products/Models/especialidad.dart';
 import 'package:Toppick_App/Products/UserInterfaces/personalize.dart';
+import 'package:Toppick_App/Reviews/UserInterfaces/product_review_screen.dart';
 import 'package:Toppick_App/Shops/Bloc/shop_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:Toppick_App/Products/UserInterfaces/add_substract.dart';
@@ -294,7 +295,9 @@ class HomeProductCard extends StatelessWidget {
                     
                     Center(
                       child: GenericButton("Ver Reseñas", Color(0xFF2196F3),
-                          274, 45, 15.0, 0, 0, 0, 22, 30, () => {}),
+                          274, 45, 15.0, 0, 0, 0, 22, 30, () => {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => ProductReviewScreen(this.selected, this.selected.ulrImage, this.prefs)))
+                          }),
                     ),
                     Center(
                       child: GenericButton("Agregar", Color(0xFF0CC665), 274,

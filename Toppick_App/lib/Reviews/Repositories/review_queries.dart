@@ -34,6 +34,34 @@ class ReviewQueries{
     }
   }
 
+  Future<List<Resena>> getProductReviews(String cookie, int productId) async {
+    final response = await http.get(
+      Uri.https(this.domain, '/resena/producto/$productId'),
+      headers: {"Accept": "application/json", "Cookie":cookie}
+    );
+    if(response.statusCode == 200){
+      return parseReviews(response.body);
+    }else{
+      return [];
+    }
+  }
+
+  Future<bool> publishProductReview(String cookie, int productId, Resena review) async {
+    final response = await http.post(
+      Uri.https(this.domain, '/resena/producto/$productId'),
+      headers: {"Accept": "application/json", "Cookie":cookie, "content-type": "application/json"},
+      body: jsonEncode({
+        "calificacion": review.calificacion,
+        "descripcion": review.descripcion
+      })
+    );
+    if(response.statusCode == 200){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
   List<Resena> parseReviews(String responseBody){
     List<Resena> result = [];
     final first = json.decode(responseBody);
