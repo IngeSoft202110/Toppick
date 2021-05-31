@@ -1,5 +1,7 @@
-idPuntoDeVenta = 2;
-
+var url = window.location.href;
+var urlSplit = url.split('/');
+var idPuntoDeVenta = parseInt( urlSplit[urlSplit.length - 1],10);
+var user = urlSplit[urlSplit.length - 2];
 /*
 estructura de JSON de los pedidos
 {
@@ -14,6 +16,43 @@ estructura de JSON de los pedidos
     ]
 }
 */
+
+const socket = io('https://toppickapp.herokuapp.com');
+
+
+socket.emit('new_Store', idPuntoDeVenta);
+
+
+socket.on('pedidos', pedido => {
+  if (pedido.PuntoDeVenta_idPuntodeVenta == storeid) {
+	console.log(pedido);
+    let fehcaReclamo = pedido.fechaReclamo;
+    let productos
+    pedido.carrito.forEach((producto) =>
+    {
+        p = {
+            idProducto = producto.Producto_idproducto,
+            nombreProducto = producto.NombreProducto
+        }
+    });
+    let nuevoPedido = {
+        id:123,
+        horaEntrga: fechaReclamo,
+        productos: [
+            {
+                idProducto: 1,
+                nombreProducto: pescadito,
+                comentarios:"cualquier cosa"
+            }
+        ]
+    }
+  }
+});
+
+
+
+
+
 
 var listaConfirmar = [];
 var listaEnCurso = [];
