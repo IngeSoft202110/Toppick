@@ -38,7 +38,7 @@ app.use(passport.session()); // Initialize passport session
 //---------------------------------------
 const isStoreAlreadyLoggedIn = (req, res, next) => {
     console.log(req.user); 
-    if (req.isAuthenticated()) return res.redirect(`/pedidos/${ req.user.id }/${ req.user.username }`); 
+    if (req.isAuthenticated()) return res.redirect(`/pedidos`); 
     else return next(); 
 }; 
 
@@ -47,12 +47,20 @@ const isStoreLoggedIn = (req, res, next) => {
     else return res.redirect('/'); 
 }; 
 
+//---------------------------------------
+//              Methods
+//---------------------------------------
+const getDate = () => {
+    const today = new Date();
+    return today.getDate() + ' / ' + today.getMonth() + ' / ' + today.getFullYear();
+}; 
+
 //-------------------------------------------------------
 //                  LOGOUT route
 //-------------------------------------------------------
-app.post('/logout', (req, res) => {
+app.post('/logout', async (req, res) => {
     req.logout(); 
-    res.redirect('/'); 
+    reredirect('/'); 
 }); 
 
 //-------------------------------------------------------
@@ -73,38 +81,125 @@ app.post('/login', (req, res, next) => {
         // If user exists in the DB
         req.logIn(user, (err) => {
             if (err) return next(err); 
-            else return res.redirect(`/pedidos/${ user.id }/${ user.username }`)
+            else return res.redirect(`/pedidos`)
         }); 
-
     }) (req, res, next); 
 }); 
 
 //-------------------------------------------------------
 //                   CIERRE DE CAJA routes
 //-------------------------------------------------------
-app.get('/cierre_Caja/:id/:name', isStoreLoggedIn, (req,res) =>{
-    res.render('cierre_caja.ejs');
+app.get('/cierre_caja', isStoreLoggedIn, async (req,res) =>{
+
+    console.log('USER', req.user); 
+    try {
+        const response = await axios({
+            method: "get",
+            url: `https://toppickapp.herokuapp.com/tienda/cierre/${ req.user.id }`
+        }); 
+
+        const mi = response.data.body.masingresos; 
+        const mc = response.data.body.mascantidad; 
+
+        let p1_mc = mi[0].id, p2_mc = mi[1].id, p3_mc = mi[2].id; 
+        let p1_mi = mc[0].id, p2_mi = mi[1].id, p3_mi = mi[2].id; 
+        
+        // // Make a request for a user with a given ID
+        // axios.get('https://toppickapp.herokuapp.com/productos/p1_mc')
+        // .then(function (response) {
+        // // handle success
+        // console.log(response);
+        // })
+        // .catch(function (error) {
+        // // handle error
+        // console.log(error);
+        // })
+        // .then(function () {
+        // // always executed
+        // });
+        
+        // Get data from response
+        const totalVentas = response.data.body.total; 
+        const productosMasVendidos = response.data.body.mascantidad; 
+        const productosMayorGanancia = response.data.body.masingresos; 
+        const dataObj = {
+            fecha: getDate(), 
+            ventas: totalVentas, 
+            masVendidos: productosMasVendidos, 
+            mayorGanancia: productosMayorGanancia
+        }; 
+        // Render page with information from DB
+        res.render('cierre_caja.ejs', dataObj); 
+
+    } catch( error ) {
+        console.log('CIERRE CAJA : Error while making request to server'); 
+    } 
 })
 
 //-------------------------------------------------------
 //                  HISTORIAL routes
 //-------------------------------------------------------
-app.get('/historial/:id/:name',(req,res) =>{
-    res.render('Historial_pedidos.ejs');
+app.get('/historial', isStoreLoggedIn, async (req,res) =>{
+
+    try {
+        const response = await axios({
+            method: "get",
+            url: `https://toppickapp.herokuapp.com/pedidos/tienda/${ req.user.id }`
+        }); 
+        console.log(response); 
+        // Get data from response
+        response.data.body.forEach(element => {
+            console.log(element); 
+        });
+        // Create object that will be passed to the view
+        const dataObj = {
+            fecha: getDate(), 
+            pedidos: response.data.body
+        }; 
+        // Render page with information from DB
+        return res.render('Historial_pedidos.ejs', dataObj); 
+
+    } catch( error ) {
+        console.log('HISTORIAL : Error while making request to server'); 
+        console.log(error); 
+    } 
 })
 
 //-------------------------------------------------------
 //              UPDATE INVENTORY routes
 //-------------------------------------------------------
-app.get('/actualizar/:id/:name', isStoreLoggedIn, (req, res) => {
-    res.render("actualizar_inventario.ejs");
+app.get('/actualizar', isStoreLoggedIn, async (req, res) => {
+    try{
+        //Get the information products
+        const response = await axios({
+            method: "GET",
+            url: `https://toppickapp.herokuapp.com/tienda/catalogo/${req.user.id}`
+        });
+        var productos = []
+        productos.append
+        response.data.body.forEach(element => {
+            productos.push(element.nombreProducto);
+        });
+        dataObj = {
+            productos:response.data.body,
+            id:req.user.id
+        };
+        return res.render("actualizar_inventario.ejs", dataObj);
+    }catch(error){
+        console.log('Actualizar : Error while making request to server'); 
+        console.log(error); 
+    }
 });
 
 //-------------------------------------------------------
 //                  ORDERS routes
 //-------------------------------------------------------
-app.get('/pedidos/:id/:name', isStoreLoggedIn, (req, res) => {
-    res.render("pedidos.ejs");
+app.get('/pedidos', isStoreLoggedIn, (req, res) => {
+    const info = {
+        idPunto :req.user.id
+    }
+    console.log(info.id)
+    res.render("pedidos.ejs", info);
 });
 
 //-------------------------------------------------------

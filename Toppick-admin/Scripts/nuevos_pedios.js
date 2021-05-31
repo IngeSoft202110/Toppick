@@ -1,7 +1,13 @@
+<<<<<<< HEAD
 var url = window.location.href;
 var urlSplit = url.split('/');
 var idPuntoDeVenta = parseInt( urlSplit[urlSplit.length - 1],10);
 var user = urlSplit[urlSplit.length - 2];
+=======
+
+var idPuntoDeVenta = document.getElementById("id");
+console.log(idPuntoDeVenta.innerHTML);
+>>>>>>> 6a032142cf0d45781dc497ce9031f673544f7a2b
 /*
 estructura de JSON de los pedidos
 {
@@ -27,6 +33,7 @@ socket.on('pedidos', pedido => {
   if (pedido.PuntoDeVenta_idPuntodeVenta == storeid) {
 	console.log(pedido);
     let fehcaReclamo = pedido.fechaReclamo;
+<<<<<<< HEAD
     let productos
     pedido.carrito.forEach((producto) =>
     {
@@ -34,10 +41,30 @@ socket.on('pedidos', pedido => {
             idProducto = producto.Producto_idproducto,
             nombreProducto = producto.NombreProducto
         }
+=======
+    let productos = []
+    pedido.carrito.forEach((producto) =>
+    {
+        let comentario = "cantidad: "+toString(producto.CantidadProducto)
+        if (producto.Acompañamientos.length != 0)
+        {
+            comentario = comentario + " Adición: "
+            producto.Acompañamientos.forEach((a)=>{
+                comentario  = comentario + a.nombreAcompañamiento + " "
+            });
+        }
+        let p = {
+            idProducto : producto.Producto_idproducto,
+            nombreProducto : producto.NombreProducto,
+            comentarios: comentario
+        };
+        producto.append(p);
+>>>>>>> 6a032142cf0d45781dc497ce9031f673544f7a2b
     });
     let nuevoPedido = {
         id:123,
         horaEntrga: fechaReclamo,
+<<<<<<< HEAD
         productos: [
             {
                 idProducto: 1,
@@ -45,6 +72,9 @@ socket.on('pedidos', pedido => {
                 comentarios:"cualquier cosa"
             }
         ]
+=======
+        productos: productos
+>>>>>>> 6a032142cf0d45781dc497ce9031f673544f7a2b
     }
   }
 });
