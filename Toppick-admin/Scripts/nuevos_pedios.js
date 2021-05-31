@@ -37,9 +37,9 @@ socket.on('pedidos', pedido => {
                 comentario  = comentario + a.nombreAcompañamiento + " "
             });
         }
-        p = {
-            idProducto = producto.Producto_idproducto,
-            nombreProducto = producto.NombreProducto,
+        let p = {
+            idProducto : producto.Producto_idproducto,
+            nombreProducto : producto.NombreProducto,
             comentarios: comentario
         };
         producto.append(p);

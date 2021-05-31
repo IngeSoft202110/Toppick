@@ -15,34 +15,28 @@
                 </label>
                 <div class='BotonSelec'>
                 <select id="producto" name="producto">
-                    <option value="papas">
-                        <p>Papas</p>
-                    </option>
-                    <option value="chocorramo">
-                        <p>Chocorramo</p>
-                    </option>
-                    <option value="mani">
-                        <p>Maní</p>
-                    </option>
-                    <option value="pescadito">
-                        <p>Pescadito
-                    </option>
+                    <% productos.forEach( p => { %>
+                        <option value="<%= JSON.stringify(p) %>">
+                            <p><%= p.nombreProducto%></p>
+                        </option>
+                    <% }); %>
                 </select><br><br>
                 <div >
-                    <button class="botonEnvio" ><p>Actualizar inventario  </p></button>
+                    <button id = "boton" class="botonEnvio" ><p>Actualizar inventario </p></button>
                 </div>
             </div>
             <section class='tabla'>
                 <table>
                     <caption>
-                        <p>Inventario</p>
-                    </caption>
+                        <p id = "id" class="<%= JSON.stringify(id); %>">Inventario</p>
+                    </caption>                   
                     <tr>
                         <th>
                             <p>Nombre del producto </p>
                         </th>
                         <th>
-                            <p>Cantidad actual del producto (un)</p>
+
+                            <p id=>Cantidad actual del producto (un)</p>
                         </th>
                         <th>
                             <p>Cantidad de productos recibidos (un)</p>
@@ -50,15 +44,51 @@
                     </tr>
                     <tr>
                         <td>
-                            <p>Papas margarita natural </p>
+                            <p id="nombreProducto"></p>
                         </td>
                         <td>
-                            <p>10</p>
+                            <p id="cantidadProducto"></p>
                         </td>
                         <td>
-                            <input type="zzs">
+                            <input id="nuevaCantidad" type="nuevaCantidad">
                         </td>
                     </tr>
+                    <script type="text/javascript">
+                        var sel = document.getElementById("producto");
+                        var opt = sel.options[sel.selectedIndex];
+                        var nombre = document.getElementById("nombreProducto");
+                        var cantidad = document.getElementById("cantidadProducto");
+                        var nuevaCantidad = document.getElementById("nuevaCantidad");
+                        console.log(nuevaCantidad);
+                        var p;
+                        sel.addEventListener("change",()=>{
+                            var opt = sel.options[sel.selectedIndex];
+                            p = JSON.parse(opt.value);
+                            
+                            nombre.innerHTML = p.nombreProducto;
+                            
+                            cantidad.innerHTML = p.inventario;
+                        });
+                        var id = document.getElementById("id");
+                        console.log(id.className);
+                        var boton = document.getElementById("boton");
+                        boton.addEventListener("click",async ()=>{
+                            try{
+                                let c = parseInt(cantidad.innerHTML,10) + parseInt(nuevaCantidad.value,10);
+                                p.inventario = c;
+
+                                let response = await axios({
+                                    method: "PATCH",
+                                    url: `https://toppickapp.herokuapp.com/productos/inventario/${id.className}`,
+                                    data:[{idProducto:p.idProducto,nuevaCantidad:p.inventario}]
+                                });
+                                console.log(response)
+                                alert("Actualizado de forma correacta");
+                            }catch(err){
+                                console.log(err);
+                            }
+                        });
+                    </script>
                 </table>
             </section>
            
@@ -67,4 +97,5 @@
     <footer>
         <p class="text-center text-muted"> Developed by ©Alpha </p>
     </footer>
+    
 </body>

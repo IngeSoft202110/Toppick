@@ -168,8 +168,27 @@ app.get('/historial', isStoreLoggedIn, async (req,res) =>{
 //-------------------------------------------------------
 //              UPDATE INVENTORY routes
 //-------------------------------------------------------
-app.get('/actualizar', isStoreLoggedIn, (req, res) => {
-    res.render("actualizar_inventario.ejs");
+app.get('/actualizar', isStoreLoggedIn, async (req, res) => {
+    try{
+        //Get the information products
+        const response = await axios({
+            method: "GET",
+            url: `https://toppickapp.herokuapp.com/tienda/catalogo/${req.user.id}`
+        });
+        var productos = []
+        productos.append
+        response.data.body.forEach(element => {
+            productos.push(element.nombreProducto);
+        });
+        dataObj = {
+            productos:response.data.body,
+            id:req.user.id
+        };
+        return res.render("actualizar_inventario.ejs", dataObj);
+    }catch(error){
+        console.log('Actualizar : Error while making request to server'); 
+        console.log(error); 
+    }
 });
 
 //-------------------------------------------------------
