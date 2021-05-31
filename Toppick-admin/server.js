@@ -47,29 +47,18 @@ const isStoreLoggedIn = (req, res, next) => {
     else return res.redirect('/'); 
 }; 
 
+//---------------------------------------
+//              Methods
+//---------------------------------------
+const getDate = () => {
+    const today = new Date();
+    return today.getDate() + ' / ' + today.getMonth() + ' / ' + today.getFullYear();
+}; 
+
 //-------------------------------------------------------
 //                  LOGOUT route
 //-------------------------------------------------------
 app.post('/logout', async (req, res) => {
-
-
-    try {
-        // Logout 
-        const response = await axios({
-            method: "get",
-            url: 'https://toppickapp.herokuapp.com/usuarios/logout'
-        }); 
-        // Return to login page        
-        console.log('Succsessfull logout'); 
-        return res.redirect('/'); 
-    } catch( error ) {
-        // Return to login page
-        console.log('Error while logging out'); 
-        console.log('ERROR', error); 
-        return res.redirect('/'); 
-    }
-
-
     req.logout(); 
     reredirect('/'); 
 }); 
@@ -94,7 +83,6 @@ app.post('/login', (req, res, next) => {
             if (err) return next(err); 
             else return res.redirect(`/pedidos`)
         }); 
-
     }) (req, res, next); 
 }); 
 
@@ -129,14 +117,13 @@ app.get('/cierre_caja', isStoreLoggedIn, async (req,res) =>{
         // .then(function () {
         // // always executed
         // });
-
+        
         // Get data from response
-        const today = new Date();
         const totalVentas = response.data.body.total; 
         const productosMasVendidos = response.data.body.mascantidad; 
         const productosMayorGanancia = response.data.body.masingresos; 
         const dataObj = {
-            fecha: today.getDate() + ' / ' + today.getMonth() + ' / ' + today.getFullYear(),
+            fecha: getDate(), 
             ventas: totalVentas, 
             masVendidos: productosMasVendidos, 
             mayorGanancia: productosMayorGanancia
@@ -152,8 +139,30 @@ app.get('/cierre_caja', isStoreLoggedIn, async (req,res) =>{
 //-------------------------------------------------------
 //                  HISTORIAL routes
 //-------------------------------------------------------
-app.get('/historial', isStoreLoggedIn, (req,res) =>{
-    res.render('Historial_pedidos.ejs');
+app.get('/historial', isStoreLoggedIn, async (req,res) =>{
+
+    try {
+        const response = await axios({
+            method: "get",
+            url: `https://toppickapp.herokuapp.com/pedidos/tienda/${ req.user.id }`
+        }); 
+        console.log(response); 
+        // Get data from response
+        response.data.body.forEach(element => {
+            console.log(element); 
+        });
+        // Create object that will be passed to the view
+        const dataObj = {
+            fecha: getDate(), 
+            pedidos: response.data.body
+        }; 
+        // Render page with information from DB
+        return res.render('Historial_pedidos.ejs', dataObj); 
+
+    } catch( error ) {
+        console.log('HISTORIAL : Error while making request to server'); 
+        console.log(error); 
+    } 
 })
 
 //-------------------------------------------------------
