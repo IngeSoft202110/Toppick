@@ -111,10 +111,10 @@ class _SearchScreenState extends State<SearchScreen> {
               }else{
                 if(filteredNames[index]['product'] is Combo){
                   Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => HomeCombosCard(filteredNames[index]['product'], Tienda(widget.id, widget.sName, "", "", "", "",""), widget.actual, widget.prefs, widget.hKey)));
+                    builder: (context) => HomeCombosCard(filteredNames[index]['product'], Tienda(widget.id, widget.sName, "", "", "", "","",0), widget.actual, widget.prefs, widget.hKey)));
                 }else{
                   Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => HomeProductCard(filteredNames[index]['product'], Tienda(widget.id, widget.sName, "", "", "", "",""), widget.actual, widget.prefs, widget.hKey)));
+                    builder: (context) => HomeProductCard(filteredNames[index]['product'], Tienda(widget.id, widget.sName, "", "", "", "","",0), widget.actual, widget.prefs, widget.hKey)));
                 }
               }
             }else if(this.option==2){
@@ -125,10 +125,10 @@ class _SearchScreenState extends State<SearchScreen> {
               Navigator.of(context).pop();
               if(filteredNames[index]['product'] is Combo){
                 Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => HomeCombosCard(filteredNames[index]['product'], Tienda(widget.id, widget.sName, "", "", "", "",""), widget.actual, widget.prefs, widget.hKey)));
+                  builder: (context) => HomeCombosCard(filteredNames[index]['product'], Tienda(widget.id, widget.sName, "", "", "", "","",0), widget.actual, widget.prefs, widget.hKey)));
               }else{
                 Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => HomeProductCard(filteredNames[index]['product'], Tienda(widget.id, widget.sName, "", "", "", "",""), widget.actual, widget.prefs, widget.hKey)));
+                  builder: (context) => HomeProductCard(filteredNames[index]['product'], Tienda(widget.id, widget.sName, "", "", "", "","",0), widget.actual, widget.prefs, widget.hKey)));
               }
             }
           },

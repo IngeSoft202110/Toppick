@@ -1,6 +1,7 @@
 import 'package:Toppick_App/Orders/Models/pedido.dart';
 import 'package:Toppick_App/Products/Bloc/product_controller.dart';
 import 'package:Toppick_App/Products/UserInterfaces/productlist.dart';
+import 'package:Toppick_App/Reviews/UserInterfaces/shop_review_screen.dart';
 import 'package:Toppick_App/Shops/Bloc/shop_controller.dart';
 import 'package:Toppick_App/Shops/Models/horario.dart';
 import 'package:Toppick_App/Shops/Models/tienda.dart';
@@ -136,6 +137,9 @@ class HomeShopCard extends StatelessWidget {
         Navigator.push(context, MaterialPageRoute(builder: (context) => ProductList(this.current, this.selected, products, this.prefs)));
       });
     };
+    var transitionReviews = (){
+      Navigator.push(context, MaterialPageRoute(builder: (context) => ShopReviewScreen(this.selected, this.selected.url, this.prefs)));
+    };
     return Container(
       margin: EdgeInsets.only(top: 18.0, left: 10.0, right: 10.0),
       width: 392,
@@ -185,7 +189,7 @@ class HomeShopCard extends StatelessWidget {
           GenericButton("Ver Catálogo", Color(0xFF0CC665), 233.0, 45.0, 5.0,
               10.0, 10.0, 10.0, 20.0, 20.0, transition),
           GenericButton("Ver Reseñas", Color(0xFF2196F3), 233.0, 45.0, 5.0,
-              10.0, 10.0, 10.0, 20.0, 20.0, transition),
+              10.0, 10.0, 10.0, 20.0, 20.0, transitionReviews),
         ],
       ),
     );

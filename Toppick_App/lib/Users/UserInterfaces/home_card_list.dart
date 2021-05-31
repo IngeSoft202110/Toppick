@@ -27,7 +27,7 @@ class HomeCardList extends StatelessWidget {
         Navigator.of(context).pop();
         result = value;
         Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ProductList(this.current, new Tienda(-1, "", "", "", "", "Cerrado", ""), this.result, this.prefs)));
+        context, MaterialPageRoute(builder: (context) => ProductList(this.current, new Tienda(-1, "", "", "", "", "Cerrado", "",0), this.result, this.prefs)));
       });
     };
     return Container(

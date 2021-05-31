@@ -10,8 +10,9 @@ class Tienda {
   String url;
   String status;
   String ubication;
+  double calificacion;
   Tienda(this.id, this.name, this.category, this.description, this.url,
-      this.status, this.ubication);
+      this.status, this.ubication, this.calificacion);
   @override
   bool operator ==(object){
     return (object is Tienda) && object.id == this.id;
@@ -53,7 +54,8 @@ class Tienda {
       json['descripcion'],
       'assets/img/central.PNG',
       json['Estado'],
-      json['urlUbicacion']
+      json['urlUbicacion'],
+      (json['calificacion']==null)?0: json['calificacion']
     );
   }
 

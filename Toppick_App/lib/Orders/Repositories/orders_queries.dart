@@ -111,7 +111,7 @@ class OrdersQueries {
     List<Pedido> result = [];
     int cont = 0;
     Pedido current = Pedido(0, DateTime.now(), 0, DateTime.now(), "estadoPedido");
-    Tienda actual = Tienda(-1, "nombrePuntoDeVenta", "category", "description", "url", "status", "ubication");
+    Tienda actual = Tienda(-1, "nombrePuntoDeVenta", "category", "description", "url", "status", "ubication",0);
     final first = json.decode(responseBody);
     final parsed = first['body'].cast<Map<String, dynamic>>();
     print(parsed);
@@ -122,7 +122,7 @@ class OrdersQueries {
           result.add(current);
           currentid = val['idPedido'];
           current = Pedido.fromJsonList(val);
-          actual = Tienda(-1, val['nombrePuntoDeVenta'], "category", "description", "url", "status", "ubication");
+          actual = Tienda(-1, val['nombrePuntoDeVenta'], "category", "description", "url", "status", "ubication",0);
           Producto product = Producto(-1, val['nombreProducto'], "description", 0, 0, 0, "ulrImage", "category", "type");
           int quantity = val['cantidadProducto'];
           if(current.storeIsInCurrentOrder(actual)){
@@ -135,7 +135,7 @@ class OrdersQueries {
         }else{
           if(cont==0){
             current = Pedido.fromJsonList(val);
-            actual = Tienda(-1, val['nombrePuntoDeVenta'], "category", "description", "url", "status", "ubication");
+            actual = Tienda(-1, val['nombrePuntoDeVenta'], "category", "description", "url", "status", "ubication",0);
           }
           Producto product = Producto(-1, val['nombreProducto'], "description", 0, 0, 0, "ulrImage", "category", "type");
           int quantity = val['cantidadProducto'];
@@ -156,7 +156,7 @@ class OrdersQueries {
     List<Pedido> result = [];
     int cont = 0;
     Pedido current = Pedido(0, DateTime.now(), 0, DateTime.now(), "estadoPedido");
-    Tienda actual = Tienda(-1, "nombrePuntoDeVenta", "category", "description", "url", "status", "ubication");
+    Tienda actual = Tienda(-1, "nombrePuntoDeVenta", "category", "description", "url", "status", "ubication",0);
     final first = json.decode(responseBody);
     final parsed = first['body'];
     int currentid = parsed[0]['idPedido'];
@@ -166,7 +166,7 @@ class OrdersQueries {
           result.add(current);
           currentid = val['idPedido'];
           current = Pedido.fromJsonList(val);
-          actual = Tienda(-1, val['nombrePuntoDeVenta'], "category", "description", "url", "status", "ubication");
+          actual = Tienda(-1, val['nombrePuntoDeVenta'], "category", "description", "url", "status", "ubication",0);
           Producto product = Producto(-1, val['nombreProducto'], "description", 0, 0, 0, "ulrImage", "category", "type");
           int quantity = val['cantidadProducto'];
           if(current.storeIsInCurrentOrder(actual)){
@@ -179,7 +179,7 @@ class OrdersQueries {
         }else{
           if(cont==0){
             current = Pedido.fromJsonList(val);
-            actual = Tienda(-1, val['nombrePuntoDeVenta'], "category", "description", "url", "status", "ubication");
+            actual = Tienda(-1, val['nombrePuntoDeVenta'], "category", "description", "url", "status", "ubication",0);
           }
           Producto product = Producto(-1, val['nombreProducto'], "description", 0, 0, 0, "ulrImage", "category", "type");
           int quantity = val['cantidadProducto'];
