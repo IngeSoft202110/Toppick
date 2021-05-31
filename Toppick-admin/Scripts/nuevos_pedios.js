@@ -1,5 +1,6 @@
-idPuntoDeVenta = 2;
 
+var idPuntoDeVenta = document.getElementById("id");
+console.log(idPuntoDeVenta.innerHTML);
 /*
 estructura de JSON de los pedidos
 {
@@ -14,6 +15,47 @@ estructura de JSON de los pedidos
     ]
 }
 */
+
+const socket = io('https://toppickapp.herokuapp.com');
+
+
+socket.emit('new_Store', idPuntoDeVenta);
+
+
+socket.on('pedidos', pedido => {
+  if (pedido.PuntoDeVenta_idPuntodeVenta == storeid) {
+	console.log(pedido);
+    let fehcaReclamo = pedido.fechaReclamo;
+    let productos = []
+    pedido.carrito.forEach((producto) =>
+    {
+        let comentario = "cantidad: "+toString(producto.CantidadProducto)
+        if (producto.Acompañamientos.length != 0)
+        {
+            comentario = comentario + " Adición: "
+            producto.Acompañamientos.forEach((a)=>{
+                comentario  = comentario + a.nombreAcompañamiento + " "
+            });
+        }
+        p = {
+            idProducto = producto.Producto_idproducto,
+            nombreProducto = producto.NombreProducto,
+            comentarios: comentario
+        };
+        producto.append(p);
+    });
+    let nuevoPedido = {
+        id:123,
+        horaEntrga: fechaReclamo,
+        productos: productos
+    }
+  }
+});
+
+
+
+
+
 
 var listaConfirmar = [];
 var listaEnCurso = [];

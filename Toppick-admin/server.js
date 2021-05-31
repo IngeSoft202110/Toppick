@@ -167,7 +167,11 @@ app.get('/actualizar', isStoreLoggedIn, (req, res) => {
 //                  ORDERS routes
 //-------------------------------------------------------
 app.get('/pedidos', isStoreLoggedIn, (req, res) => {
-    res.render("pedidos.ejs");
+    const info = {
+        idPunto :req.user.id
+    }
+    console.log(info.id)
+    res.render("pedidos.ejs", info);
 });
 
 //-------------------------------------------------------
