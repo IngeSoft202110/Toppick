@@ -50,13 +50,14 @@ showBackWarning(BuildContext context){
   );
 }
 class PaymentCard extends StatelessWidget {
-  PaymentCard(this.imagePath, this.totalValue, this.paymentMethod, this.actual, this.timeSend);
+  PaymentCard(this.imagePath, this.totalValue, this.paymentMethod, this.actual, this.timeSend, this.prefs);
   final String imagePath;
   final int totalValue;
-  final MetodoPago? paymentMethod;
+  final dynamic paymentMethod;
   final Pedido actual;
   final DateTime timeSend;
   final OrderController controller = OrderController();
+  final prefs;
 
   Widget textForPrice(String title, int value){
     var formatter = NumberFormat('#,###,000');
@@ -97,14 +98,13 @@ class PaymentCard extends StatelessWidget {
         this.actual.fechaCreacion = DateTime.now();
         this.actual.costoTotal = this.totalValue;
         print(this.actual.costoTotal);
-        this.controller.sendOrder(this.actual);
+        this.controller.sendOrder(this.actual, this.prefs);
       }
-      //Enviar el pedido al servidor, también mandarlo con el DateTime.now() en caso de que incluya horas
-      this.actual.carrito.clear();
+      /*this.actual.carrito.clear();
       this.actual.costoTotal = 0;
       this.actual.fechaCreacion = DateTime.now();
       this.actual.fechaReclamo = DateTime.now();
-      showCorrectPayment(context);
+      showCorrectPayment(context);*/
     }
     var transitionFinishOrder = () => finish(context);
     var transitionBack = () => showBackWarning(context);

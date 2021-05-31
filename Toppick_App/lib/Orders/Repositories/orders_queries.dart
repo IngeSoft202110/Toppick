@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:Toppick_App/Products/Models/especialidad.dart';
 import 'package:Toppick_App/Products/Models/producto.dart';
 import 'package:Toppick_App/Shops/Models/tienda.dart';
@@ -8,7 +7,6 @@ import '../Models/pedido.dart';
 import 'package:http/http.dart' as http;
 
 class OrdersQueries {
-  int port = 3000;
   String domain = 'toppickapp.herokuapp.com';
 
   Future<List<Pedido>> getOrderHistory(String cookie) async {
@@ -35,78 +33,65 @@ class OrdersQueries {
     }
   }
 
-  Future<void> funcionDatos(Pedido pedido) async {
+  Future<bool> funcionDatos(Pedido pedido, dynamic prefs) async {
+    bool result = false;
+    String cookie = prefs.getString('cookie');
+    int cantidadPedidos = prefs.getInt('pedidos actuales');
     var stringList = pedido.fechaCreacion.toIso8601String().split(new RegExp(r"[T\.]"));
-    var formatedDate = "${stringList[0]} ${stringList[1]}";
+    var formatedDateCreacion = "${stringList[0]} ${stringList[1]}";
     var stringList2 =  pedido.fechaReclamo.toIso8601String().split(new RegExp(r"[T\.]"));
-    var formatedDate2 = "${stringList2[0]} ${stringList2[1]}";
-
-    var orden = [];
-    orden.add(pedido.idPedido);
-    orden.add(formatedDate);
-    orden.add(pedido.costoTotal);
-    orden.add(formatedDate2);
-    orden.add(pedido.estadoPedido);
-    orden.add(pedido.razonRechazo);
-
-    var car = [];
-    var acompanamientos = [];
-
-    void action(key, value) {
-      value.forEach((k, v) {
-        List<dynamic> aux = [];
-        //id del producto
-        aux.add(k.id);
-        //id del pedido
-        aux.add(0);
-        //cantidad solicitada
-        aux.add(v);
-        //comentarios
-        aux.add(k.comments);
-        car.add(aux);
-        if (k is Especialidad) {
-          k.selecciones.forEach((kk, vv) {
-            List<int> aux2 = [];
-            if (vv) {
-              aux2.add(k.id);
-              aux2.add(kk.id);
-              aux2.add(0);
-              acompanamientos.add(aux2);
-            }
-          });
-        }
+    var formatedDateReclamo = "${stringList2[0]} ${stringList2[1]}";
+    pedido.carrito.forEach((key, value) {
+      Map<String, dynamic> json = Map<String, dynamic>();
+      json.addAll({"PuntoDeVenta_idPuntodeVenta": key!.id});
+      json.addAll({"fechaCreacion": formatedDateCreacion});
+      int costoTotal = 0;
+      value.forEach((key, value) {
+        costoTotal+=key.price*value;
       });
-      print("Esto es una tienda diferente");
-      var copy = [] ;
-      copy.addAll(orden);
-      copy.insert(1,key.id);//Este es el id de la tienda
-      copy.insert(2,1);//ese 1 es el id del usuario
-      sendOrder(copy,car,acompanamientos);
-      car.clear();
-      acompanamientos.clear();
-    }
-    pedido.carrito.forEach(action);
+      json.addAll({"costoTotal": costoTotal});
+      json.addAll({"fechaReclamo": formatedDateReclamo});
+      json.addAll({"estadoPedido": pedido.estadoPedido});
+      json.addAll({"razonRechazo": ""});
+      List<Map<String,dynamic>> carrito = [];
+      value.forEach((key, value) {
+        Map<String, dynamic> current = Map<String, dynamic>();
+        current.addAll({"Producto_idProducto":key.id});
+        current.addAll({"CantidadProducto": value});
+        current.addAll({"comentario":key.comments});
+        if(key is Especialidad){
+          List<Map<String,int>> acompanamientos = [];
+          key.selecciones.forEach((key, value) {
+            acompanamientos.add({"Acompañamiento_idAcompañamiento":key.id});
+          });
+          current.addAll({"Acompañaminetos":acompanamientos});
+        }
+        carrito.add(current);
+      });
+      json.addAll({"carrito":carrito});
+      print(jsonEncode(json));
+      //result = await this.sendOrder(json,cookie);
+      //if(result == false){return false;}
+      cantidadPedidos+=1;
+      print(cantidadPedidos);
+      //prefs.setInt('pedidos actuales', cantidadPedidos);
+    });
+    return result;
   }
 
-  Future<void> sendOrder(var orden, var car, var acompanamientos)
-  async {
-    print(orden);
-    final http.Response response = await http.post(Uri.http('10.0.2.2:$port','toppick/app/insert/order'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-    },
-      body: jsonEncode({
-        'orden': orden,
-        'carrito': car,
-        'acompanamientos': acompanamientos
-      }),
+  Future<bool> sendOrder(Map<String, dynamic> json, String cookie) async {
+    final response = await http.post(
+      Uri.https(this.domain, '/pedidos'),
+      headers: {"Accept": "application/json", "Cookie":cookie, "content-type": "application/json"},
+      body: jsonEncode(json)
     );
-    if (response.statusCode == 200) {
-        print("Pedido enviado");
-    } else { 
-        throw Exception('Error');
+    if(response.statusCode == 200){
+      return true;
+    }else{
+      return false;
     }
   }
+
   List<Pedido> parseActiveOrders(String responseBody){
     List<Pedido> result = [];
     int cont = 0;

@@ -22,7 +22,7 @@ class _OrderHistoryCardState extends State<OrderHistoryCard> {
         child: Text("Pedido ${widget.number}", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
       ),
     );
-    Map<Producto, int> products = widget.current.carrito[this.store]!;
+    Map<dynamic, int> products = widget.current.carrito[this.store]!;
     products.forEach((key, value) {
       result.add(
         Padding(

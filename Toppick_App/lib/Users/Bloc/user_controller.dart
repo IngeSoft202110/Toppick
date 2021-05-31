@@ -209,7 +209,7 @@ class UserController{
             context, MaterialPageRoute(builder: (context) => Profile(current, prefs)));
         }else if(screen == "Pedido"){
           Navigator.push(
-            context, MaterialPageRoute(builder: (context) => OrderCard(current, hKey)));
+            context, MaterialPageRoute(builder: (context) => OrderCard(current, hKey, prefs)));
         }
       },
     );

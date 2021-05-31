@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class RadioButtonPaymentList extends StatelessWidget {
   RadioButtonPaymentList(this.paymentList, this.notifyParent);
-  final List<MetodoPago> paymentList;
+  final List<dynamic> paymentList;
   final Function(MetodoPago? selected) notifyParent;
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class RadioButtonPaymentList extends StatelessWidget {
 
 class RadioButtonsStore extends StatefulWidget {
   RadioButtonsStore(this.paymentList, this.notifyParent);
-  final List<MetodoPago> paymentList;
+  final List<dynamic> paymentList;
   final Function(MetodoPago? selected) notifyParent; 
   @override
   _RadioButtonsStoreState createState() =>

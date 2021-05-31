@@ -20,8 +20,8 @@ class OrderController {
     return this.orderqueries.getActiveOrders(cookie);
   }
   
-  void sendOrder(Pedido pedido){
-    this.orderqueries.funcionDatos(pedido);
+  void sendOrder(Pedido pedido, dynamic prefs){
+    this.orderqueries.funcionDatos(pedido, prefs);
   }
 
   DateTime getMaxShopsHour(Pedido currentP, int day){

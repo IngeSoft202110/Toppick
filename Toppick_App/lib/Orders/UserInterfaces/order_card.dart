@@ -10,19 +10,16 @@ import 'package:Toppick_App/Orders/UserInterfaces/payment_card.dart';
 import 'package:Toppick_App/Orders/UserInterfaces/payment_selection.dart';
 import 'package:Toppick_App/Products/Models/producto.dart';
 import 'package:Toppick_App/Shops/Models/tienda.dart';
+import 'package:Toppick_App/Users/Bloc/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-List<MetodoPago> methods =[
-  DaviPlata(1, 100000, 3004006789),
-  Nequi(1, 20000, 3009990009),
-];
-
 
 class OrderCard extends StatefulWidget {
-  OrderCard(this.actual, this.hKey);
+  OrderCard(this.actual, this.hKey, this.prefs);
   final Pedido actual;
   final hKey;
+  final prefs;
 
   int calculateTotal(){
     int total = 0;
@@ -43,8 +40,9 @@ class _OrderCardState extends State<OrderCard> {
   _OrderCardState(this.actual, this.total, this.hKey);
   final Pedido actual;
   int total;
-  MetodoPago? selected;
+  dynamic selected;
   OrderController controller = OrderController();
+  UserController uContreoller = UserController();
   DateTime? minTime;
   TimeOfDay? _actualTime = TimeOfDay.now();
   DateTime? max2Hours;
@@ -52,6 +50,7 @@ class _OrderCardState extends State<OrderCard> {
   DateTime? maxShopTime;
   DateTime? minShopTime;
   DateTime? finalDateSend;
+  List<dynamic> methods = [];
   final hKey;
 
   Future<Null> selectTime(BuildContext context) async{
@@ -92,8 +91,9 @@ class _OrderCardState extends State<OrderCard> {
       }
     });
   }
-  void updateMethod(MetodoPago? selected) {
+  void updateMethod(dynamic selected) {
     this.selected = selected;
+    print(this.selected.runtimeType);
   }
 
   List<Widget> fill(var transitionToPay){
@@ -173,15 +173,15 @@ class _OrderCardState extends State<OrderCard> {
         this.finalDateSend = DateTime(current.year, current.month, current.day, this.minTime!.hour, this.minTime!.minute);
       }
       if(this.selected.runtimeType.toString()=="DaviPlata"){
-        return PaymentCard("assets/img/daviplata.png", total, selected, this.actual, this.finalDateSend!);
+        return PaymentCard("assets/img/daviplata.png", total, selected, this.actual, this.finalDateSend!, widget.prefs);
       }
       else if(this.selected.runtimeType.toString()=="Nequi"){
-        return PaymentCard("assets/img/nequi.jpg", total, selected, this.actual, this.finalDateSend!);
+        return PaymentCard("assets/img/nequi.jpg", total, selected, this.actual, this.finalDateSend!, widget.prefs);
       }
       else if(this.selected.runtimeType.toString()=="PSE"){
-        return PaymentCard("assets/img/pse.jpg", total, selected, this.actual, this.finalDateSend!);
+        return PaymentCard("assets/img/pse.jpg", total, selected, this.actual, this.finalDateSend!, widget.prefs);
       }  
-      return OrderCard(this.actual, this.hKey);
+      return OrderCard(this.actual, this.hKey, widget.prefs);
     }
     var payTransition = () => Navigator.push(context, MaterialPageRoute(builder: construct));
     this.maxShopTime = this.controller.getMaxShopsHour(this.actual, DateTime.now().weekday);
@@ -211,11 +211,35 @@ class _OrderCardState extends State<OrderCard> {
                 ),
                 Container(
                   decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40)), color: Color(0xFFFFFEEE),),
-                  child: Column(
-                    key: Key(this.actual.carrito.length.toString()),
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: fill(payTransition),
+                  child: FutureBuilder(
+                    future: this.uContreoller.getPaymentMethods(widget.prefs.getString('cookie')),
+                    builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot){
+                      switch(snapshot.connectionState){
+                        case ConnectionState.none:
+                          break;
+                        case ConnectionState.waiting:
+                          break;
+                        case ConnectionState.active:
+                          break;
+                        case ConnectionState.done:
+                        if(snapshot.hasData){
+                          this.methods = snapshot.data!;
+                          return Column(
+                            key: Key(this.actual.carrito.length.toString()),
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: fill(payTransition),
+                          );
+                        }
+                      }
+                      return Center(
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          height: 50,
+                          child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.red),)
+                        ),
+                      );
+                    }
                   ),
                 )
               ],

@@ -52,7 +52,7 @@ class HeaderState extends State<Header> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    var f1 = () => Navigator.push(context, MaterialPageRoute(builder: (context) => OrderCard(widget.actual, widget.key)));
+    var f1 = () => Navigator.push(context, MaterialPageRoute(builder: (context) => OrderCard(widget.actual, widget.key, this.widget.prefs)));
     var f2 = () => Navigator.push(context, MaterialPageRoute(builder: (context) => Menu(widget.actual, this.widget.prefs)));
     return SafeArea(
       child: Padding(
