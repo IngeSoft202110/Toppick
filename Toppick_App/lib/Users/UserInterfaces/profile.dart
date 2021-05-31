@@ -22,9 +22,11 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var f1 = (){
+      Navigator.pop(context);
       Navigator.push(context, MaterialPageRoute(builder: (context) => AddMethodStartPage(this.clienteActual.metodos, this.prefs, this.actual)));
     };
     var f2 = (){
+      Navigator.pop(context);
       Navigator.push(context, MaterialPageRoute(builder: (context) => EditUserInfoScreen(this.clienteActual, this.prefs, this.actual)));
     };
     var formatter = NumberFormat('#,###,000');

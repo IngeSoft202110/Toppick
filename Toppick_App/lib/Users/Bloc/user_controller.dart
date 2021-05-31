@@ -79,15 +79,15 @@ class UserController{
     return this.userQueries.register(prefs, user);
   }
 
-  Future<Cliente> getUserInfo(String cookie, String email) async {
-    return await this.userQueries.getUserInfo(cookie, email);
+  Future<Cliente> getUserInfo(String cookie, String email) {
+    return this.userQueries.getUserInfo(cookie, email);
   }
 
   Future<bool> updateUserInfo(String cookie, String nName, String nType, String document, String number){
     return this.userQueries.updateUserInfo(cookie, nName, nType, document, number);
   }
 
-  Future<dynamic> getPaymentMethods(String cookie) async {
+  Future<dynamic> getPaymentMethods(String cookie) {
     return this.userQueries.getPaymentMethods(cookie);
   }
 
@@ -256,7 +256,6 @@ class UserController{
         Navigator.of(context).pop(); //Alerta
         Navigator.of(context).pop(); //Formulario actualizar
         Navigator.of(context).pop(); //Pantalla perfil
-        Navigator.of(context).pop(); //Pantalla perfil
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => Profile(current, prefs)));
       },
@@ -303,7 +302,6 @@ class UserController{
       onPressed: () { 
         Navigator.of(context).pop(); //Alerta
         Navigator.of(context).pop(); //Formulario actualizar
-        Navigator.of(context).pop(); //Pantalla perfil
         Navigator.of(context).pop(); //Pantalla perfil
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => Profile(current, prefs)));

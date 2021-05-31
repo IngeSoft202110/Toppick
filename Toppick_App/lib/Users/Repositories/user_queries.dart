@@ -163,12 +163,12 @@ class UserQueries{
     int add = current+toAdd;
     final response = await http.patch(
       Uri.https(this.domain, '/pagos'),
-      headers: {"Accept": "application/json", "Cookie": cookie},
-      body:{
+      headers: {"Accept": "application/json", "Cookie": cookie, "content-type": "application/json"},
+      body:jsonEncode({
         "metodo": methodName,
-        "identificador": id.toString(),
-        "saldo": add.toString()
-      }
+        "identificador": id,
+        "saldo": add
+      })
     );
     if(response.statusCode==200){
       return true;
@@ -180,16 +180,15 @@ class UserQueries{
   List<dynamic> parsePaymentMethods(String responseBody){
     List<dynamic> result = [];
     final first = json.decode(responseBody);
-    final parsed = first['body'];
-    int saldoTotal = parsed['saldoTotal'][0]['saldoTotal'];
-    if(!parsed['daviplata'].isEmpty){
-      result.add(DaviPlata(0, saldoTotal, parsed['daviplata'][0]['numeroCelular']));
+    int saldoTotal = first['body']['saldoTotal'][0]['saldoTotal'];
+    if(!first['body']['daviplata'].isEmpty){
+      result.add(DaviPlata(0, saldoTotal, first['body']['daviplata'][0]['numeroCelular']));
     }
-    if(!parsed['nequi'].isEmpty){
-      result.add(Nequi(0, saldoTotal, parsed['nequi'][0]['numeroCelular']));
+    if(!first['body']['nequi'].isEmpty){
+      result.add(Nequi(0, saldoTotal, first['body']['nequi'][0]['numeroCelular']));
     }
-    if(!parsed['pse'].isEmpty){
-      result.add(PSE(0, saldoTotal, parsed['pse'][0]['numeroCuenta']));
+    if(!first['body']['pse'].isEmpty){
+      result.add(PSE(0, saldoTotal, first['body']['pse'][0]['numeroCuenta']));
     }
     return result;
   }
