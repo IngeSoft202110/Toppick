@@ -69,11 +69,20 @@ class _OrderCardState extends State<OrderCard> {
       }
       DateTime actual = DateTime(current.year, current.month, current.day, _actualTime!.hour, _actualTime!.minute);
       bool exp1 = this.controller.isBeforeThan(picked, actual); //Si se selecciona una hora antes a la actual
-      bool exp2 = this.controller.isOutOfRange(picked, maxShopTime!, minShopTime!); //Si se selecciona una hora luego del cierre del punto de venta
+      bool exp2 = this.controller.isOutOfRange(picked, maxShopTime!, minShopTime!); //Si está por fuera del rango de horario del punto de venta
       bool exp3 = this.controller.isAfterThan(picked, max2Hours!); //Si se selecciona una hora más allá de las 2 horas y media dadas
       bool exp4 = this.controller.isBeforeThan(picked, minTime!); //Si se selecciona una hora antes del tiempo minímo calculado
       if(exp1 || exp2 || exp3 || exp4){
-        this.controller.showPayHourWarning(context);
+        String text = "";
+        if(exp1)
+          text="Seleccionó una hora previa a la hora actual, por favor seleccione otra hora.";
+        if(exp2)
+          text="Seleccionó una hora fuera del rango de los puntos de venta a donde quiere enviar su pedido.";
+        if(exp3)
+          text="Seleccionó una hora más allá de las 2 horas y media posibles para realizar el pedido.";
+        if(exp4)
+          text="Seleccionó una hora previa al tiempo necesario para la preparación de los productos de su pedido.";
+        this.controller.showPayHourWarning(context, text);
         pickedTime = null;
       }
       maxShopTime!.subtract(Duration(days: 1));
@@ -141,26 +150,30 @@ class _OrderCardState extends State<OrderCard> {
       ),
     );
     result.add(showMethods);
+    bool exp11 = this.controller.isOutOfRange(this.minTime!, maxShopTime!, minShopTime!); //Si está por fuera del rango de horario del punto de venta
+    bool exp22 = this.controller.isAfterThan(this.minTime!, max2Hours!); //Si se selecciona una hora más allá de las 2 horas y media dadas
+    String text = "";
+    if(exp11)
+      text="La hora calculada está fuera del rango de horarios de los puntos de venta a donde quiere enviar su pedido.";
+    if(exp22)
+      text="La hora calculada supera las 2 horas y media posibles para realizar el pedido.";
     result.add(Center(child: GenericButton("Total: \$${formatter.format(this.total)}", Color(0xFFBB4900), 274, 45, 15.0, 0, 0, 0, 22, 0, () => {})));
     result.add(Center(child: GenericButton("Realizar Pedido", Color(0xFF0CC665), 274, 45, 15.0, 0, 0, 0, 22, 30, () => {
       if(selected==null){
-        this.controller.showPayMethodWarning(context)}
-        else{
+        this.controller.showPayMethodWarning(context)
+      }else{
           if(this.pickedTime != null){
             transitionToPay()
           }else{
-            if(this.controller.isAfterThan(this.minTime!, maxShopTime!) //Si se selecciona una hora luego del cierre del punto de venta
-            || this.controller.isBeforeThan(this.minTime!, minShopTime!) //Si se selecciona una hora previa a la apertura del punto de venta
-            || this.controller.isAfterThan(this.minTime!, max2Hours!) //Si se selecciona una hora más allá de las 2 horas y media dadas
-            ){
-              this.controller.showMinTimeWarning(context)
+            if(exp11 || exp22){
+              this.controller.showMinTimeWarning(context, text)
             }else{
               transitionToPay()
             }
           }
         }
     })));
-    result.add(Center(child: GenericButton("Cancelar predido", Color(0xFFFB2900), 274, 45, 15.0, 0, 0, 0, 22, 30, cancelTransition)));
+    result.add(Center(child: GenericButton("Cancelar Pedido", Color(0xFFFB2900), 274, 45, 15.0, 0, 0, 0, 22, 30, cancelTransition)));
     result.add(SizedBox(height: 30,));
     return result;
   }

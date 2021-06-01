@@ -129,14 +129,8 @@ class EditUserInfoScreen extends StatelessWidget {
                                 requestFocus(context, identifierFocus);
                               },
                               validator: (value){
-                                if(value!.isEmpty){
-                                  return "Ingrese la información";
-                                }
-                                else if (value.contains(new RegExp(r'[!@#$%^(),.?":{}|<>]'))){
-                                  return "Sin caracteres especiales";
-                                }
-                                else if (value.contains(new RegExp(r'[0-9]'))){
-                                  return "No pueden haber números en su nombre";
+                                if (!this.controller.validateName(value!).contains("válido")) {
+                                  return this.controller.validateName(value);
                                 }
                               },
                             ),
@@ -211,10 +205,7 @@ class EditUserInfoScreen extends StatelessWidget {
                                 this.nPhone = value!;
                               },
                               validator: (value){
-                                if(value!.isEmpty){
-                                  return "Ingrese la información";
-                                }
-                                if(!this.controller.validatePhone(value).contains("válido")){
+                                if(!this.controller.validatePhone(value!).contains("válido")){
                                   return this.controller.validatePhone(value);
                                 }
                               },

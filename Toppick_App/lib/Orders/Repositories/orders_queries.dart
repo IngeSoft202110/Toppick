@@ -94,12 +94,12 @@ class OrdersQueries {
   }
 
   Future<bool> sendOrder(Map<String, dynamic> json, String cookie) async {
-    var body = jsonEncode(json);
-    print(body);
+    var myBody = jsonEncode(json);
+    print(myBody);
     final response = await http.post(
       Uri.https(this.domain, '/pedidos'),
       headers: {"Accept": "application/json", "Cookie":cookie, "content-type": "application/json"},
-      body: body,
+      body: myBody,
     );
     print(response.body);
     print(response.statusCode);

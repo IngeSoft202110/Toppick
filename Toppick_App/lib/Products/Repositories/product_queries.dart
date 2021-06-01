@@ -39,7 +39,7 @@ class ProductQueries {
       headers: {"Accept": "application/json", "Cookie":cookie}
     );
     if (response.statusCode == 200) {
-        return parseProducts(response.body);
+        return parseProductsInCombo(response.body);
     } else { 
         throw Exception('Error');
     }
@@ -70,10 +70,30 @@ class ProductQueries {
         dynamic a = Combo.fromJson(y);
         result.add(a);
       }else{
-        if(y['precio']!=0){
+        if(y['precio']!=0 ){
           dynamic a = Producto.fromJson(y);
           result.add(a);
         }
+      }
+    }
+    return result; 
+  }
+
+  List<dynamic> parseProductsInCombo(String responseBody) { 
+    final first = json.decode(responseBody);
+    final parsed = first['body'];
+    List<dynamic> result = [];
+    for (var y in parsed) {
+      String val = y['categoria'];
+      if(val == 'Especialidades'){
+        dynamic a = Especialidad.fromJson(y);
+        result.add(a);
+      }else if (val == 'Combos'){
+        dynamic a = Combo.fromJson(y);
+        result.add(a);
+      }else{
+        dynamic a = Producto.fromJson(y);
+        result.add(a);
       }
     }
     return result; 

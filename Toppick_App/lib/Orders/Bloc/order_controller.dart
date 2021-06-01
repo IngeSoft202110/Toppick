@@ -146,8 +146,8 @@ class OrderController {
       title: Text("Cancelar pedido", style: TextStyle(color: Color(0xFFD76060)),),
       content: Text("¿Está seguro de querer borrar el pedido"),
       actions: [
-        yesButton,
         noButton,
+        yesButton,
       ],
     );
     showDialog(
@@ -178,14 +178,14 @@ class OrderController {
     );
   }
 
-  showPayHourWarning(BuildContext context){
+  showPayHourWarning(BuildContext context, String text){
     Widget okButton = TextButton(
       child: Text("OK"),
       onPressed: () { Navigator.of(context).pop();},
     );
     AlertDialog alert = AlertDialog(
       title: Text("No se ha seleccionado una hora válida", style: TextStyle(color: Color(0xFFD76060)),),
-      content: Text("Por favor seleccione una hora válida para poder pasar por el pedido."),
+      content: Text(text),
       actions: [
         okButton,
       ],
@@ -218,14 +218,14 @@ class OrderController {
     );
   }
 
-  showMinTimeWarning(BuildContext context){
+  showMinTimeWarning(BuildContext context, String text){
     Widget okButton = TextButton(
       child: Text("OK"),
       onPressed: () {Navigator.of(context).pop();},
     );
     AlertDialog alert = AlertDialog(
       title: Text("Tiempo mínimo invalido", style: TextStyle(color: Color(0xFFD76060)),),
-      content: Text("El tiempo mínimo para recoger el pedido no es válido, elimine los productos que generan conflicto e intente de nuevo."),
+      content: Text(text),
       actions: [
         okButton,
       ],
@@ -263,7 +263,7 @@ class OrderController {
   bool isOutOfRange(DateTime selectedHour, DateTime maxShopTime, DateTime minShopTime) {
     print("${selectedHour.isAfter(maxShopTime)}");
     print("${selectedHour.isBefore(minShopTime)}");
-    return selectedHour.isAfter(maxShopTime) && selectedHour.isBefore(minShopTime);
+    return selectedHour.isAfter(maxShopTime) || selectedHour.isBefore(minShopTime);
   }
 
 }

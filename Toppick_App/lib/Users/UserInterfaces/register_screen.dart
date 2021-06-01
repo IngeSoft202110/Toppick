@@ -123,14 +123,8 @@ class RegisterScreen extends StatelessWidget {
                             requestFocus(context, documentFocus);
                           },
                           validator: (value) {
-                            if (!this.controller.isEmpty(value!).contains("válido")) {
-                              return this.controller.isEmpty(value);
-                            }
-                            else if (value.contains(new RegExp(r'[!@#$%^(),.?":{}|<>]'))){
-                              return "Sin caracteres especiales";
-                            }
-                            else if (value.contains(new RegExp(r'[0-9]'))){
-                              return "No pueden haber números en su nombre";
+                            if (!this.controller.validateName(value!).contains("válido")) {
+                              return this.controller.validateName(value);
                             }
                           },
                         ),

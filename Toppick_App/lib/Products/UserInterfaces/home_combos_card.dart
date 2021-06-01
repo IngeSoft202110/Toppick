@@ -56,7 +56,7 @@ Widget place() {
   );
 }
 
-Widget productDescription(String description) {
+Widget productDescription(String description, int preparationTime) {
   return Container(
     margin: EdgeInsets.only(top: 15.0, left: 15.0, right: 15.0),
     child: Column(
@@ -76,6 +76,18 @@ Widget productDescription(String description) {
               fontSize: 22,
               color: Color(0xFFB7B7B7)),
           textAlign: TextAlign.left,
+        ),
+        Text("Tiempo preparación",
+          style: TextStyle(
+            fontWeight: FontWeight.w700,
+            fontSize: 30,
+            color: Color(0xFFD76060)),
+        ),
+        Text("$preparationTime minutos",
+          style: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 22,
+              color: Color(0xFFB7B7B7)),
         )
       ],
     ),
@@ -202,9 +214,9 @@ class HomeCombosCard extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    image("assets/img/pescadito.jpg", double.infinity, 315),
+                    image(this.selected.ulrImage, double.infinity, 315),
                     productHead(this.selected.name, this.selected, updateQuantity),
-                    productDescription(this.selected.description),
+                    productDescription(this.selected.description, this.selected.preparationTime),
                     Container(
                       margin:
                           EdgeInsets.only(top: 10, left: 15.0, bottom: 10.0),

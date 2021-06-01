@@ -48,11 +48,27 @@ class UserController{
       return "válido";
   }
 
+  String validateName(String value){
+    if(value.isEmpty){
+      return "El campo no puede quedar vacío";
+    }
+    else if (value.contains(new RegExp(r'[!@#$%^(),.?":{}|<>]'))){
+      return "No pueden haber caracteres especiales";
+    }
+    else if (value.contains(new RegExp(r'[0-9]'))){
+      return "No pueden haber números en su nombre";
+    }
+    else
+      return "válido";
+  }
+
   String validateDocument(String document){
     if(document.isEmpty)
       return "Debe ingresar un # de documento";
     else if(document.length < 6 || document.length > 10)
       return "Número de documento inválido";
+    else if(document.contains(new RegExp(r'[a-z]')) || document.contains(new RegExp(r'[A-Z]')))
+      return "No pueden haber letras";
     else
       return "correcto";
   }
@@ -60,6 +76,8 @@ class UserController{
   String validatePhone(String phone){
     if(phone.isEmpty)
       return "Debe ingresar un # de celular";
+    else if(phone.contains(new RegExp(r'[a-z]')) || phone.contains(new RegExp(r'[A-Z]')))
+      return "No pueden haber letras";
     else if (phone.length != 10)
       return "El # de celular es incorrecto";
     else

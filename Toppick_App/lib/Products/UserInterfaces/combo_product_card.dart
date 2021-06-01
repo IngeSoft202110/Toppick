@@ -47,7 +47,7 @@ class ComboProductCard extends StatelessWidget {
           ]),
       child: Column(
         children: [
-          image("assets/img/pescadito.jpg", double.infinity, 120),
+          image(this.selected.ulrImage, double.infinity, 120),
           productTitle(this.selected.name),
           (this.selected.category == "A la carta")
               ? AddTodoButton(this.selected)

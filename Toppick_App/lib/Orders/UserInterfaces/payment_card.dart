@@ -78,8 +78,8 @@ showBackWarning(BuildContext context){
     title: Text("Cancelar pago", style: TextStyle(color: Color(0xFFD76060)),),
     content: Text("¿Está seguro de querer volver al pedido?"),
     actions: [
-      yesButton,
       noButton,
+      yesButton,
     ],
   );
   showDialog(
