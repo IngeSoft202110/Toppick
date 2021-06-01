@@ -79,4 +79,30 @@ module.exports = {
             }
         });
     },
+
+
+    cerrarTienda: (id) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                 await db.cerrarTienda(id);
+                return resolve("cierre");
+            } catch (e) {
+                reject(e);
+            }
+        });
+    },
+
+    abrirTienda: (id) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                 await db.abrirTienda(id);
+                return resolve("apertura");
+            } catch (e) {
+                reject(e);
+            }
+        });
+    },
+
+
+
 }

@@ -7,10 +7,10 @@ const router = express.Router();
     APP
 
 */
-
+const { isLoggedIn } = require('../../utils/auth/auth');
 
 //listar tiendas
-router.get('/',function(req, res,next) {
+router.get('/',isLoggedIn,function(req, res,next) {
     controller.listarTiendas()
     .then(tiendas=>{
         response.success(req,res,tiendas,200);
@@ -21,7 +21,7 @@ router.get('/',function(req, res,next) {
 
 
 //listar tiendas by id
-router.get('/tienda/:id',function(req, res,next) {
+router.get('/tienda/:id',isLoggedIn,function(req, res,next) {
     const id = req.params.id;
     controller.listarTiendabyId(id)
     .then(tiendas=>{
@@ -35,7 +35,7 @@ router.get('/tienda/:id',function(req, res,next) {
 
 
 // lista los horarios by id
-router.get('/horario/:id',function(req, res,next) {
+router.get('/horario/:id',isLoggedIn,function(req, res,next) {
     const id = req.params.id;
     controller.listarHorarioTienda(id)
     .then(tiendas=>{
@@ -59,7 +59,7 @@ router.get('/catalogo/:id',function(req, res,next) {
 
 
 //listar tiendas por producto
-router.get('/producto/:id', function(req, res,next) {
+router.get('/producto/:id', isLoggedIn,function(req, res,next) {
     const id = req.params.id;
     controller.listarTiendaPorProducto(id)
     .then(tiendas=>{
@@ -72,8 +72,8 @@ router.get('/producto/:id', function(req, res,next) {
 
 
 //cierre de caja
-router.get('/cierre',function(req, res,next) {
-    const id = req['user'].IdUsuario;
+router.get('/cierre/:id',function(req, res,next) {
+    const id = req.params.id;
     
     controller.cierreCajaTienda(id)
     .then(cierre=>{
@@ -83,6 +83,29 @@ router.get('/cierre',function(req, res,next) {
     });
 });
 
+
+//cerrar la tienda
+router.patch('/cierreTienda/:id',function(req, res,next) {
+    const id = req.params.id;
+    controller.cerrarTienda(id)
+    .then(cierre=>{
+        response.success(req,res,cierre,200);
+    }).catch((e)=>{
+        next(e);
+    });
+});
+
+
+//abrir la tienda
+router.patch('/AperturaTienda/:id',function(req, res,next) {
+    const id = req.params.id;
+    controller.abrirTienda(id)
+    .then(cierre=>{
+        response.success(req,res,cierre,200);
+    }).catch((e)=>{
+        next(e);
+    });
+});
 
 
 

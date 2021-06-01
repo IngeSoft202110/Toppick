@@ -22,6 +22,7 @@ module.exports = {
                 return resolve(response);
             }catch(e)
             {
+                console.log("error in store pedido: " + e);
                 reject(e);
             }
      });
@@ -60,6 +61,17 @@ module.exports = {
             try {
                 const ordenes =  await db.listarOrdenesPorIdTienda(id);
                 return resolve(ordenes);
+            } catch (error) {
+                return reject(error);
+            }
+     });
+    },
+
+    listarTodaLaOrdenPorId:  (id)=>{
+        return new Promise( async(resolve, reject) => {
+            try {
+                const orden =  await db.listarTodaLaOrdenPorId(id);
+                return resolve(orden);
             } catch (error) {
                 return reject(error);
             }

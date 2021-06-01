@@ -11,7 +11,7 @@ const {
     } = require('../../utils/schemas/pedido');
 
 const validation = require('../../utils/middleware/validationHandler');
-
+const { isLoggedIn } = require('../../utils/auth/auth');
 
 /*
 
@@ -26,26 +26,23 @@ function initializeSockets(io)
 {
      io.on('connection', socket => {
         socket.on('new_Store', idStore => {
-            console.log(idStore);
           socket.storeid = idStore;
           stores[idStore] = socket;
         })
         //crea un pedido
 
-        router.post('/',validation(createPedidoSchema), function (req, res,next) {
+        router.post('/',isLoggedIn,validation(createPedidoSchema), function (req, res,next) {
             const storeid = req.body.PuntoDeVenta_idPuntodeVenta;
             req.body.Cliente_IdCliente = req['user'].IdUsuario;
             controller.crearOrden(req.body,res)
-                .then(idOrden => {
-                    if(idOrden === "no hay fondos suficientes") response.error(req,res,"no hay fondos suficientes",400);
-                    
-                    socket.broadcast.emit('pedidos',req.body);
-                    response.success(req,res,"creado Correctamente",201);
+                .then(orden => {
+                    if(orden === "no hay fondos suficientes") response.error(req,res,"no hay fondos suficientes",400);
+                    socket.broadcast.emit('pedidos',orden);
+                    response.success(req,res,{id:orden.idPedido},201);
                 }).catch((e) => {
+                    console.log("error in network pedido: " + e);
                     next(e);
                 });
-            
-            
         });
       });
 }
@@ -53,7 +50,7 @@ function initializeSockets(io)
 
 
 //listar pedido por id
-router.get('/pedido/:id', function (req, res,next) {
+router.get('/pedido/:id',isLoggedIn,function (req, res,next) {
     const id = req.params.id;
     controller.listarOrdenbyId(id)
         .then(orden => {
@@ -65,7 +62,7 @@ router.get('/pedido/:id', function (req, res,next) {
 
 
 //lista los pedidos realizados por un usuario
-router.get('/usuario', function (req, res,next) {
+router.get('/usuario',isLoggedIn, function (req, res,next) {
     
     const id = req['user'].IdUsuario;
     controller.listarOrdenesPorIdUsuario(id)
@@ -106,9 +103,8 @@ router.patch('/pedido/:id', validation(updatePedidoSchema), function (req, res,n
 
 //listar Historial pedidos del dia 
 
-router.get( '/tienda', function (req, res,next) {
-    const id = req['user'].IdUsuario;
-    console.log(id);
+router.get( '/tienda/:id', function (req, res,next) {
+    const id = req.params.id;
     controller.listarOrdenesPorIdTienda(id)
         .then(ordenes => {
             response.success(req, res, ordenes, 200);

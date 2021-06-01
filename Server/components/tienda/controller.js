@@ -82,11 +82,40 @@ function cierreCajaTienda(id){
     }) 
 }
 
+
+function cerrarTienda (id)  {
+    return new Promise((resolve, reject) => {
+        try {
+            return resolve(store.cerrarTienda(id));
+        } catch (e) {
+            reject(e);
+        }
+    });
+}
+
+function abrirTienda (id)  {
+    return new Promise((resolve, reject) => {
+        try {
+            return resolve(store.abrirTienda(id));
+        } catch (e) {
+            reject(e);
+        }
+    });
+}
+
+
+
+
+
+
+
 module.exports = {
     listarTiendas,
     listarTiendabyId,
     listarTiendasProductos,
     listarHorarioTienda,
     listarTiendaPorProducto,
-    cierreCajaTienda
+    cierreCajaTienda,
+    cerrarTienda,
+    abrirTienda
 };

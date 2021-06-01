@@ -27,4 +27,16 @@ module.exports = {
      });
     }, 
 
+    isLoggedIn: (id) =>{
+        return new Promise( async (resolve, reject) => {
+            try{
+                const response = await db.isLoggedIn(id);
+                return resolve(response);
+            }catch(e)
+            {
+                reject(e);
+            }
+     });
+    }
+
 }

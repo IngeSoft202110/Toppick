@@ -6,10 +6,11 @@ const pagos = require('../components/pagos/network');
 const resenas = require('../components/reseñas/network');
 const { isLoggedIn } = require('../utils/auth/auth');
 
+
 const routes = function (server) {
-    server.use('/productos',isLoggedIn,productos);
-    server.use('/tienda',isLoggedIn,tienda);
-    server.use('/pedidos',isLoggedIn,pedidos.router);
+    server.use('/productos',productos);
+    server.use('/tienda',tienda);
+    server.use('/pedidos',pedidos.router);
     server.use('/pagos',isLoggedIn,pagos);
     server.use('/usuarios', usuario);
     server.use('/resena',isLoggedIn, resenas);

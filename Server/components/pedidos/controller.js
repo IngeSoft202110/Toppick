@@ -22,6 +22,7 @@ function crearOrden(orden,res) {
             return resolve(response);
 
         } catch (error) {
+            console.log("error in controller pedido: " + error);
             return reject(error);
         }
     });
@@ -98,6 +99,20 @@ function listarOrdenesPorIdTienda(id) {
 
 }
 
+function listarTodaLaOrdenPorId(id) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!id) {
+                console.error('[predidoController] No hay id');
+                return reject(new Error("faltan datos id"));
+            }
+            return await resolve(store.listarTodaLaOrdenPorId(id));
+        } catch (error) {
+            return reject(error);
+        }
+    });
+
+}
 
 
 module.exports = {
@@ -108,7 +123,8 @@ module.exports = {
 
 
     modificarOrden,
-    listarOrdenesPorIdTienda
+    listarOrdenesPorIdTienda,
+    listarTodaLaOrdenPorId
 };
 
 

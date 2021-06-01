@@ -20,11 +20,7 @@ function withErrorStack(err, stack) {
   }
 }
 
-function logErrors(err, req, res, next) {
-  if(err.status === 500)
-  console.log(err.stack);
-  next(err);
-}
+
 
 function wrapErrors(err, req, res, next) {
   if (!err.isBoom) {
@@ -33,6 +29,13 @@ function wrapErrors(err, req, res, next) {
 
   next(err);
 }
+
+function logErrors(err, req, res, next) {
+  if(err.status === 500)
+  console.log(err.stack);
+  next(err);
+}
+
 
 function clientErrorHandler(err, req, res, next) {
   const {

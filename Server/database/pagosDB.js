@@ -43,7 +43,7 @@ async function crearMetodoDePago(info) {
         if (error === "ya esta registrado, intente nuevamente")
             throw boom.conflict("ya esta registrado, intente nuevamente");
         else
-            throw new Error("error en la creacion de Cierre de caja");
+            throw new Error("error en la creacion de metodos de pago");
     }
 }
 

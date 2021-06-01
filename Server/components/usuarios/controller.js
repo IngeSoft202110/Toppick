@@ -36,7 +36,23 @@ function editarUsuario(id, user) {
 }
 
 
+function isLoggedIn(id) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!id) {
+        console.error("[usuarioController]falta el metodo");
+        return reject(new Error("faltan datos id"));
+      }
+      const response = await store.isLoggedIn(id);
+      return resolve(response);
+    } catch (error) {
+      return reject(error);
+    }
+  });
+}
+
 module.exports = {
   listarUsuario,
-  editarUsuario
+  editarUsuario,
+  isLoggedIn
 }

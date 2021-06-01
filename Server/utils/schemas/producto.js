@@ -51,7 +51,7 @@ const carritoItemSchema = Joi.object({
     Producto_idProducto: productIdSchema.required(),
     CantidadProducto:Joi.number().min(1).max(99).required(),
     comentario:Joi.string().allow(null, '').min(0).max(500).required(),
-    Acompañaminetos:acompanantesArraySchema
+    Acompañamientos:acompanantesArraySchema
 })
 
 

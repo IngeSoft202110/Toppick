@@ -11,11 +11,11 @@ const {
     carritoSchema
 } = require('../../utils/schemas/producto');
 
-
+const { isLoggedIn } = require('../../utils/auth/auth');
 //APP
 
 //lista todos los productos
-router.get('/',function(req, res,next) {
+router.get('/',isLoggedIn,function(req, res,next) {
     controller.listarProductos()
     .then(productos=>{
         response.success(req,res,productos,200);
@@ -38,7 +38,7 @@ router.get('/:id',function(req, res,next) {
 
 
 //lista los acompañantes de un producto por id
-router.get('/acompanamientos/:id',function(req,res,next){
+router.get('/acompanamientos/:id',isLoggedIn,function(req,res,next){
     const id = req.params.id;
     controller.listarAcompanantesProductoById(id)
     .then(acompanantes=>{
@@ -52,7 +52,7 @@ router.get('/acompanamientos/:id',function(req,res,next){
 
 
 //lista los productos de un combo dado su id
-router.get('/combo/:id',function(req,res,next) {
+router.get('/combo/:id',isLoggedIn,function(req,res,next) {
     const id = req.params.id;
     controller.listarProductosComboById(id)
     .then(productos=>{
@@ -77,8 +77,8 @@ router.post('/',validation(createProductSchema),function(req, res,next) {
 });
 
 
-router.patch('/inventario',validation(productIventarioSchema),function(req,res,next){
-    controller.modificarInventario(req['user'].IdUsuario,req.body)
+router.patch('/inventario/:id',validation(productIventarioSchema),function(req,res,next){
+    controller.modificarInventario(req.params.id,req.body)
     .then(productos=>{
         response.success(req,res,productos,200);
     }).catch((e)=>{

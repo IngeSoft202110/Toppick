@@ -78,6 +78,7 @@ app.use(function (req, res, next) {
   res.status(statusCode).json(payload);
 });
 
-app.use(logErrors);
+
 app.use(wrapErrors);
+app.use(logErrors);
 app.use(clientErrorHandler);

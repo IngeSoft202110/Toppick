@@ -66,9 +66,9 @@ async function getAStoresBySpecificProduct(id) {
 
 async function cierreCajaTienda(id) {
 
-    const TOTALVENDIDO = totalGanado(id);
-    const MASVENDIDO = masVendidos(id);
-    const MASINGRESOS = masingresos(id);
+    const TOTALVENDIDO = totalGanado(id,getDate1(),getDate2());
+    const MASVENDIDO = masVendidos(id,getDate1(),getDate2());
+    const MASINGRESOS = masingresos(id,getDate1(),getDate2());
 
     const object = {}
     const objectResponse = {};
@@ -83,7 +83,7 @@ async function cierreCajaTienda(id) {
         objectResponse.total = (responseTotal[0].total) || 0;
         objectResponse.mascantidad = await object.cantidad(MASVENDIDO);
         objectResponse.masingresos = await object.ingresos(MASINGRESOS);
-    
+        console.log("buenas llego hasta aca")
         const currenDate = getDate();
     
         await pool.query("START TRANSACTION");
@@ -101,6 +101,8 @@ async function cierreCajaTienda(id) {
     
         return objectResponse;
     } catch (error) {
+        console.log("buenas llego hasta aca error")
+        console.log(error);
         pool.query("rollback");
         throw new Error("error en la creacion de Cierre de caja");
     }
@@ -109,7 +111,19 @@ async function cierreCajaTienda(id) {
 
 
 
+async function cerrarTienda(id) 
+{
+    await  pool.query(`UPDATE PuntoDeVenta
+      SET Estado = 'Cerrado'
+      WHERE PuntoDeVenta.idPuntodeVenta = ${id}`)
+}
 
+async function abrirTienda(id) 
+{
+    await  pool.query(`UPDATE PuntoDeVenta
+      SET Estado = 'Abierto'
+      WHERE PuntoDeVenta.idPuntodeVenta = ${id}`)
+}
 
 
 module.exports = {
@@ -118,7 +132,9 @@ module.exports = {
     getAll,
     getSchedule,
     getAStoresBySpecificProduct,
-    cierreCajaTienda
+    cierreCajaTienda,
+    cerrarTienda,
+    abrirTienda
 }
 
 
@@ -131,17 +147,18 @@ module.exports = {
 
 
 
-function masVendidos(id) {
+function masVendidos(id,fechaInicio,fechaFinal) {
     const query = `WITH maximos (id,veces) AS
     (
         SELECT Carrito.Producto_idProducto, COUNT(Carrito.Producto_idProducto) as total
         from  Pedido, Carrito
-        where Pedido.PuntoDeVenta_idPuntodeVenta = ${id} and Pedido.idPedido = Carrito.Pedido_idPedido
+        where Pedido.PuntoDeVenta_idPuntodeVenta = ${id} and Pedido.idPedido = Carrito.Pedido_idPedido and
+        Pedido.fechaCreacion BETWEEN ${fechaInicio} AND ${fechaFinal}
         GROUP by Carrito.Producto_idProducto
     )
-    select  id,MAX(veces) as total
-    FROM  maximos
-    GROUP BY id
+    select  id,nombreProducto,MAX(veces) as total
+    FROM  maximos, Producto
+    GROUP BY id, nombreProducto
     ORDER BY  total DESC  
     lIMIT 3
     `
@@ -149,27 +166,27 @@ function masVendidos(id) {
 }
 
 
-function totalGanado(id) {
+function totalGanado(id,fechaInicio,fechaFinal) {
     const query = `SELECT sum(costoTotal) as total
     FROM Pedido
-    where Pedido.PuntoDeVenta_idPuntodeVenta = ${id}`;
+    where Pedido.PuntoDeVenta_idPuntodeVenta = ${id} and Pedido.fechaCreacion BETWEEN ${fechaInicio} AND ${fechaFinal}`;
     return query;
 }
 
 
 
-function masingresos(id) {
+function masingresos(id,fechaInicio,fechaFinal) {
     const query = `WITH maximos (id,veces) AS
     (
         SELECT Carrito.Producto_idProducto, COUNT(Carrito.Producto_idProducto)*Producto.precio as total
         from  Pedido, Carrito, Producto
         where Pedido.PuntoDeVenta_idPuntodeVenta = ${id} and Pedido.idPedido = Carrito.Pedido_idPedido
-        and Producto.idProducto = Carrito.Producto_idProducto
+        and Producto.idProducto = Carrito.Producto_idProducto and Pedido.fechaCreacion BETWEEN ${fechaInicio} AND ${fechaFinal}
         GROUP by Carrito.Producto_idProducto
     )
-    select  id,MAX(veces) as total
-    FROM  maximos
-    GROUP BY id
+    select  id, nombreProducto,MAX(veces) as total
+    FROM  maximos, Producto
+    GROUP BY id, nombreProducto
     ORDER BY  total DESC  
     lIMIT 3`
     return query;
@@ -189,5 +206,26 @@ function getDate() {
     const fecha = `STR_TO_DATE('${year}-${month}-${day} ${hour}:${minutes}:${seconds}' , '%Y-%m-%d %T')`;
 
 
+    return fecha;
+}
+
+
+function getDate1() {
+    let ts = Date.now();
+    let date_ob = new Date(ts);
+    let day = date_ob.getDate();
+    let month = date_ob.getMonth() + 1;
+    let year = date_ob.getFullYear();
+    const fecha = `STR_TO_DATE('${year}-${month}-${day} 00:00:00' , '%Y-%m-%d %T')`;
+    return fecha;
+}
+
+function getDate2() {
+    let ts = Date.now();
+    let date_ob = new Date(ts);
+    let day = date_ob.getDate();
+    let month = date_ob.getMonth() + 1;
+    let year = date_ob.getFullYear();
+    const fecha = `STR_TO_DATE('${year}-${month}-${day} 23:59:59' , '%Y-%m-%d %T')`;
     return fecha;
 }

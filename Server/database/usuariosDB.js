@@ -10,7 +10,7 @@ async function listarUsuario(id){
 
     try {
          const response = await object.listar(id);
-         return response;   
+         return response[0];   
     } catch (error) {
         throw new Error ("error en listar usuario");
     }
@@ -45,12 +45,17 @@ async function editarUsuario (id,usuario)
 
 
 
-
+async function isLoggedIn(id)
+{
+    const response = await pool.query(`SELECT * FROM sessions WHERE data = '{"cookie":{"originalMaxAge":null,"expires":null,"httpOnly":true,"path":"/"},"passport":{"user":${id}}}' `);
+    return response.length;
+}
 
 
 
 
 module.exports = {
     listarUsuario,
-    editarUsuario
+    editarUsuario,
+    isLoggedIn
 }

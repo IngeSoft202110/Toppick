@@ -20,10 +20,9 @@ passport.use('login',new LocalStrategy({
   async function (req, username, password, done) {
     try {
       const response = await object.getUserByUserName(username);
-      if(response.length == 0){ return done(null, false, { message: 'Informacion incorrecta' }); }
+      if(response.length == 0){return done(null, false, { message: 'Informacion incorrecta' }); }
       if (!response[0].nombreUsuario) { return done(null, false, { message: 'Informacion incorrecta' }); }
-      if (!helper.matchPassword(password,response[0].contraseña)) {return done(null, false, { message: 'Informacion incorrecta' }); }
-
+      if (!await helper.matchPassword(password,response[0].contraseña)) { return done(null, false, { message: 'Informacion incorrecta' }); }
       if(req.body.token)
       await object.updateToken(req.body.token,response[0].IdUsuario);
 
