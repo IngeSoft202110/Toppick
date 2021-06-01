@@ -14,6 +14,27 @@ class OrderHistoryCard extends StatefulWidget {
 
 class _OrderHistoryCardState extends State<OrderHistoryCard> {
   Tienda? store;
+
+  showRejection(BuildContext context, String razones){
+  Widget okButton = TextButton(
+    child: Text("OK"),
+    onPressed: () {Navigator.pop(context);}
+  );
+  AlertDialog alert = AlertDialog(
+    title: Text("Razones de rechazo", style: TextStyle(color: Color(0xFFD76060)),),
+    content: Text("$razones"),
+    actions: [
+      okButton,
+    ],
+  );
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
   List<Widget> loadOrderInformation(){
     List<Widget> result = [];
     result.add(
@@ -48,14 +69,18 @@ class _OrderHistoryCardState extends State<OrderHistoryCard> {
     result.add(
       Padding(
         padding: const EdgeInsets.only(left: 10.0, top: 5.0, bottom: 5.0),
-        child: Text("Fecha reclamo: $time", style: TextStyle(color: Color(0xFF0CC665), fontWeight: FontWeight.bold),),
+        child: Text("Reclamo: $time", style: TextStyle(color: Color(0xFF0CC665), fontWeight: FontWeight.bold),),
       )
     );
-    if(widget.current.estadoPedido == "Cancelado"){
+    print(widget.current.estadoPedido);
+    if(widget.current.estadoPedido == "Rechazado"){
       result.add(
-        Padding(
-          padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0, bottom: 5.0),
-          child: Flexible(child: Text("Razon rechazo: ${widget.current.razonRechazo}", style: TextStyle(color: Color(0xFFD76060)),)),
+        Container(
+          padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+          child: IconButton(
+            icon: Icon(Icons.info, color: Color(0xFFD76060),),
+            onPressed: () => showRejection(context, widget.current.razonRechazo),
+          )//Text("Razon rechazo: ${widget.current.razonRechazo}", style: TextStyle(color: Color(0xFFD76060)),),
         )
       );
     }

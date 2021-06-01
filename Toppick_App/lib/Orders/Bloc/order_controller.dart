@@ -24,6 +24,19 @@ class OrderController {
     return this.orderqueries.funcionDatos(pedido, prefs);
   }
 
+  showLoader(BuildContext context){
+    AlertDialog alert = AlertDialog(
+      content: Container(height: 125, child: CircularProgressIndicator())
+    );
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context){
+        return alert;
+      }
+    );
+  }
+
   DateTime getMaxShopsHour(Pedido currentP, int day){
     if(currentP.carrito.isNotEmpty){
       DateTime current = DateTime.now();

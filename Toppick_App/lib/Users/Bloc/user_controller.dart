@@ -132,6 +132,26 @@ class UserController{
     );
   }
 
+  showLogoutError(BuildContext context) {
+    Widget okButton = TextButton(
+      child: Text("OK"),
+      onPressed: () {Navigator.pop(context);},
+    );
+    AlertDialog alert = AlertDialog(
+      title: Text("No se puede cerrar sesión", style: TextStyle(color: Color(0xFFD76060)),),
+      content: Text("Aún tienes pedidos activos, por lo que no puedes cerrar sesión aún."),
+      actions: [
+        okButton,
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   showLoginError(BuildContext context) {
     Navigator.of(context).pop();
     Widget okButton = TextButton(

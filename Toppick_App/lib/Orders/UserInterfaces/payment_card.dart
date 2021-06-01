@@ -1,13 +1,14 @@
 import 'package:Toppick_App/GeneralUserInterfaces/generic_button.dart';
 import 'package:Toppick_App/Orders/Bloc/order_controller.dart';
 import 'package:Toppick_App/Orders/Models/pedido.dart';
+import 'package:Toppick_App/Users/UserInterfaces/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-showCorrectPayment(BuildContext context){
+showCorrectPayment(BuildContext context, dynamic prefs, Pedido nuevo){
   Widget okButton = TextButton(
     child: Text("OK"),
-    onPressed: () { Navigator.of(context).pop(); Navigator.of(context).pop();Navigator.of(context).pop();}
+    onPressed: () { Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>HomeScreen(nuevo, prefs)), (route) => false);}
   );
   AlertDialog alert = AlertDialog(
     title: Text("Pedido realizado", style: TextStyle(color: Color(0xFF0CC665)),),
@@ -136,14 +137,17 @@ class PaymentCard extends StatelessWidget {
       if(this.paymentMethod!.availableAmount > this.totalValue){
         this.actual.fechaCreacion = DateTime.now();
         this.actual.costoTotal = this.totalValue;
+        this.controller.showLoader(context);
         this.controller.sendOrder(this.actual, this.prefs).then(
           (value){
+            Navigator.of(context).pop();
             if(value){
               this.actual.carrito.clear();
               this.actual.costoTotal = 0;
               this.actual.fechaCreacion = DateTime.now();
               this.actual.fechaReclamo = DateTime.now();
-              showCorrectPayment(context);
+              this.prefs.setInt('cantidades', 0);
+              showCorrectPayment(context, this.prefs, this.actual);
             }else{
               showInCorrectPayment(context);
             }

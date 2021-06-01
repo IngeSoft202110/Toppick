@@ -39,6 +39,7 @@ class Pedido{
       DateTime.now(),
       json['costoTotal'],
       DateTime.parse(json['fechaReclamo']),
-      json['estadoPedido']);
+      json['estadoPedido'],
+      razonRechazo: (json['razonRechazo']==null)?"":json['razonRechazo']);
   }
 }

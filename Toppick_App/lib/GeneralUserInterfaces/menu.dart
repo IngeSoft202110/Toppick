@@ -42,7 +42,7 @@ class Menu extends StatelessWidget {
         } 
         );
       }else{
-        this.controller.showError(context);
+        this.controller.showLogoutError(context);
       }
     };
     return Scaffold(

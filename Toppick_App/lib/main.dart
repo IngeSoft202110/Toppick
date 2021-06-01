@@ -32,13 +32,15 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-
+    
     PushNotificationService.messagesStream.listen((message) {
       //Se deja en la pagina de inicio y se borra todo lo anterior, con esto ya luego se redirige a la que sigue dependiendo del estado
-      navigatorKey.currentState?.pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainPage(widget.prefs)), (route) => false);
-      if (message == "Rechazado" || message == "Terminado")
+      navigatorKey.currentState?.pushAndRemoveUntil(MaterialPageRoute(builder: (context) => HomeScreen(Pedido(0, DateTime.now(), 0, DateTime.now(), "Solicitado"),widget.prefs, reset: "Si",)), (route) => false);
+      if (message == "Rechazado" || message == "Terminado"){
+        int actual = widget.prefs.getInt('pedidos actuales');
+        widget.prefs.setInt('pedidos actuales', actual-1);
         navigatorKey.currentState?.pushNamed('historial');
-      else
+      }else
         navigatorKey.currentState?.pushNamed('activos');
     });
     
