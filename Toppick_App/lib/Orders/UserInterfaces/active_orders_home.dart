@@ -28,8 +28,10 @@ class ActiveOrdersHome extends StatelessWidget {
     ));
     int count = 1;
     this.activeOrders.forEach((element) {
-      result.add(ActiveOrderCard(element, count));
-      count += 1;
+      if(element.carrito.isNotEmpty){
+        result.add(ActiveOrderCard(element, count));
+        count += 1;
+      }
     });
     result.add(SizedBox(
       height: 10,

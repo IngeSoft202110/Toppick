@@ -72,7 +72,6 @@ class _OrderHistoryCardState extends State<OrderHistoryCard> {
         child: Text("Reclamo: $time", style: TextStyle(color: Color(0xFF0CC665), fontWeight: FontWeight.bold),),
       )
     );
-    print(widget.current.estadoPedido);
     if(widget.current.estadoPedido == "Rechazado"){
       result.add(
         Container(

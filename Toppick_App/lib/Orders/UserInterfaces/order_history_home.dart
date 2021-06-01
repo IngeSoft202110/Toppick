@@ -28,8 +28,10 @@ class OrderHistoryHome extends StatelessWidget {
     );
     int count = 1;
     this.history.forEach((element) {
-      result.add(OrderHistoryCard(element, count));
-      count += 1;
+      if(element.carrito.isNotEmpty){
+        result.add(OrderHistoryCard(element, count));
+        count += 1;
+      }
     });
     result.add(SizedBox(
       height: 10,

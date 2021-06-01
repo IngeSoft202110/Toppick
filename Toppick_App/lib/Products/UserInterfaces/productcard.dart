@@ -34,16 +34,6 @@ class ProductCard extends StatelessWidget {
               padding: const EdgeInsets.only(left: 10.0, right: 10.0),    
                 child: Text(this.product.name, style: TextStyle(color: Colors.red)),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.star, color: Colors.amber,),
-                Icon(Icons.star, color: Colors.amber,),
-                Icon(Icons.star, color: Colors.amber,),
-                Icon(Icons.star, color: Colors.amber,),
-                Icon(Icons.star),
-              ],
-            ),
             Text('\$$price', style: TextStyle(fontWeight: FontWeight.bold),),
           ],
         ),
