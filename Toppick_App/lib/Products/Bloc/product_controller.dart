@@ -101,7 +101,7 @@ class ProductController {
 
   showLoader(BuildContext context){
     AlertDialog alert = AlertDialog(
-      content: Container(height: 125, child: CircularProgressIndicator())
+      content: Container(height: 150, child: CircularProgressIndicator())
     );
     showDialog(
       barrierDismissible: false,

@@ -70,8 +70,10 @@ class ProductQueries {
         dynamic a = Combo.fromJson(y);
         result.add(a);
       }else{
-        dynamic a = Producto.fromJson(y);
-        result.add(a);
+        if(y['precio']!=0){
+          dynamic a = Producto.fromJson(y);
+          result.add(a);
+        }
       }
     }
     return result; 

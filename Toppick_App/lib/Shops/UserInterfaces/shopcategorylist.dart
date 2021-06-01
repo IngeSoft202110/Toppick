@@ -93,7 +93,6 @@ class ShopCategoryList extends StatelessWidget {
                     return Center(
                       child: Container(
                         padding: const EdgeInsets.only(top: 50.0,),
-                        height: 100,
                         child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFFFEEE)),)
                       ),
                     );

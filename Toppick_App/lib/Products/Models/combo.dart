@@ -12,7 +12,7 @@ class Combo extends Producto {
       json['descripcion'],
       json['precio'],
       json['tiempoPreparacion'],
-      (json['calificacion']==null)?0:json['calificacion'],
+      (json['calificacion']==null)?0:json['calificacion'].toDouble(),
       (json['urlImagen']==null)?"assets/img/pescadito.jpg":json['urlImagen'],
       json['categoria'],
       json['tipo']);

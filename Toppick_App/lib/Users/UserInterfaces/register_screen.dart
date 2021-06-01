@@ -23,8 +23,18 @@ class RegisterScreen extends StatelessWidget {
 
   final formKey = GlobalKey<FormState>();
 
+  final FocusNode nameFocus = FocusNode();
+  final FocusNode documentFocus = FocusNode();
+  final FocusNode emailFocus = FocusNode();
+  final FocusNode passwordFocus = FocusNode();
+  final FocusNode phoneFocus = FocusNode();
+
   void notifyParent(String nValue){
     this.dropdownValue = nValue;
+  }
+
+  void requestFocus(BuildContext context, FocusNode selected){
+    FocusScope.of(context).requestFocus(selected);
   }
 
   @override
@@ -98,6 +108,8 @@ class RegisterScreen extends StatelessWidget {
                           left: 45,
                         ),
                         child: TextFormField(
+                          focusNode: nameFocus,
+                          textInputAction: TextInputAction.next,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20),
@@ -106,6 +118,9 @@ class RegisterScreen extends StatelessWidget {
                           ),
                           onSaved: (value) {
                             nameValue = value!;
+                          },
+                          onEditingComplete: () {
+                            requestFocus(context, documentFocus);
                           },
                           validator: (value) {
                             if (!this.controller.isEmpty(value!).contains("válido")) {
@@ -142,6 +157,8 @@ class RegisterScreen extends StatelessWidget {
                                 ),
                                 child: TextFormField(
                                   keyboardType: TextInputType.number,
+                                  focusNode: documentFocus,
+                                  textInputAction: TextInputAction.next,
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(20),
@@ -150,6 +167,9 @@ class RegisterScreen extends StatelessWidget {
                                   ),
                                   onSaved: (value) {
                                     documentValue = value!;
+                                  },
+                                  onEditingComplete: (){
+                                    requestFocus(context, emailFocus);
                                   },
                                   validator: (value) {
                                     if (!this.controller.validateDocument(value!).contains("correcto")) {
@@ -169,6 +189,8 @@ class RegisterScreen extends StatelessWidget {
                           ),
                           child: TextFormField(
                             keyboardType: TextInputType.emailAddress,
+                            focusNode: emailFocus,
+                            textInputAction: TextInputAction.next,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(20),
@@ -177,6 +199,9 @@ class RegisterScreen extends StatelessWidget {
                             ), 
                             onSaved: (value){
                               emailValue = value!;
+                            },
+                            onEditingComplete: (){
+                              requestFocus(context, passwordFocus);
                             },
                             validator: (value){
                               if(!this.controller.validateEmail(value!).contains("válido")){
@@ -193,6 +218,8 @@ class RegisterScreen extends StatelessWidget {
                           ),
                           child: TextFormField(
                             keyboardType: TextInputType.visiblePassword,
+                            focusNode: passwordFocus,
+                            textInputAction: TextInputAction.next,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(20),
@@ -201,6 +228,9 @@ class RegisterScreen extends StatelessWidget {
                             ), 
                             onSaved: (value){
                               passwordValue = value!;
+                            },
+                            onEditingComplete: () {
+                              requestFocus(context, phoneFocus);
                             },
                             validator: (value){
                               if(!this.controller.validatePassword(value!).contains("válido")){
@@ -218,6 +248,7 @@ class RegisterScreen extends StatelessWidget {
                           ),
                           child: TextFormField(
                             keyboardType: TextInputType.number,
+                            focusNode: phoneFocus,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(20),

@@ -20,6 +20,10 @@ class EditUserInfoScreen extends StatelessWidget {
   final prefs;
   final Pedido current;
 
+  final FocusNode nameFocus = FocusNode();
+  final FocusNode identifierFocus = FocusNode();
+  final FocusNode phoneFocus = FocusNode();
+
   void notifyParent(String nValue){
     this.dropdownValue = nValue;
   }
@@ -49,6 +53,10 @@ class EditUserInfoScreen extends StatelessWidget {
       Navigator.pop(context);
       Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(this.current, this.prefs)));
     };
+
+    void requestFocus(BuildContext context, FocusNode selected){
+      FocusScope.of(context).requestFocus(selected);
+    }
 
     return WillPopScope(
       onWillPop: () async{
@@ -106,6 +114,8 @@ class EditUserInfoScreen extends StatelessWidget {
                             child: TextFormField(
                               initialValue: this.actual.nombreCompleto,
                               keyboardType: TextInputType.visiblePassword,
+                              focusNode: nameFocus,
+                              textInputAction: TextInputAction.next,
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(20),
@@ -114,6 +124,9 @@ class EditUserInfoScreen extends StatelessWidget {
                               ),
                               onSaved: (value){
                                 this.nNames = value!;
+                              },
+                              onEditingComplete: (){
+                                requestFocus(context, identifierFocus);
                               },
                               validator: (value){
                                 if(value!.isEmpty){
@@ -150,6 +163,8 @@ class EditUserInfoScreen extends StatelessWidget {
                                   child: TextFormField(
                                     initialValue: this.actual.documento.toString(),
                                     keyboardType: TextInputType.number,
+                                    textInputAction: TextInputAction.next,
+                                    focusNode: identifierFocus,
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(20),
@@ -158,6 +173,9 @@ class EditUserInfoScreen extends StatelessWidget {
                                     ),
                                     onSaved: (value) {
                                       this.nDocument= value!;
+                                    },
+                                    onEditingComplete: (){
+                                      requestFocus(context, phoneFocus);
                                     },
                                     validator: (value) {
                                       if(value!.isEmpty){
@@ -182,6 +200,7 @@ class EditUserInfoScreen extends StatelessWidget {
                             child: TextFormField(
                               initialValue: this.actual.celular.toString(),
                               keyboardType: TextInputType.number,
+                              focusNode: phoneFocus,
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(20),

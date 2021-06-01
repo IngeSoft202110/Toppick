@@ -17,6 +17,13 @@ class LoginScreen extends StatelessWidget {
   late String passwordValue;
   final formKey = GlobalKey<FormState>();
 
+  final FocusNode emailFocus = FocusNode();
+  final FocusNode passwordFocus = FocusNode();
+
+  void requestFocus(BuildContext context, FocusNode selected){
+    FocusScope.of(context).requestFocus(selected);
+  }
+
   @override
   Widget build(BuildContext context) {
     void main (){
@@ -86,6 +93,8 @@ class LoginScreen extends StatelessWidget {
                           ),
                           child: TextFormField(
                             keyboardType: TextInputType.emailAddress,
+                            focusNode: emailFocus,
+                            textInputAction: TextInputAction.next,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(20),
@@ -94,6 +103,9 @@ class LoginScreen extends StatelessWidget {
                             ),
                             onSaved: (value){
                               emailValue = value!;
+                            },
+                            onEditingComplete: (){
+                              requestFocus(context, passwordFocus);
                             },
                             validator: (value){
                               if(!this.controller.validateEmail(value!).contains("válido")){
@@ -109,6 +121,7 @@ class LoginScreen extends StatelessWidget {
                             left: 45,
                           ),
                           child: TextFormField(
+                            focusNode: passwordFocus,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(20),

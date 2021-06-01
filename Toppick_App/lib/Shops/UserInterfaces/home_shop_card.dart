@@ -6,6 +6,7 @@ import 'package:Toppick_App/Shops/Bloc/shop_controller.dart';
 import 'package:Toppick_App/Shops/Models/horario.dart';
 import 'package:Toppick_App/Shops/Models/tienda.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../GeneralUserInterfaces/generic_button.dart';
 
@@ -46,9 +47,14 @@ Widget cardHeader(String title, String status, String ubication) {
               fontSize: 20,
               color: (status=="Abierto") ? Color(0xFF0CC665) : Color(0xFFD76060)),
         ),
-        Icon(
-          Icons.place,
-          size: 30,
+        IconButton(
+          onPressed: () async{
+            await launch(ubication);
+          },
+          icon: Icon(
+            Icons.place,
+            size: 30,
+          ),
         )
       ],
     ),
