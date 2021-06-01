@@ -68,9 +68,6 @@ socket.on('pedidos', pedido => {
 
 
 
-
-
-
 var listaConfirmar = [];
 var listaEnCurso = [];
 var listaListos = [];
@@ -90,7 +87,7 @@ async function getOrders() {
     try {
         const response = await axios({
             method: "GET",
-            url: `https://toppickapp.herokuapp.com/pedidos/tienda/${idPuntoDeVenta}`
+            url: `https://toppickapp.herokuapp.com/pedidos/tienda/${ idPuntoDeVenta }`
         });
         console.log(response);
         // Get data from response
@@ -127,7 +124,6 @@ async function getOrders() {
 
                 productosd.push(p);
 
-
             }
             let nuevoP = {
                 id: pedido.idPedido,
@@ -149,6 +145,7 @@ async function getOrders() {
     }
 }
 getOrders();
+
 /**
  * Función que realiza una petición de tipo POST al servidor 
  * y pretende cambiar el estado de un pedido en una tienda. 

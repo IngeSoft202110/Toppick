@@ -98,26 +98,6 @@ app.get('/cierre_caja', isStoreLoggedIn, async (req,res) =>{
             url: `https://toppickapp.herokuapp.com/tienda/cierre/${ req.user.id }`
         }); 
 
-        const mi = response.data.body.masingresos; 
-        const mc = response.data.body.mascantidad; 
-
-        let p1_mc = mi[0].id, p2_mc = mi[1].id, p3_mc = mi[2].id; 
-        let p1_mi = mc[0].id, p2_mi = mi[1].id, p3_mi = mi[2].id; 
-        
-        // // Make a request for a user with a given ID
-        // axios.get('https://toppickapp.herokuapp.com/productos/p1_mc')
-        // .then(function (response) {
-        // // handle success
-        // console.log(response);
-        // })
-        // .catch(function (error) {
-        // // handle error
-        // console.log(error);
-        // })
-        // .then(function () {
-        // // always executed
-        // });
-        
         // Get data from response
         const totalVentas = response.data.body.total; 
         const productosMasVendidos = response.data.body.mascantidad; 
