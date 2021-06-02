@@ -36,6 +36,7 @@ class ProductListState extends State<ProductList> {
   //Esta es la lista de tiendas donde se puede conseguir el producto
   String currentTitle = "";
   String currentDescription = "";
+  String currentLogoCategory = "";
 
   Widget selectProductsFromCategory(BuildContext context, int index) {
     return Padding(
@@ -46,6 +47,7 @@ class ProductListState extends State<ProductList> {
             ProductCategoryCard selectedCard = widgets[index];
             this.currentTitle = selectedCard.categoryName;
             this.currentDescription = selectedCard.categoryDescription;
+            this.currentLogoCategory = selectedCard.categoryLogoPath;
             this.filtered = controller.filterProducts(this.productList, this.currentTitle);
           });
         },
@@ -90,7 +92,7 @@ class ProductListState extends State<ProductList> {
                     itemBuilder: selectProductsFromCategory,
                   ),
                 ),
-                ProductCategoryDisplay(this.currentTitle, this.currentDescription, this.filtered, widget.store!, widget.current, widget.prefs, widget.hKey),
+                ProductCategoryDisplay(this.currentTitle, this.currentDescription, this.currentLogoCategory, this.filtered, widget.store!, widget.current, widget.prefs, widget.hKey),
                 SizedBox(
                   height: 10,
                 ),

@@ -8,9 +8,10 @@ import 'home_combos_card.dart';
 import 'home_product_card.dart';
 
 class ProductCategoryDisplay extends StatelessWidget {
-  ProductCategoryDisplay(this.categoryName, this.categoryDescription, this.products, this.store, this.current, this.prefs, this.hKey);
+  ProductCategoryDisplay(this.categoryName, this.categoryDescription, this.categoryImagePath, this.products, this.store, this.current, this.prefs, this.hKey);
   final String categoryName;
   final String categoryDescription;
+  final String categoryImagePath;
   final List<dynamic> products;
   final Tienda store;
   final Pedido current;
@@ -57,7 +58,7 @@ class ProductCategoryDisplay extends StatelessWidget {
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(left: 15.0),
-                    child: ProductCard(products[index]),
+                    child: ProductCard(products[index], this.categoryImagePath),
                   ),
                 );
             },

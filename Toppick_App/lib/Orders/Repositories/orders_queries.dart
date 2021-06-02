@@ -124,9 +124,10 @@ class OrdersQueries {
           result.add(current);
           currentid = val['idPedido'];
           current = Pedido.fromJsonList(val);
-          actual = Tienda(-1, val['nombrePuntoDeVenta'], "category", "description", "url", "status", "ubication",0);
+          actual = Tienda(val['idPuntodeVenta'], val['nombrePuntoDeVenta'], "category", "description", "url", "status", "ubication",0);
           for(var product in val['carrito']){
-            Producto curr = Producto(-1, product['nombreProducto'], "description", 0, 0, 0, "ulrImage", "category", "type");
+            print(product['nombreProducto']);
+            Producto curr = Producto(product['Producto_idProducto'], product['nombreProducto'], "description", 0, 0, 0, "ulrImage", "category", "type");
             int quantity = product['CantidadProducto'];
             if(current.storeIsInCurrentOrder(actual)){
               current.addProductToSelectedStore(actual, curr, quantity);
@@ -140,10 +141,11 @@ class OrdersQueries {
         }else{
           if(cont==0){
             current = Pedido.fromJsonList(val);
-            actual = Tienda(-1, val['nombrePuntoDeVenta'], "category", "description", "url", "status", "ubication",0);
+            actual = Tienda(val['idPuntodeVenta'], val['nombrePuntoDeVenta'], "category", "description", "url", "status", "ubication",0);
           }
           for(var product in val['carrito']){
-            Producto curr = Producto(-1, product['nombreProducto'], "description", 0, 0, 0, "ulrImage", "category", "type");
+            print(product['nombreProducto']);
+            Producto curr = Producto(product['Producto_idProducto'], product['nombreProducto'], "description", 0, 0, 0, "ulrImage", "category", "type");
             int quantity = product['CantidadProducto'];
             if(current.storeIsInCurrentOrder(actual)){
               current.addProductToSelectedStore(actual, curr, quantity);
@@ -172,9 +174,9 @@ class OrdersQueries {
         if(currentid != val['idPedido']){
           currentid = val['idPedido'];
           current = Pedido.fromJsonList(val);
-          actual = Tienda(-1, val['nombrePuntoDeVenta'], "category", "description", "url", "status", "ubication",0);
+          actual = Tienda(val['idPuntodeVenta'], val['nombrePuntoDeVenta'], "category", "description", "url", "status", "ubication",0);
           for(var product in val['carrito']){
-            Producto curr = Producto(-1, product['nombreProducto'], "description", 0, 0, 0, "ulrImage", "category", "type");
+            Producto curr = Producto(product['Producto_idProducto'], product['nombreProducto'], "description", 0, 0, 0, "ulrImage", "category", "type");
             int quantity = product['CantidadProducto'];
             if(current.storeIsInCurrentOrder(actual)){
               current.addProductToSelectedStore(actual, curr, quantity);
@@ -188,10 +190,10 @@ class OrdersQueries {
         }else{
           if(cont==0){
             current = Pedido.fromJsonList(val);
-            actual = Tienda(-1, val['nombrePuntoDeVenta'], "category", "description", "url", "status", "ubication",0);
+            actual = Tienda(val['idPuntodeVenta'], val['nombrePuntoDeVenta'], "category", "description", "url", "status", "ubication",0);
           }
           for(var product in val['carrito']){
-            Producto curr = Producto(-1, product['nombreProducto'], "description", 0, 0, 0, "ulrImage", "category", "type");
+            Producto curr = Producto(product['Producto_idProducto'], product['nombreProducto'], "description", 0, 0, 0, "ulrImage", "category", "type");
             int quantity = product['CantidadProducto'];
             if(current.storeIsInCurrentOrder(actual)){
               current.addProductToSelectedStore(actual, curr, quantity);

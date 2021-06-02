@@ -52,10 +52,10 @@ class Tienda {
       json['nombrePuntoDeVenta'],
       json['tipoPuntoVenta'],
       json['descripcion'],
-      'assets/img/central.PNG',
+      json['urlImagen'],
       json['Estado'],
       json['urlUbicacion'],
-      (json['calificacion']==null)?0: json['calificacion']
+      json['calificacion'].toDouble()
     );
   }
 

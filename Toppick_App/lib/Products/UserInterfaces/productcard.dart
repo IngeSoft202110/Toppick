@@ -14,8 +14,9 @@ Widget image(String pathImage, double w, double h) {
 }
 
 class ProductCard extends StatelessWidget {
-  ProductCard(this.product);
+  ProductCard(this.product, this.categoryLogoPath);
   final Producto product;
+  final String categoryLogoPath;
   @override
   Widget build(BuildContext context) {
     var formatter = NumberFormat('#,###,000');
@@ -29,7 +30,7 @@ class ProductCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            image("assets/img/foodBox.png", 75, 75), //Aqui debe ir la URL del producto
+            image(this.categoryLogoPath, 100, 100), //Aqui debe ir la URL del producto
             Padding(
               padding: const EdgeInsets.only(left: 10.0, right: 10.0),    
                 child: Text(this.product.name, style: TextStyle(color: Colors.red)),

@@ -49,7 +49,8 @@ class ShopQueries {
     final parsed = first['body'];
     for(var val in parsed){
       if(val['Estado'] == "Abierto"){
-        result.add(Tienda.fromJson(val));
+        Tienda x = Tienda.fromJson(val);
+        result.add(x);
       }
     }
     return result;

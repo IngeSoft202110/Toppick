@@ -74,12 +74,20 @@ class _OrderHistoryCardState extends State<OrderHistoryCard> {
     );
     if(widget.current.estadoPedido == "Rechazado"){
       result.add(
-        Container(
-          padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-          child: IconButton(
-            icon: Icon(Icons.info, color: Color(0xFFD76060),),
-            onPressed: () => showRejection(context, widget.current.razonRechazo),
-          )//Text("Razon rechazo: ${widget.current.razonRechazo}", style: TextStyle(color: Color(0xFFD76060)),),
+        Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: IconButton(
+                icon: Icon(Icons.info, color: Color(0xFFD76060),),
+                onPressed: () => showRejection(context, widget.current.razonRechazo),
+              )//Text("Razon rechazo: ${widget.current.razonRechazo}", style: TextStyle(color: Color(0xFFD76060)),),
+            ),
+            Container(
+              padding: const EdgeInsets.only(right: 10.0),
+              child: Text("Info. rechazo", style: TextStyle(color: Color(0xFFD76060), fontWeight: FontWeight.bold))
+            )
+          ],
         )
       );
     }

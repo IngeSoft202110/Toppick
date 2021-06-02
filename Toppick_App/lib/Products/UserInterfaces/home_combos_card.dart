@@ -18,7 +18,7 @@ Widget image(String pathImage, double w, double h) {
         shape: BoxShape.rectangle,
         borderRadius: BorderRadius.all(Radius.circular(30.0)),
         image:
-            DecorationImage(fit: BoxFit.cover, image: AssetImage(pathImage))),
+            DecorationImage(fit: BoxFit.cover, image: NetworkImage(pathImage))),
   );
 }
 

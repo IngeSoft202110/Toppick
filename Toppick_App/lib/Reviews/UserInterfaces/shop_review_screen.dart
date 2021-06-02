@@ -24,7 +24,7 @@ class ShopReviewScreen extends StatelessWidget {
           shape: BoxShape.rectangle,
           
           image:
-              DecorationImage(fit: BoxFit.cover, image: AssetImage(pathImage))),
+              DecorationImage(fit: BoxFit.cover, image: NetworkImage(pathImage))),
     );
   }
 
@@ -59,66 +59,97 @@ class ShopReviewScreen extends StatelessWidget {
                       child: Text(this.shop.description, style: TextStyle(fontWeight: FontWeight.w400,fontSize: 15, color: Color(0xFF707070)),)
                     ),
                     Text("Reseñas", style: TextStyle(color: Color(0xFFD76060), fontSize: 30, fontWeight: FontWeight.bold)),
-                    SizedBox(
-                      height: 180,
-                      child: FutureBuilder(
-                        future: this.controller.getShopReviews(this.prefs.getString('cookie'), this.shop.id),
-                        builder: (context, AsyncSnapshot<List<Resena>> snapshot){
-                          switch (snapshot.connectionState) {
-                            case ConnectionState.none:
-                              break;
-                            case ConnectionState.waiting:
-                              break;
-                            case ConnectionState.active:
-                              break;
-                            case ConnectionState.done:
-                              if(snapshot.hasData){
-                                this.reviews = snapshot.data!;
-                                if(this.reviews.isNotEmpty){
-                                  return ListView.builder(
-                                    itemCount: this.reviews.length,
-                                    scrollDirection: Axis.vertical,
-                                    physics: ScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemBuilder: (BuildContext context, int index) => ReviewCard(this.reviews[index])
-                                  );
-                                }else{
-                                  return Center(
-                                    child:Text("No se han encontrado reseñas", style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFFFF441F), fontSize: 20,))
-                                  );
-                                }
+                    FutureBuilder(
+                      future: this.controller.getShopReviews(this.prefs.getString('cookie'), this.shop.id),
+                      builder: (context, AsyncSnapshot<List<Resena>> snapshot){
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.none:
+                            break;
+                          case ConnectionState.waiting:
+                            break;
+                          case ConnectionState.active:
+                            break;
+                          case ConnectionState.done:
+                            if(snapshot.hasData){
+                              this.reviews = snapshot.data!;
+                              if(this.reviews.isNotEmpty){
+                                double calificacion = this.reviews.first.calificacionPadre;
+                                return Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 180,
+                                      child: ListView.builder(
+                                        itemCount: this.reviews.length,
+                                        scrollDirection: Axis.vertical,
+                                        physics: ScrollPhysics(),
+                                        shrinkWrap: true,
+                                        itemBuilder: (BuildContext context, int index) => ReviewCard(this.reviews[index])
+                                      ),
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        Container(
+                                          padding: const EdgeInsets.only(top: 10.0, left:10.0, right: 10.0),
+                                          child: Text("Califiación total: ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Color(0xFFD76060)),)
+                                        ),
+                                        Container(
+                                          padding: const EdgeInsets.only(top: 10.0, left:10.0, right: 10.0),
+                                          child: RatingBar.builder(
+                                            initialRating: calificacion,
+                                            direction: Axis.horizontal,
+                                            allowHalfRating: true,
+                                            itemCount: 5,
+                                            ignoreGestures: true,
+                                            itemSize: 30,
+                                            itemBuilder: (context,_) =>Icon(Icons.star, color: Colors.amber,),
+                                            onRatingUpdate: (rating)=>{}
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                );
+                              }else{
+                                double calificacion = 0;
+                                return Column(
+                                  children: [
+                                    Center(
+                                      child:Text("No se han encontrado reseñas", style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFFFF441F), fontSize: 20,))
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        Container(
+                                          padding: const EdgeInsets.only(top: 10.0, left:10.0, right: 10.0),
+                                          child: Text("Califiación total: ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Color(0xFFD76060)),)
+                                        ),
+                                        Container(
+                                          padding: const EdgeInsets.only(top: 10.0, left:10.0, right: 10.0),
+                                          child: RatingBar.builder(
+                                            initialRating: calificacion,
+                                            direction: Axis.horizontal,
+                                            allowHalfRating: true,
+                                            itemCount: 5,
+                                            ignoreGestures: true,
+                                            itemSize: 30,
+                                            itemBuilder: (context,_) =>Icon(Icons.star, color: Colors.amber,),
+                                            onRatingUpdate: (rating)=>{}
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                );
                               }
-                          }
-                          return Center(
-                            child: Container(
-                              padding: const EdgeInsets.all(10),
-                              height: 50,
-                              child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.red),)
-                            ),
-                          );
+                            }
                         }
-                      )
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Container(
-                          padding: const EdgeInsets.only(top: 10.0, left:10.0, right: 10.0),
-                          child: Text("Califiación total: ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Color(0xFFD76060)),)
-                        ),
-                        Container(
-                          padding: const EdgeInsets.only(top: 10.0, left:10.0, right: 10.0),
-                          child: RatingBar.builder(
-                            initialRating: this.shop.calificacion,
-                            direction: Axis.horizontal,
-                            allowHalfRating: true,
-                            itemCount: 5,
-                            ignoreGestures: true,
-                            itemSize: 30,
-                            itemBuilder: (context,_) =>Icon(Icons.star, color: Colors.amber,),
-                            onRatingUpdate: (rating)=>{}
+                        return Center(
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            height: 50,
+                            child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.red),)
                           ),
-                        )
-                      ],
+                        );
+                      }
                     ),
                     Center(
                       child: GenericButton("Escribir reseña", Color(0xFF2196F3), 225, 40, 15, 0, 0, 0, 20, 20, createReview)

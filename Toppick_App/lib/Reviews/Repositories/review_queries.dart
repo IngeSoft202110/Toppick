@@ -39,6 +39,7 @@ class ReviewQueries{
       Uri.https(this.domain, '/resena/producto/$productId'),
       headers: {"Accept": "application/json", "Cookie":cookie}
     );
+    print(response.body);
     if(response.statusCode == 200){
       return parseReviews(response.body);
     }else{
@@ -66,8 +67,9 @@ class ReviewQueries{
     List<Resena> result = [];
     final first = json.decode(responseBody);
     final parsed = first['body'];
-    for(var val in parsed){
-      result.add(Resena.fromJson(val));
+    double calificacion = parsed['calificacion'].toDouble();
+    for(var val in parsed['reseñas']){
+      result.add(Resena.fromJson(val, calificacion));
     }
     return result;
   }
