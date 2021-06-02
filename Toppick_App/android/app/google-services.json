@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "748827736837",
+    "project_id": "notificaciones-toppick",
+    "storage_bucket": "notificaciones-toppick.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:748827736837:android:645b8d5abd0e25fcb0956c",
+        "android_client_info": {
+          "package_name": "com.example.Toppick_App"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "748827736837-83fdd8cpglu4en2j0ivbdhktkqk3n6jr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.Toppick_App",
+            "certificate_hash": "c5574e6435d5f9a137340c2237b4c62c89d2e043"
+          }
+        },
+        {
+          "client_id": "748827736837-4o1nqu4fqft8naeblqkrfbihuaidl6gd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqUryCViqcru98LlRDYN4bF9Jiq8-fnUc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "748827736837-4o1nqu4fqft8naeblqkrfbihuaidl6gd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

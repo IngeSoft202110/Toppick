@@ -1,0 +1,220 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%; /*con esto un rem es igual a 10px y sirve para usar medidas relativas */
+}
+
+.navbar {
+  background-color: #d77d4f;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  width: 100%;
+}
+
+.titulo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  color: #fffde7;
+  font-size: 50px;
+  font-family: Roboto, sans-serif;
+}
+.navbar div p {
+  color: #fffde7;
+  font-size: 40px;
+  font-family: Roboto, sans-serif;
+  margin-left: 15px;
+}
+
+ul {
+  list-style-type: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+
+ul li {
+  margin: 0 30px;
+}
+
+ul li a {
+  font-size: 1.8rem;
+  padding: 10px;
+  border: 2px solid #fffeee;
+  border-radius: 5px;
+  color: #fffeee;
+  display: inline-block;
+  width: 192px;
+  text-align: center;
+  font-family: "Lato", sans-serif;
+}
+
+ul li button {
+  font-size: 1.8rem;
+  padding: 10px;
+  background-color: #472025;
+  border-radius: 5px;
+  color: #fffeee;
+  width: 192px;
+  font-family: "Lato", sans-serif;
+  border: none;
+}
+
+body {
+  font-family: Roboto, sans-serif;
+  background-color: rgba(255, 253, 231, 0.7);
+}
+
+body .imgBackgraound img {
+  position: absolute;
+  z-index: -1;
+  opacity: 0.3;
+  width: 100rem;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+
+main {
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.titulo-pro {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.titulo-pro h2 {
+  color: #47525e;
+  font-family: Roboto, sans-serif;
+  font-size: 3rem;
+  line-height: 50px;
+  text-align: center;
+  margin-right: 50px;
+  margin-left: 50px;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.PantallaBajo {
+  display: flex;
+  justify-content: space-between;
+}
+.PantallaBajo h3{
+  color: #47525e;
+  font-family: Lato, sans-serif;
+  font-size: 30px;
+  line-height: 50px;
+  text-align: left;
+  margin: 20px;
+  margin-left: 0px;
+}
+.BotonSelec{
+  position:relative;
+  font-family: Lato, sans-serif;
+}
+.BotonSelec select{
+  background-color: #fcdcbf;
+  border: none;
+  width: 100%;
+  height: 80px;
+  margin: 50px;
+  margin-left: -10px;
+  margin-right: 100px;
+  padding: 0.3rem;
+  border-radius: 5px;
+  color: #47525e;
+  font-size: medium;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 20%);
+}
+
+.tabla {
+  width: 100%;
+  
+}
+
+th,
+td {
+  width: 25%;
+  text-align: center;
+  border: 8px solid #fcdcbf;
+  border-radius: 15px;
+  width: 100%;
+  height: 100%;
+  border-collapse: collapse;
+  /*border-spacing: 0; /* Mirar porque no se uneeee*/
+  padding: 3rem;
+  
+}
+caption p {
+  color: #47525e;
+  font-family: Lato, sans-serif;
+  font-size: 26px;
+  line-height: 33px;
+  width: 174px;
+  text-align: center;
+}
+th p {
+  color: #47525e;
+  font-family: Lato, sans-serif;
+  font-size: 26px;
+  line-height: 33px;
+  width: 174px;
+  text-align: center;
+}
+td p {
+  color: #47525e;
+  font-family: Lato, sans-serif;
+  font-size: 26px;
+  line-height: 33px;
+  width: 174px;
+  text-align: center;
+}
+.botonEnvio {
+  background-color: #472025;
+  border: none;
+  border-radius: 5px;
+  width: 245px;
+  height: 97px;
+  margin-left: -15px;
+  margin-right: 100px;
+}
+.botonEnvio p{
+  color: #FFFEEE;
+  font-family: Lato;
+  font-size: 23px;
+  line-height: 64px;
+  width: 258px;
+  text-align: center;
+  padding-right: 0.5rem;
+}
+
+footer {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 5vh;
+  justify-content: center;
+  align-items: center;
+  color: #47525e;
+  font-family: Roboto;
+  font-size: 2.6rem;
+  margin: 50px 0;
+}

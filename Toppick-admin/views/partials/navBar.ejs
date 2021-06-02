@@ -1,0 +1,43 @@
+<div class="imgBackgraound">
+    <img src="../../assets/logo.png" alt="imagenFondo">
+</div>
+
+<header>
+    <link rel="stylesheet" href="../../Css/heder.css">
+    <nav class='navbar'>
+        <div class="titulo">
+            <h1> Toppick </h1>
+            <p>Admin</p>
+        </div>
+        <ul>
+            <li><button class="BotonHeader" id="PantallaPedidos"> Pedidos </button></li>
+            <li><button class="BotonHeader" id="PatnallaActualizar">Actualizar inventario</button></li>
+            <li><button class="BotonHeader" id="PantallaHisto"> Historial de pedidos </button></li>
+            <li><button class="BotonHeader" id="PantallaCierre">Cierre de caja </button></li>
+            <li>
+                <form method="POST" action="/logout">
+                    <button id="Cerrar"> Cerrar sesión </button>
+                </form>
+            </li>
+        </ul>
+
+    </nav>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script defer>
+        var url = window.location.href;
+        var urlSplit = url.split('/');
+        var id = urlSplit[urlSplit.length - 1];
+        var user = urlSplit[urlSplit.length - 2];
+        var botonPantallaPedidos = document.getElementById("PantallaPedidos");
+        var botonPantallaActualizar = document.getElementById("PatnallaActualizar");
+        var botonPantallaHisto = document.getElementById("PantallaHisto");
+        var botonPantallaCierre = document.getElementById("PantallaCierre");
+    
+        botonPantallaPedidos.addEventListener("click", () => { window.location.replace('https://toppick-admin-server.herokuapp.com/pedidos'); });
+        botonPantallaActualizar.addEventListener("click", () => { window.location.replace('https://toppick-admin-server.herokuapp.com/actualizar'); });
+        botonPantallaHisto.addEventListener("click", () => { window.location.replace('https://toppick-admin-server.herokuapp.com/historial'); });
+        botonPantallaCierre.addEventListener("click", () => { window.location.replace('https://toppick-admin-server.herokuapp.com/cierre_caja'); });
+    </script>
+    
+</header>

@@ -1,0 +1,217 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%; /*con esto un rem es igual a 10px y sirve para usar medidas relativas */
+}
+
+.navbar {
+  background-color: #d77d4f;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  width: 100%;
+}
+
+.titulo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  color: #fffde7;
+  font-size: 50px;
+  font-family: Roboto, sans-serif;
+}
+.navbar div p {
+  color: #fffde7;
+  font-size: 40px;
+  font-family: Roboto, sans-serif;
+  margin-left: 15px;
+}
+
+ul {
+  list-style-type: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+
+ul li {
+  margin: 0 30px;
+}
+
+ul li a {
+  font-size: 1.8rem;
+  padding: 10px;
+  border: 2px solid #fffeee;
+  border-radius: 5px;
+  color: #fffeee;
+  display: inline-block;
+  width: 192px;
+  text-align: center;
+  font-family: "Lato", sans-serif;
+}
+
+ul li button {
+  font-size: 1.8rem;
+  padding: 10px;
+  background-color: #472025;
+  border-radius: 5px;
+  color: #fffeee;
+  width: 192px;
+  font-family: "Lato", sans-serif;
+  border: none;
+}
+
+body {
+  font-family: Roboto, sans-serif;
+  background-color: rgba(255, 253, 231, 0.7);
+}
+
+body .imgBackgraound img {
+  position: absolute;
+  z-index: -1;
+  opacity: 0.3;
+  width: 100rem;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+
+main {
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.caja1{
+  background-color: #D77D4F;
+  border-radius: 20px;
+  width: 500px;
+  height: 370px;
+  margin:80px;
+  margin-top: 150PX;
+  margin-right: -30PX;
+}
+.fecha p{
+  color: #FFFEEE;
+  font-family: Lato;
+  font-size: 28px;
+  line-height: 34px;
+  width: 400px;
+  text-align: center;
+  padding-left:9.5rem;
+  padding-top: 2.5rem;
+}
+.ventas p{
+  color: #FFFEEE;
+  font-family: Lato;
+  font-size: 28px;
+  line-height: 34px;
+  width: 400px;
+  text-align: center;
+  padding-left:9.5rem;
+  padding-top: 2.5rem;
+}
+.cierreCaja{
+  background-color: #472025;
+  border-radius: 5px;
+  width: 239px;
+  height: 58px;
+  margin:40px;
+  margin-left:130px;
+  border: none;
+}
+.cierreCaja p{
+  color: #FFFEEE;
+  font-family: Lato;
+  font-size: 18px;
+  line-height: 62px;
+  width: 239px;
+  text-align: center;
+}
+.cajaAMasVenidosHoy{
+  background-color: #D77D4F;
+  border-radius: 20px;
+  width: 574px;
+  height: 214px;
+  margin:80px;
+  margin-left: -20px;
+  padding:0.3rem;
+}
+.cajaAMasVenidosHoy p{
+  color: #FFFEEE;
+  font-family: Lato;
+  font-size: 28px;
+  line-height: 34px;
+  width: 585px;
+  text-align: center;
+  padding-top: 2.5rem;
+  margin-left: -10px;
+  margin-bottom:12.5px;
+}
+.cajaAMasVenidosHoy ol {
+  margin: 0 110px;
+}
+.cajaAMasVenidosHoy ol li{
+  color: #FFFEEE;
+  font-family: Lato;
+  font-size: 28px;
+  line-height: 34px;
+  width: 451px;
+  text-align: left;
+}
+.cajaBMasPlataHoy{
+  background-color: #D77D4F;
+  border-radius: 20px;
+  width: 574px;
+  height: 220px;
+  margin:80px;
+  margin-left: -20px;
+  padding:0.3rem;
+}
+.cajaBMasPlataHoy p{
+  color: #FFFEEE;
+  font-family: Lato;
+  font-size: 26px;
+  line-height: 34px;
+  width: 585px;
+  text-align: center;
+  padding-top: 1.5rem;
+  margin-left: -10px;
+  margin-bottom:12.5px;
+}
+.cajaBMasPlataHoy ol{
+  margin: 0 110px;
+}
+.cajaBMasPlataHoy ol li{
+  color: #FFFEEE;
+  font-family: Lato;
+  font-size: 28px;
+  line-height: 34px;
+  width: 451px;
+  text-align: left;
+}
+footer {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 5vh;
+  justify-content: center;
+  align-items: center;
+  color: #47525e;
+  font-family: Roboto;
+  font-size: 2.6rem;
+  margin: 50px 0;
+}

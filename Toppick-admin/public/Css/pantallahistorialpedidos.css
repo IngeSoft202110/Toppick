@@ -1,0 +1,233 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  
+  html {
+    font-size: 62.5%; /*con esto un rem es igual a 10px y sirve para usar medidas relativas */
+  }
+  
+  .navbar {
+    background-color: #d77d4f;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    width: 100%;
+  }
+  
+  .titulo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  h1 {
+    color: #fffde7;
+    font-size: 50px;
+    font-family: Roboto, sans-serif;
+  }
+  .navbar div p {
+    color: #fffde7;
+    font-size: 40px;
+    font-family: Roboto, sans-serif;
+    margin-left: 15px;
+  }
+  
+  ul {
+    list-style-type: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  ul li {
+    margin: 0 30px;
+  }
+ 
+  
+  body {
+    font-family: Roboto, sans-serif;
+    background-color: rgba(255, 253, 231, 0.7);
+  }
+  
+  body .imgBackgraound img {
+    position: absolute;
+    z-index: -1;
+    opacity: 0.3;
+    width: 100rem;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    text-align: center;
+  }
+  
+  main {
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+  }
+
+  .titulo-contenedor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .titulo-contenedor h2 {
+    color: #47525e;
+    font-family: Roboto, sans-serif;
+    font-size: 3.5rem;
+    line-height: 45px;
+    width: 132px;
+    text-align: left;
+    margin-top: 20px;
+  }
+  
+  .titulo-contenedor p {
+    color: #47525e;
+    font-family: Roboto, sans-serif;
+    font-size: 3.4rem;
+    line-height: 44px;
+    width: 228px;
+    text-align: left;
+    margin-left: 13px;
+    margin-top: 20px;
+  }
+
+  .cajita {
+    border: 8px solid #fcdcbf;
+    border-radius: 25px;
+    width: 100%;
+    height: 71.4rem;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    flex-grow: 1;
+    overflow: auto;
+  }
+  .cajita::-webkit-scrollbar {
+    display: none;
+    height: auto;
+    width: auto;
+    background: #47525e;
+  }
+
+  .pedido {
+    column-count: 2;
+    column-gap: 0.5%;
+    background: #fcdcbf;
+    height: 30%;
+    margin: 1.5%;
+    padding: 0.5%;
+    border-radius: 12px;
+    display: flex;
+    
+  }
+  .separador1{
+    
+    display: flex;
+    height: 100%;
+    width: 30%;
+    background-color: #fffde7;
+    border-radius:12px;
+    justify-content: center;
+    align-items: center;
+    font-size: 4rem;
+    font-weight: bold;
+  
+  }
+  .separador2{
+    display: block;
+    height: 100%;
+    width: 100%;
+    background-color: #fffde7;
+    border-radius:12px;
+    columns:2;
+    
+  }
+  .fila{
+    display: flex;
+    column-count: 2;
+    width: 100%;
+    height: 30%;
+    margin:0.5%;
+    border-right-width: 1px;
+    border-right-color: rgb(134, 82, 82);
+    column-gap: 0.5%;
+  }
+  .c1{
+    display: flex;
+    height: 100%;
+    width: 30%;
+    border-right-width: 1px;
+    border-right-color: rgb(134, 82, 82);
+    border-right-style:solid ;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+  }
+  .c2{
+    display: flex;
+    height: 100%;
+    width: 100%;
+  
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    
+  }
+  .pedido b{
+    font-family: Roboto, sans-serif;
+    font-size: 3rem;
+  }
+  
+  .botonAzul {
+    background-color: #0c5db6;
+    border: none;
+    width: 50REM;
+    height: 5rem;
+    margin-top: 0.3rem;
+    margin-bottom: 0.3rem;
+    padding: 0.5rem;
+    border-radius: 5px;
+    color: aliceblue;
+    font-size: medium;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 20%);
+    align-content:cen
+  }
+  .botonAzul:hover{
+    background-color: #0c5eb6d3;
+  }
+  
+  footer {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 5vh;
+    justify-content: center;
+    align-items: center;
+    color: #47525e;
+    font-family: Roboto;
+    font-size: 2.6rem;
+    margin: 50px 0;
+  } 
+  .detalles {
+    opacity: 0;
+    transition: 1s ease all;
+    transform: (translateY(-15px));
+  }
+  .linea {
+    height: 2px;
+    background-color: #0c5eb6ab;
+    width: 100%;
+    align-self: center;
+    border-radius: 50px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 20%);
+  }

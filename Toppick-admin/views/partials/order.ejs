@@ -1,0 +1,32 @@
+<div class="pedido">
+    <div class="separador1">
+        <p> # <%- numero %>  </p>
+    </div>
+    <div class="separador2">
+        <div class="fila">
+            <div class="c1">Id Pedido</div>
+            <div class="c2"> <%- idPedido %> </div>
+        </div>
+        <div class="fila">
+            <div class="c1">Id cliente</div>
+            <div class="c2"> <%- Cliente_IdCliente %> </div>
+        </div>
+        <div class="fila">
+            <div class="c1"> Costo total </div>
+            <div class="c2"> <%- costoTotal %> </div>
+        </div>
+        <div class="fila">
+            <div class="c1"> Estado Pedido </div>
+            <div class="c2"> <%= estadoPedido %> </div>
+        </div>
+        <div class="fila">
+            <div class="c1"> Fecha solicitud </div>
+            <div class="c2"> <%= fechaReclamo.substr(0, 10) %> </div>
+        </div>
+        <div class="fila">
+            <div class="c1"> Fecha reclamo </div>
+            <div class="c2"> <%= fechaReclamo.substr(0, 10) %> </div>
+        </div>
+        
+    </div>
+</div>
