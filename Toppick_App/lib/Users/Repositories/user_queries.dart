@@ -141,17 +141,21 @@ class UserQueries{
 
   Future<bool> registerPaymentMethod(String cookie, String number, String name) async{
     int value = 300000;
-    final response = await http.post(
-      Uri.https(this.domain, '/pagos'),
-      headers: {"Accept": "application/json", "Cookie": cookie, "content-type": "application/json"},
-      body:jsonEncode({
+    int numberV = int.parse(number);
+    var myJson = jsonEncode({
         "metodo":{"saldoTotal":value},
         "opcionSeleccionada":{
           "opcion": name,
-          "identificador": number
+          "identificador": numberV
         }
-      })
+      });
+      print(myJson);
+    final response = await http.post(
+      Uri.https(this.domain, '/pagos'),
+      headers: {"Accept": "application/json", "Cookie": cookie, "content-type": "application/json"},
+      body: myJson
     );
+    print(response.body);
     if(response.statusCode == 200){
       return true;
     }else{
@@ -180,6 +184,7 @@ class UserQueries{
   List<dynamic> parsePaymentMethods(String responseBody){
     List<dynamic> result = [];
     final first = json.decode(responseBody);
+    print(first);
     int saldoTotal = 0;
     if(!first['body']['saldoTotal'].isEmpty){
       saldoTotal = first['body']['saldoTotal'][0]['saldoTotal'];
