@@ -5,16 +5,16 @@ const cookieParser = require('cookie-parser');
 const session = require("express-session");
 const PassportLocal = require('passport-local').Strategy;
 const app = express();
+const path = require('path'); 
 require('./Passport.js'); 
 
 //-------------------------------------------------------
 //                  Server configuration 
 //------------------------------------------------------- 
 //configuracion de los valores staticos
+app.use(express.static(path.join(__dirname, 'public'))); 
+app.set('views', __dirname + '/views');
 app.set('view engie', 'ejs');
-app.use("/assets", express.static("assets"));
-app.use("/Scripts", express.static("Scripts"));
-app.use("/Css", express.static("Css"));
 
 const PORT = process.env.PORT || 8080; // Port in which the server will be listening to requests
 
@@ -38,7 +38,7 @@ app.use(passport.session()); // Initialize passport session
 //---------------------------------------
 const isStoreAlreadyLoggedIn = (req, res, next) => {
     console.log(req.user); 
-    if (req.isAuthenticated()) return res.redirect(`/pedidos`); 
+    if (req.isAuthenticated()) return res.redirect('/pedidos'); 
     else return next(); 
 }; 
 
@@ -59,18 +59,33 @@ const getDate = () => {
 //                  LOGOUT route
 //-------------------------------------------------------
 app.post('/logout', async (req, res) => {
-    req.logout(); 
-    reredirect('/'); 
+     
+    // Change availavility of store in DB
+    const url = `https://toppickapp.herokuapp.com/tienda/cierreTienda/${ req.user.id }`; 
+    console.log('LOGOUT URL:', url); 
+    axios.patch( url )
+        .then( response => {
+            console.log('LOGOUT server response:', response.data); 
+             // Log out from store
+            req.logout();
+            // Return successfull redirect 
+            return res.redirect('/'); 
+        } )
+        .catch( error => {
+            console.log('ERROR:', error.data); 
+            // Return error redirect 
+            return res.redirect('/'); 
+        } ); 
 }); 
 
 //-------------------------------------------------------
 //                  LOGIN routes
 //-------------------------------------------------------
 app.get('/', isStoreAlreadyLoggedIn, (req, res) => {
-    res.render("inicio.ejs");
+    res.render('pages/inicio.ejs');
 });
 
-app.post('/login', (req, res, next) => { 
+app.post('/login', async (req, res, next) => { 
     passport.authenticate('local-login', (err, user, info) => {
         // If an error occurs
         if (err) return res.redirect('/'); 
@@ -79,9 +94,25 @@ app.post('/login', (req, res, next) => {
         if (!user) return res.redirect('/'); 
 
         // If user exists in the DB
-        req.logIn(user, (err) => {
+        req.logIn(user, async (err) => {
+            // Error while loggin in
             if (err) return next(err); 
-            else return res.redirect(`/pedidos`)
+            // No error 
+            else {
+                // Change store state in DB  
+                const url = `https://toppickapp.herokuapp.com/tienda/AperturaTienda/${ req.user.id }`; 
+                console.log('LOGIN URL', url); 
+                axios.patch( url )
+                    .then( response => {
+                        console.log('LOGIN server response :', response.data); 
+                        // Return succsessfull redirect 
+                        return res.redirect(`/pedidos`); 
+                    } )
+                    .catch( error => {
+                        console.log('login error:', error.data); 
+                        return res.redirect('/'); 
+                    } ); 
+            } 
         }); 
     }) (req, res, next); 
 }); 
@@ -109,7 +140,7 @@ app.get('/cierre_caja', isStoreLoggedIn, async (req,res) =>{
             mayorGanancia: productosMayorGanancia
         }; 
         // Render page with information from DB
-        res.render('cierre_caja.ejs', dataObj); 
+        res.render('pages/cierre_caja.ejs', dataObj); 
 
     } catch( error ) {
         console.log('CIERRE CAJA : Error while making request to server'); 
@@ -137,7 +168,7 @@ app.get('/historial', isStoreLoggedIn, async (req,res) =>{
             pedidos: response.data.body
         }; 
         // Render page with information from DB
-        return res.render('Historial_pedidos.ejs', dataObj); 
+        return res.render('pages/Historial_pedidos.ejs', dataObj); 
 
     } catch( error ) {
         console.log('HISTORIAL : Error while making request to server'); 
@@ -149,7 +180,7 @@ app.get('/historial', isStoreLoggedIn, async (req,res) =>{
 //              UPDATE INVENTORY routes
 //-------------------------------------------------------
 app.get('/actualizar', isStoreLoggedIn, async (req, res) => {
-    try{
+    try {
         //Get the information products
         const response = await axios({
             method: "GET",
@@ -164,8 +195,8 @@ app.get('/actualizar', isStoreLoggedIn, async (req, res) => {
             productos:response.data.body,
             id:req.user.id
         };
-        return res.render("actualizar_inventario.ejs", dataObj);
-    }catch(error){
+        return res.render("pages/actualizar_inventario.ejs", dataObj);
+    } catch(error){
         console.log('Actualizar : Error while making request to server'); 
         console.log(error); 
     }
@@ -179,7 +210,7 @@ app.get('/pedidos', isStoreLoggedIn, (req, res) => {
         idPunto :req.user.id
     }
     console.log(info.id)
-    res.render("pedidos.ejs", info);
+    res.render('pages/pedidos.ejs', info);
 });
 
 //-------------------------------------------------------
